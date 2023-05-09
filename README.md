@@ -7,7 +7,7 @@ This github repository summarized the progress made in the VSD-HDP tapeout progr
 
 I installed the following tools:
 - Yosys
-I installed Yosys using the following commands:
+    I installed Yosys using the following commands:
 ```bash
 git clone https://github.com/YosysHQ/yosys.git
 cd yosys-master 
