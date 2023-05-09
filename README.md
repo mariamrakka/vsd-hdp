@@ -6,7 +6,8 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 ## Day 0
 
 I installed the following tools:
- - Yosys
+ <details>
+ <summary> Yosys </summary>
 
 
  I installed Yosys using the following commands:
@@ -30,7 +31,7 @@ Below is the screenshot showing sucessful launch:
 
 <img width="568" alt="yosys" src="https://user-images.githubusercontent.com/49097440/236971495-4115ae24-e7e0-460a-81ce-86b5adcb4a15.png">
 
-
+</details>
  - OpenSTA
 
 
