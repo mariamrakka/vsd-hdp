@@ -32,6 +32,8 @@ Below is the screenshot showing sucessful launch:
 
 
  - OpenSTA
+
+
  I installed and built OpenSTA (including the needed packages) using the following commands:
  ```bash
 sudo apt-get install cmake clang gcctcl swig bison flex
@@ -53,6 +55,8 @@ Below is the screenshot showing sucessful launch:
 
 
  - ngspice
+
+
  I downloaded the tarball from https://sourceforge.net/projects/ngspice/files/ to a local directory and unpacked it using the following commands:
  ```bash
 tar -zxvf ngspice-37.tar.gz
@@ -74,6 +78,8 @@ Below is the screenshot showing sucessful launch:
 
 
  - iverilog
+
+
  I installed iverilog using the following command:
   ```bash
 sudo apt-get install iverilog
@@ -89,6 +95,8 @@ sudo apt-get install iverilog
 
 
  - gtkwave
+
+
  I installed gtkwave using the following command:
   ```bash
 sudo apt-get install gtkwave
@@ -104,6 +112,8 @@ Below is the screenshot showing sucessful launch:
 
 
  - magic
+
+
  I installed magic using the following commands:
   ```bash
 sudo apt-get install m4
