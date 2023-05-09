@@ -1,7 +1,7 @@
 
 # VSD-HDP
 
-This github repository summarized the progress made in the VSD-HDP tapeout program.
+This github repository summarizes the progress made in the VSD-HDP tapeout program.
 
 ## Day 0
 
