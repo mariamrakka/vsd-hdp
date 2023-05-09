@@ -32,7 +32,8 @@ Below is the screenshot showing sucessful launch:
 <img width="568" alt="yosys" src="https://user-images.githubusercontent.com/49097440/236971495-4115ae24-e7e0-460a-81ce-86b5adcb4a15.png">
 
 </details>
- - OpenSTA
+ <details>
+ <summary> OpenSTA </summary>
 
 
  I installed and built OpenSTA (including the needed packages) using the following commands:
@@ -54,8 +55,9 @@ Below is the screenshot showing sucessful launch:
 
 <img width="570" alt="OpenُSTA" src="https://user-images.githubusercontent.com/49097440/236971590-b2fac0d1-bfd1-43fb-a3d4-9fc2febeb414.png">
 
-
- - ngspice
+</details>
+ <details>
+ <summary> ngspice </summary>
 
 
  I downloaded the tarball from https://sourceforge.net/projects/ngspice/files/ to a local directory and unpacked it using the following commands:
@@ -77,8 +79,9 @@ Below is the screenshot showing sucessful launch:
 
 <img width="573" alt="ngspice" src="https://user-images.githubusercontent.com/49097440/236971646-05bd8b13-6166-4fec-ae35-cd5ded8d4741.png">
 
-
- - iverilog
+</details>
+ <details>
+ <summary> iverilog </summary>
 
 
  I installed iverilog using the following command:
@@ -94,8 +97,9 @@ sudo apt-get install iverilog
  
  <img width="560" alt="iverilog" src="https://user-images.githubusercontent.com/49097440/236971782-a5ae1815-7ca0-4514-8b9c-6464b012b5c7.png">
 
-
- - gtkwave
+</details>
+ <details>
+ <summary> gtkwave </summary>
 
 
  I installed gtkwave using the following command:
@@ -111,8 +115,9 @@ Below is the screenshot showing sucessful launch:
 
 <img width="572" alt="gtkwave" src="https://user-images.githubusercontent.com/49097440/236971818-0c6906c4-2839-4913-8d1e-fc173c5d9251.png">
 
-
- - magic
+</details>
+ <details>
+ <summary> magic </summary>
 
 
  I installed magic using the following commands:
@@ -134,7 +139,7 @@ sudo apt-get install libncurses-dev
 Below is the screenshot showing sucessful launch:
 
 <img width="635" alt="magic" src="https://user-images.githubusercontent.com/49097440/236971851-c1ac2fc1-8aa0-4f26-aa4a-ef053c7b47cb.png">
-
+</details>
 
 
 
