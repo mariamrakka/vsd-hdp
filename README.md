@@ -26,6 +26,9 @@ Below is the screenshot showing sucessful installation:
 
 Below is the screenshot showing sucessful launch:
 
+<img width="568" alt="yosys" src="https://user-images.githubusercontent.com/49097440/236971495-4115ae24-e7e0-460a-81ce-86b5adcb4a15.png">
+
+
  - OpenSTA
  I installed and built OpenSTA (including the needed packages) using the following commands:
  ```bash
