@@ -3,18 +3,6 @@
 
 This github repository summarized the progress made in the VSD-HDP tapeout program.
 
-
-## Day 0
-
-I installed the following tools:
-
-
-
-
-# VSD-HDP
-
-This github repository summarized the progress made in the VSD-HDP tapeout program.
-
 ## Day 0
 
 I installed the following tools:
@@ -32,6 +20,9 @@ make
 sudo make install
 ```
 Below is the screenshot showing sucessful installation:
+
+<img width="642" alt="yosys-installation" src="https://user-images.githubusercontent.com/49097440/236971441-0680e294-0229-41a8-84b8-9a81c173f667.png">
+
 
 Below is the screenshot showing sucessful launch:
 
