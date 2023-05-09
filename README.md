@@ -6,8 +6,8 @@ This github repository summarized the progress made in the VSD-HDP tapeout progr
 ## Day 0
 
 I installed the following tools:
- - Yosys
- I installed Yosys using the following commands:
+- Yosys
+I installed Yosys using the following commands:
 ```bash
 git clone https://github.com/YosysHQ/yosys.git
 cd yosys-master 
@@ -23,8 +23,8 @@ Below is the screenshot showing sucessful installation:
 <img width="642" alt="yosys-installation" src="https://user-images.githubusercontent.com/49097440/236970377-90dc784f-934b-4268-9d05-766f01d0ec52.png">
 Below is the screenshot showing sucessful launch:
 <img width="568" alt="yosys" src="https://user-images.githubusercontent.com/49097440/236970455-639c2d86-1982-4473-9fe6-656909ef4597.png">
- - OpenSTA
- I installed and built OpenSTA (including the needed packages) using the following commands:
+- OpenSTA
+I installed and built OpenSTA (including the needed packages) using the following commands:
  ```bash
 sudo apt-get install cmake clang gcctcl swig bison flex
 git clone https://github.com/The-OpenROAD-Project/OpenSTA.git
@@ -35,11 +35,15 @@ cmake ..
 make
 ```
 Below is the screenshot showing sucessful installation:
+
 <img width="644" alt="OpenSTA-installation" src="https://user-images.githubusercontent.com/49097440/236970483-93e5af93-b6b6-4ec7-b235-282e258e7a9c.png">
+
 Below is the screenshot showing sucessful launch:
+
 <img width="570" alt="OpenُSTA" src="https://user-images.githubusercontent.com/49097440/236970494-db1af91a-ff50-4e1b-a78a-f2f2352d451e.png">
+ 
  - ngspice
- I downloaded the tarball from https://sourceforge.net/projects/ngspice/files/ to a local directory and unpacked it using the following commands:
+I downloaded the tarball from https://sourceforge.net/projects/ngspice/files/ to a local directory and unpacked it using the following commands:
  ```bash
 tar -zxvf ngspice-37.tar.gz
 cd ngspice-37
@@ -50,11 +54,15 @@ make
 sudo make install
  ```
 Below is the screenshot showing sucessful installation:
+
 <img width="641" alt="ngspice-installation" src="https://user-images.githubusercontent.com/49097440/236970506-7a163ce6-b326-4264-9a7c-d698868ac30a.png">
+
 Below is the screenshot showing sucessful launch:
+
 <img width="573" alt="ngspice" src="https://user-images.githubusercontent.com/49097440/236970522-7d74c109-739c-4755-88e5-3a478ba33383.png">
- - iverilog
- I installed iverilog using the following command:
+ 
+- iverilog
+I installed iverilog using the following command:
   ```bash
 sudo apt-get install iverilog
  ```
