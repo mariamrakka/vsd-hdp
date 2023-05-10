@@ -198,12 +198,15 @@ endmodule
  <summary> Simulation: iverilog and gtkwave </summary>
  
  I used the following commands to simulate and view the plots of the RTL design:
+	
  ```bash
  iverilog good_mux.v tb_good_mux.v
  ./a.out
  gtkwave tb_good_mux.vcd
  ```
+	
  Below is the screenshot of the gtkwave plots:
+	
  <img width="639" alt="Screen Shot 2023-05-09 at 9 21 02 PM" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2c757bfc-b8ca-41f0-b18d-e976dd02552c">
 
  </details>
@@ -219,6 +222,7 @@ yosys> abc -liberty *<your lib file address>*
 yosys> show
  ```
  Below is the screenshot of the synthesized design:
+	
  <img width="504" alt="Screen Shot 2023-05-09 at 9 56 15 PM" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/f67d773d-6cc0-435d-bb95-ce62be7e8525">
 
  I used the following commands to generate the netlist:
