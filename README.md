@@ -141,5 +141,96 @@ Below is the screenshot showing sucessful launch:
 <img width="635" alt="magic" src="https://user-images.githubusercontent.com/49097440/236971851-c1ac2fc1-8aa0-4f26-aa4a-ef053c7b47cb.png">
 </details>
 
+## Day 1
+This is how I simulated and synthesized a 2x1 mux using iverilog and yosys respectively. iverilog generates from the RTL design and its testbench a value changing dump file (vcd). gtkwave is the tool used to plot the simulation results of the design. Yosys is a tool which synthesizes RTL designs into a netlist. It is also used to test the synthesized netlist when we provide it with a testbench.
+
+<details>
+ <summary> Code </summary>
+- The verilog code of the 2x1 mux is as follows:
+
+```bash
+module good_mux (input i0 , input i1 , input sel , output reg y);
+always @ (*)
+begin
+	if(sel)
+		y <= i1;
+	else 
+		y <= i0;
+end
+endmodule
+```
+- The verilog code of the testbench is as follows: 
+
+```bash
+`timescale 1ns / 1ps
+module tb_good_mux;
+	// Inputs
+	reg i0,i1,sel;
+	// Outputs
+	wire y;
+
+        // Instantiate the Unit Under Test (UUT)
+	good_mux uut (
+		.sel(sel),
+		.i0(i0),
+		.i1(i1),
+		.y(y)
+	);
+
+	initial begin
+	$dumpfile("tb_good_mux.vcd");
+	$dumpvars(0,tb_good_mux);
+	// Initialize Inputs
+	sel = 0;
+	i0 = 0;
+	i1 = 0;
+	#300 $finish;
+	end
+
+always #75 sel = ~sel;
+always #10 i0 = ~i0;
+always #55 i1 = ~i1;
+endmodule
+```
+</details>
+
+ <details>
+ <summary> Simulation: iverilog and gtkwave </summary>
+ 
+ I used the following commands to simulate and view the plots of the RTL design:
+ ```bash
+ iverilog good_mux.v tb_good_mux.v
+ ./a.out
+ gtkwave tb_good_mux.vcd
+ ```
+ Below is the screenshot of the gtkwave plots:
+ <img width="639" alt="Screen Shot 2023-05-09 at 9 21 02 PM" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2c757bfc-b8ca-41f0-b18d-e976dd02552c">
+
+ </details>
+
+<details>
+ <summary> Synthesis: Yosys </summary>
+ In the directory of the verilog files, I used the following commands to synthesize and view the synthesized deisgn:
+ ```bash
+yosys> read_liberty -lib <path to lib file>
+yosys> read_verilog <path to verilog file>
+yosys> synth -top <top_module_name>
+yosys> abc -liberty *<your lib file address>*
+yosys> show
+ ```
+ Below is the screenshot of the synthesized design:
+ <img width="504" alt="Screen Shot 2023-05-09 at 9 56 15 PM" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/f67d773d-6cc0-435d-bb95-ce62be7e8525">
+
+ I used the following commands to generate the netlist:
+ ```bash
+ yosys> write_verilog <file_name_netlist.v>
+ yosys> write_verilog -noattr <file_name_netlist.v>
+ ```
+ 
+ Below is the screenshot of the generated netlist:
+ 
+ <img width="636" alt="Screen Shot 2023-05-09 at 10 04 07 PM" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/57513c10-1c2f-4ae8-9a34-535d5f9d3e18">
+ 
+ </details>
 
 
