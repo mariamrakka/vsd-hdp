@@ -262,10 +262,9 @@ module multiple_modules (input a, input b, input c , output y);
 	sub_module2 u2(.a(net1),.b(c),.y(y));  //y = net1|c ,ie y = a&b + c;
 endmodule
 ```
+</details>
 	
-	</details>
-	
-	<details>
+<details>
  <summary> Synthesis: multiple_modules level </summary>
 		
 I used the following commands to synthesize and view the design of the hierarchical multiple module:
