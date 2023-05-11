@@ -204,7 +204,7 @@ After that, I sumulated the different flop designs using iverilog and gtkwave, a
 
 <details>
  <summary> Verilog codes </summary>
-The verilog codes of the multiple module (multiple_modules.v), the D-flipflop with asynchronous reset (dff_asyncres.v), the D-flipflop with synchronous and asynchronous reset (dff_asyncres_syncres.v), and the D-flipflop with synchronous reset (dff_syncres.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
+The verilog codes of the multiple module (multiple_modules.v), the D-flipflop with asynchronous reset (dff_asyncres.v), the D-flipflop with synchronous and asynchronous reset (dff_asyncres_syncres.v), the D-flipflop with synchronous reset (dff_syncres.v), and their respective testbenches (tb_*) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
 
 </details>
 	
