@@ -263,14 +263,14 @@ Below is the screenshot of the generated design:
 		
 </details>
 <details>
- <summary> Simulation: dff with asynchronous reset </summary>
+<summary> Simulation: dff with asynchronous reset </summary>
+
 I used the following commands to simulate the RTL design of the dff with asynchronous reset:
 ```bash	
 iverilog dff_asyncres.v tb_dff_asyncres.v
 ./a.out
 gtkwave <name vcd file: tb_dff_asyncres.vcd>
-```
-	
+```	
 Below is the screenshot of the simulation:
 <img width="466" alt="asyncres" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9ac7b0c9-a88f-459e-8b86-7613d645ef6a">
 </details>
@@ -281,7 +281,6 @@ iverilog dff_async_set.v tb_dff_async_set.v
 ./a.out
 gtkwave <name vcd file: tb_dff_async_set.vcd>
 ```
-	
 Below is the screenshot of the simulation:
 <img width="489" alt="asyncset" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ebfebce2-d568-48dc-ac00-5d66fe78ff5e">
 
@@ -293,8 +292,7 @@ I used the following commands to simulate the RTL design of the dff with asynchr
 iverilog dff_asyncres.v tb_dff_asyncres.v
 ./a.out
 gtkwave <name vcd file: tb_dff_asyncres.vcd>
-```
-	
+```	
 Below is the screenshot of the simulation:
 <img width="466" alt="asyncres" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9ac7b0c9-a88f-459e-8b86-7613d645ef6a">
 </details>
@@ -304,8 +302,7 @@ I used the following commands to simulate the RTL design of the dff with synchro
 iverilog dff_syncres.v tb_dff_syncres.v
 ./a.out
 gtkwave <name vcd file: tb_dff_syncres.vcd>
-```
-	
+```	
 Below is the screenshot of the simulation:
 <img width="476" alt="syncres" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/6d20f785-a07f-4eae-801d-f7dac19159b6">
 
