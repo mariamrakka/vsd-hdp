@@ -256,7 +256,7 @@ yosys> synth -top <name: sub_module1>
 yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> show <name: sub_module1>
 ```
-		
+	
 Below is the screenshot of the generated design:
 		
 <img width="418" alt="synth_submodule1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2be34dc4-2bab-496e-8683-8d2bb1f90ed2">
@@ -266,22 +266,30 @@ Below is the screenshot of the generated design:
 <summary> Simulation: dff with asynchronous reset </summary>
 
 I used the following commands to simulate the RTL design of the dff with asynchronous reset:
+	
 ```bash	
 iverilog dff_asyncres.v tb_dff_asyncres.v
 ./a.out
 gtkwave <name vcd file: tb_dff_asyncres.vcd>
 ```	
+	
 Below is the screenshot of the simulation:
+	
 <img width="466" alt="asyncres" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9ac7b0c9-a88f-459e-8b86-7613d645ef6a">
+	
 </details>
+<details>
 <summary> Simulation: dff with asynchronous set </summary>
 I used the following commands to simulate the RTL design of the dff with asynchronous set:
+	
 ```bash	
 iverilog dff_async_set.v tb_dff_async_set.v
 ./a.out
 gtkwave <name vcd file: tb_dff_async_set.vcd>
 ```
+	
 Below is the screenshot of the simulation:
+	
 <img width="489" alt="asyncset" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ebfebce2-d568-48dc-ac00-5d66fe78ff5e">
 
 </details>
@@ -330,13 +338,13 @@ yosys> show <name: dff_asyncres>
 Below is the screenshot of the synthesized design:
 	
 <img width="415" alt="asyncressynth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/420f2db1-3c7c-44d8-98ed-be6e9ef6bc7e">
-
-</details>
+	
 </details>
 <details>
  <summary> Synthesis: dff with asynchronous set </summary>
 
 I used the following commands to synthesize the design:
+	
 ```bash
 yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> read_verilog <name of verilog file: dff_async_set.v>
@@ -348,8 +356,7 @@ yosys> show <name: dff_async_set>
 Below is the screenshot of the synthesized design:
 	
 <img width="415" alt="asyncsetsynth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/bdb9efd8-3f3b-4048-81e0-7996107f5a31">
-
-</details>
+	
 </details>
 <details>
  <summary> Synthesis: dff with synchronous reset </summary>
