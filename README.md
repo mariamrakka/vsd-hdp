@@ -145,7 +145,7 @@ Below is the screenshot showing sucessful launch:
 This is how I simulated and synthesized a 2x1 mux using iverilog and yosys respectively. iverilog generates from the RTL design and its testbench a value changing dump file (vcd). gtkwave is the tool used to plot the simulation results of the design. Yosys is a tool which synthesizes RTL designs into a netlist. It is also used to test the synthesized netlist when we provide it with a testbench.
 
 <details>
- <summary> Verilog Code </summary>
+ <summary> Verilog code </summary>
 - The verilog code of the 2x1 mux is as follows:
 
 ```bash
@@ -246,7 +246,7 @@ yosys> show
 I first synthesized a multiple module (made of two submodules) at the multiple module level (both in hierarchical and flattened forms) then at the submodule level. Synthesis at the submodule level is important for two reasons: 1-) when we have multiple instances of same module (we synthesize once and replicate this netlist multiple times and stitch together the replicas to get the multiple module netlist, and 2-) when we want to divide and conquer (in massive designs) so that the tool can generate a portion by portion of the overall netlist and then we can stitch together the netlist portions to get the multiple module netlist.
 
 <details>
- <summary> Verilog Code </summary>
+ <summary> Verilog code </summary>
 - The verilog code of the multiple module (multiple_modules.v) is as follows:
 	
 ```bash
