@@ -146,52 +146,8 @@ This is how I simulated and synthesized a 2x1 mux using iverilog and yosys respe
 
 <details>
  <summary> Verilog code </summary>
-- The verilog code of the 2x1 mux is as follows:
+The verilog codes of the 2x1 mux (good_mux.v) and its testbench (tb_good_mux.v) are taken from [GitHub Link](https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git)
 
-```bash
-module good_mux (input i0 , input i1 , input sel , output reg y);
-always @ (*)
-begin
-	if(sel)
-		y <= i1;
-	else 
-		y <= i0;
-end
-endmodule
-```
-- The verilog code of the testbench is as follows: 
-
-```bash
-`timescale 1ns / 1ps
-module tb_good_mux;
-	// Inputs
-	reg i0,i1,sel;
-	// Outputs
-	wire y;
-
-        // Instantiate the Unit Under Test (UUT)
-	good_mux uut (
-		.sel(sel),
-		.i0(i0),
-		.i1(i1),
-		.y(y)
-	);
-
-	initial begin
-	$dumpfile("tb_good_mux.vcd");
-	$dumpvars(0,tb_good_mux);
-	// Initialize Inputs
-	sel = 0;
-	i0 = 0;
-	i1 = 0;
-	#300 $finish;
-	end
-
-always #75 sel = ~sel;
-always #10 i0 = ~i0;
-always #55 i1 = ~i1;
-endmodule
-```
 </details>
 
  <details>
@@ -244,24 +200,12 @@ yosys> show
 ## Day 2
 
 I first synthesized a multiple module (made of two submodules) at the multiple module level (both in hierarchical and flattened forms) then at the submodule level. Synthesis at the submodule level is important for two reasons: 1-) when we have multiple instances of same module (we synthesize once and replicate this netlist multiple times and stitch together the replicas to get the multiple module netlist, and 2-) when we want to divide and conquer (in massive designs) so that the tool can generate a portion by portion of the overall netlist and then we can stitch together the netlist portions to get the multiple module netlist.
+After that, I sumulated the different flop designs using iverilog and gtkwave, and applied optimizations.
 
 <details>
  <summary> Verilog code </summary>
-- The verilog code of the multiple module (multiple_modules.v) is as follows:
-	
-```bash
-module sub_module2 (input a, input b, output y);
-	assign y = a | b;
-endmodule
-module sub_module1 (input a, input b, output y);
-	assign y = a&b;
-endmodule
-module multiple_modules (input a, input b, input c , output y);
-	wire net1;
-	sub_module1 u1(.a(a),.b(b),.y(net1));  //net1 = a&b
-	sub_module2 u2(.a(net1),.b(c),.y(y));  //y = net1|c ,ie y = a&b + c;
-endmodule
-```
+The verilog codes of the multiple module (multiple_modules.v), the D-flipflop with asynchronous reset (dff_asyncres.v), the D-flipflop with synchronous and asynchronous reset (dff_asyncres_syncres.v), and the D-flipflop with synchronous reset (dff_syncres.v) are taken from [GitHub Link](https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git)
+
 </details>
 	
 <details>
