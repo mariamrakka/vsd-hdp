@@ -240,6 +240,7 @@ yosys> show
  <img width="636" alt="Screen Shot 2023-05-09 at 10 04 07 PM" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/57513c10-1c2f-4ae8-9a34-535d5f9d3e18">
  
  </details>
+	
 ## Day 2
 
 I first synthesized a multiple module (made of two submodules) at the multiple module level (both in hierarchical and flattened forms) then at the submodule level. Synthesis at the submodule level is important for two reasons: 1-) when we have multiple instances of same module (we synthesize once and replicate this netlist multiple times and stitch together the replicas to get the multiple module netlist, and 2-) when we want to divide and conquer (in massive designs) so that the tool can generate a portion by portion of the overall netlist and then we can stitch together the netlist portions to get the multiple module netlist.
@@ -266,8 +267,9 @@ endmodule
 	</details>
 	<details>
  <summary> Synthesis: multiple_modules level </summary>
-- Hierarchical Synthesis
+		
 I used the following commands to synthesize and view the design of the hierarchical multiple module:
+		
 ```bash		
 yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> read_verilog <name of verilog file: multiple_modules.v>
@@ -276,24 +278,37 @@ yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> show <name: multiple_modules>
 yosys> write_verilog -noattr <name: multiple_modules_hier.v>
 ```
+		
 Below is the screenshot of the generated hierarchical design:
+		
 	<img width="530" alt="hier" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/4844a043-c175-4de0-b1b7-e3e06a99017a">
 	
 Below is the screenshot of the generated hierarchical netlist:
+		
 		<img width="645" alt="hiernetlist" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/bfc43804-7293-48e3-b588-cfadf39bda76">
 
 I used the following additional commands to synthesize and view the design of the flattened multiple module:
+		
 ```bash
 yosys> flatten
 yosys> write_verilog -noattr <name: multiple_modules_flat.v>
 ```
+		
 Below is the screenshot of the generated flattened design:
+		
 		<img width="574" alt="flatten" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/b5b4d527-fa39-46a3-9ae5-8c3b70ebae83">
 
 Below is the screenshot of the generated flattened netlist:
+		
 <img width="645" alt="flattennetlist" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/461ed9dc-6c37-4c41-888a-f7c5e84b1442">
 
+		</details>
+
+	<details>
+ <summary> Synthesis: sub_module1 level </summary>
+		
 I used the following commands to view the synthesized design of the submodule:
+		
 ```bash		
 yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> read_verilog <name of verilog file: multiple_modules.v>
@@ -301,5 +316,9 @@ yosys> synth -top <name: sub_module1>
 yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> show <name: sub_module1>
 ```
+		
 Below is the screenshot of the generated design:
+		
 <img width="418" alt="synth_submodule1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2be34dc4-2bab-496e-8683-8d2bb1f90ed2">
+		
+		</details>
