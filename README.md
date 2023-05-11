@@ -201,10 +201,11 @@ yosys> show
 
 I first synthesized a multiple module (made of two submodules) at the multiple module level (both in hierarchical and flattened forms) then at the submodule level. Synthesis at the submodule level is important for two reasons: 1-) when we have multiple instances of same module (we synthesize once and replicate this netlist multiple times and stitch together the replicas to get the multiple module netlist, and 2-) when we want to divide and conquer (in massive designs) so that the tool can generate a portion by portion of the overall netlist and then we can stitch together the netlist portions to get the multiple module netlist.
 After that, I sumulated the different flop designs using iverilog and gtkwave, then synthesized the designs.
+Finally, I synthesized 2 designs that were special; their synthesis used optimizations.
 
 <details>
  <summary> Verilog codes </summary>
-The verilog codes of the multiple module (multiple_modules.v), the D-flipflop with asynchronous reset (dff_asyncres.v), the D-flipflop with asynchronous set (dff_async_set.v), the D-flipflop with synchronous reset (dff_syncres.v), and their respective testbenches (tb_*) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
+The verilog codes of the multiple module (multiple_modules.v), the D-flipflop with asynchronous reset (dff_asyncres.v), the D-flipflop with asynchronous set (dff_async_set.v), the D-flipflop with synchronous reset (dff_syncres.v), their respective testbenches (tb_*), mult_2.v and mult_8.v are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
 
 </details>
 	
@@ -361,4 +362,51 @@ Below is the screenshot of the synthesized design:
 <img width="418" alt="syncressynth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/805a803c-c7d5-4049-9107-28852c15a4e7">
 
 </details>
+<details>
+ <summary> Synthesis: mult_2.v </summary>
+	
+I used the following commands to synthesize and view the design:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: mult_2.v>
+yosys> synth -top <name: mul2>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> show <name: mul2>
+yosys> write_verilog -noattr <name: mul2_net.v>
+```
+	
+Below is the screenshot of the synthesized design, note that no hardware was used as multiplying by a power of two is equivalent to shifting:
+	
+<img width="453" alt="mul2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/63af05e1-945d-4a24-862c-f97fbcd45922">
+	
+Below is the screenshot of the netlist:
+	
+<img width="636" alt="mul2_net" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/cd6ffe25-388b-48d4-a133-20758c730e58">
+	
 
+</details>
+<details>
+ <summary> Synthesis: mult_8.v </summary>
+	
+I used the following commands to synthesize and view the design:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: mult_8.v>
+yosys> synth -top <name: mult8>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> show <name: mult8>
+yosys> write_verilog -noattr <name: mult8_net.v>
+```
+	
+Below is the screenshot of the synthesized design, note that no hardware was used as multiplying a 3-bit input (special case) by a nine is equivalent to replicating the input twice for output:
+	
+<img width="414" alt="mult8" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ea3937da-6fe9-45b6-a90d-1af514d175ec">
+	
+Below is the screenshot of the netlist:
+	
+<img width="645" alt="mult8_net" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9aec2099-3427-4b6f-9d6a-694f846d69bf">
+
+
+</details>
