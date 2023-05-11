@@ -145,8 +145,8 @@ Below is the screenshot showing sucessful launch:
 This is how I simulated and synthesized a 2x1 mux using iverilog and yosys respectively. iverilog generates from the RTL design and its testbench a value changing dump file (vcd). gtkwave is the tool used to plot the simulation results of the design. Yosys is a tool which synthesizes RTL designs into a netlist. It is also used to test the synthesized netlist when we provide it with a testbench.
 
 <details>
- <summary> Verilog code </summary>
-The verilog codes of the 2x1 mux (good_mux.v) and its testbench (tb_good_mux.v) are taken from [GitHub Link](https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git)
+ <summary> Verilog codes </summary>
+The verilog codes of the 2x1 mux (good_mux.v) and its testbench (tb_good_mux.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
 
 </details>
 
@@ -203,8 +203,8 @@ I first synthesized a multiple module (made of two submodules) at the multiple m
 After that, I sumulated the different flop designs using iverilog and gtkwave, and applied optimizations.
 
 <details>
- <summary> Verilog code </summary>
-The verilog codes of the multiple module (multiple_modules.v), the D-flipflop with asynchronous reset (dff_asyncres.v), the D-flipflop with synchronous and asynchronous reset (dff_asyncres_syncres.v), and the D-flipflop with synchronous reset (dff_syncres.v) are taken from [GitHub Link](https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git)
+ <summary> Verilog codes </summary>
+The verilog codes of the multiple module (multiple_modules.v), the D-flipflop with asynchronous reset (dff_asyncres.v), the D-flipflop with synchronous and asynchronous reset (dff_asyncres_syncres.v), and the D-flipflop with synchronous reset (dff_syncres.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
 
 </details>
 	
