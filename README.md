@@ -305,6 +305,7 @@ gtkwave <name vcd file: tb_dff_syncres.vcd>
 ```	
 	
 Below is the screenshot of the simulation:
+	
 <img width="476" alt="syncres" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/6d20f785-a07f-4eae-801d-f7dac19159b6">
 
 </details>
