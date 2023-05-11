@@ -248,6 +248,7 @@ I first synthesized a multiple module (made of two submodules) at the multiple m
 <details>
  <summary> Verilog Code </summary>
 	- The verilog code of the multiple module (multiple_modules.v) is as follows:
+	
 	```bash
 	module sub_module2 (input a, input b, output y);
 	assign y = a | b;
@@ -265,6 +266,7 @@ module multiple_modules (input a, input b, input c , output y);
 endmodule
 ```
 	</details>
+	
 	<details>
  <summary> Synthesis: multiple_modules level </summary>
 		
