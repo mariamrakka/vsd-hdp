@@ -376,7 +376,7 @@ yosys> show <name: mul2>
 yosys> write_verilog -noattr <name: mul2_net.v>
 ```
 	
-Below is the screenshot of the synthesized design, note that no hardware was used as multiplying by a power of two is equivalent to shifting:
+Below is the screenshot of the synthesized design, note that no hardware was used as multiplying a 3-bit input by a power of two is equivalent to shifting for output:
 	
 <img width="453" alt="mul2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/63af05e1-945d-4a24-862c-f97fbcd45922">
 	
