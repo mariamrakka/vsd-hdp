@@ -294,21 +294,6 @@ Below is the screenshot of the simulation:
 
 </details>
 <details>
- <summary> Simulation: dff with asynchronous reset </summary>
-	
-I used the following commands to simulate the RTL design of the dff with asynchronous reset:
-	
-```bash	
-iverilog dff_asyncres.v tb_dff_asyncres.v
-./a.out
-gtkwave <name vcd file: tb_dff_asyncres.vcd>
-```
-	
-Below is the screenshot of the simulation:
-<img width="466" alt="asyncres" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9ac7b0c9-a88f-459e-8b86-7613d645ef6a">
-	
-</details>
-<details>
 <summary> Simulation: dff with synchronous reset </summary>
 	
 I used the following commands to simulate the RTL design of the dff with synchronous reset:
