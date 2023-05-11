@@ -376,7 +376,7 @@ yosys> show <name: mul2>
 yosys> write_verilog -noattr <name: mul2_net.v>
 ```
 	
-Below is the screenshot of the synthesized design, note that no hardware was used as multiplying a 3-bit input by a power of two is equivalent to shifting for output:
+Below is the screenshot of the synthesized design, note that no hardware was used (no cells are synthesised) as multiplying a 3-bit input by a power of two is equivalent to shifting for output:
 	
 <img width="453" alt="mul2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/63af05e1-945d-4a24-862c-f97fbcd45922">
 	
@@ -400,7 +400,7 @@ yosys> show <name: mult8>
 yosys> write_verilog -noattr <name: mult8_net.v>
 ```
 	
-Below is the screenshot of the synthesized design, note that no hardware was used as multiplying a 3-bit input (special case) by a nine is equivalent to replicating the input twice for output:
+Below is the screenshot of the synthesized design, note that no hardware was used (no cells are synthesised) as multiplying a 3-bit input (special case) by a nine is equivalent to replicating the input twice for output:
 	
 <img width="414" alt="mult8" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ea3937da-6fe9-45b6-a90d-1af514d175ec">
 	
