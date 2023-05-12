@@ -424,12 +424,12 @@ I have synthesized designs with optimizations. Combinational logic optimizations
 I used the below commands to view the synthesized design of opt_check.v with optimizations:
 	
 ```bash
-	yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
-	yosys> read_verilog <name of verilog file: opt_check.v>
-	yosys> synth -top <name: opt_check>
-	yosys> opt_clean -purge
-	yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
-	yosys> show
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: opt_check.v>
+yosys> synth -top <name: opt_check>
+yosys> opt_clean -purge
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> show
 ```
 	
 Below is the screenshot of the obtained optimized design, as we can see a 2-input and gate is realized as was expected when optimizations are applied:
