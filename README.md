@@ -431,7 +431,8 @@ I used the below commands to view the synthesized design of opt_check.v with opt
 	yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 	yosys> show
 ```
-	Below is the screenshot of the obtained optimized design, as we can see a 2-input and gate is realized as was expected when optimizations are applied:
+	
+Below is the screenshot of the obtained optimized design, as we can see a 2-input and gate is realized as was expected when optimizations are applied:
 	
 <img width="676" alt="opt_check" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/24e58532-806f-4ddb-bd6f-67496c516633">
 
@@ -470,7 +471,7 @@ Below is the screenshot of the obtained optimized design, as we can see a 2-inpu
 	yosys> show
 	```
 	
-	Below is the screenshot of the obtained optimized design, as we can see a 3-input and gate is realized as was expected when optimizations are applied:
+Below is the screenshot of the obtained optimized design, as we can see a 3-input and gate is realized as was expected when optimizations are applied:
 	
 <img width="444" alt="opt_check3" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ce988dc4-46a3-4506-a72a-244bc7c0b3a1">
 
