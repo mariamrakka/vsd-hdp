@@ -418,41 +418,49 @@ I have synthesized designs with optimizations. Combinational logic optimizations
  <summary> Verilog codes </summary>
 	The verilog codes used (opt_*) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
 	</details>
+	
 <details>
  <summary> Combinational logic optimizations: opt_check.v </summary>
-	I used the below commands to view the synthesized design of opt_check.v with optimizations:
-	```bash
+I used the below commands to view the synthesized design of opt_check.v with optimizations:
+	
+```bash
 	yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 	yosys> read_verilog <name of verilog file: opt_check.v>
 	yosys> synth -top <name: opt_check>
 	yosys> opt_clean -purge
 	yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 	yosys> show
-	```
+```
 	Below is the screenshot of the obtained optimized design, as we can see a 2-input and gate is realized as was expected when optimizations are applied:
-	<img width="676" alt="opt_check" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/24e58532-806f-4ddb-bd6f-67496c516633">
+	
+<img width="676" alt="opt_check" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/24e58532-806f-4ddb-bd6f-67496c516633">
 
 </details>
-	<details>
+	
+<details>
  <summary> Combinational logic optimizations: opt_check2.v </summary>
 	I used the below commands to view the synthesized design of opt_check2.v with optimizations:
-	```bash
-	yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
-	yosys> read_verilog <name of verilog file: opt_check2.v>
-	yosys> synth -top <name: opt_check2>
-	yosys> opt_clean -purge
-	yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
-	yosys> show
-	```
-	Below is the screenshot of the obtained optimized design, as we can see a 2-input or gate is realized as was expected when optimizations are applied:
-	<img width="676" alt="opt_check1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/6b1f4bf7-3ade-4ce2-a3fd-f2698147c2ad">
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: opt_check2.v>
+yosys> synth -top <name: opt_check2>
+yosys> opt_clean -purge
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> show
+```
+Below is the screenshot of the obtained optimized design, as we can see a 2-input or gate is realized as was expected when optimizations are applied:
+	
+<img width="676" alt="opt_check1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/6b1f4bf7-3ade-4ce2-a3fd-f2698147c2ad">
 
 
 </details>
-
-		<details>
+	
+<details>
  <summary> Combinational logic optimizations: opt_check3.v </summary>
+	
 	I used the below commands to view the synthesized design of opt_check3.v with optimizations:
+	
 	```bash
 	yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 	yosys> read_verilog <name of verilog file: opt_check3.v>
@@ -461,7 +469,9 @@ I have synthesized designs with optimizations. Combinational logic optimizations
 	yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 	yosys> show
 	```
+	
 	Below is the screenshot of the obtained optimized design, as we can see a 3-input and gate is realized as was expected when optimizations are applied:
+	
 <img width="444" alt="opt_check3" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ce988dc4-46a3-4506-a72a-244bc7c0b3a1">
 
 
