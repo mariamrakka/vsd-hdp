@@ -460,7 +460,7 @@ Below is the screenshot of the obtained optimized design, as we can see a 2-inpu
 <details>
  <summary> Combinational logic optimizations: opt_check3.v </summary>
 	
-	I used the below commands to view the synthesized design of opt_check3.v with optimizations:
+I used the below commands to view the synthesized design of opt_check3.v with optimizations:
 	
 	```bash
 	yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
@@ -502,7 +502,7 @@ Below is the screenshot of the obtained optimized design, as we can see a 2-inpu
 <details>
  <summary> Combinational logic optimizations: multiple_module_opt.v </summary>
 	
-	I used the below commands to view the synthesized design of multiple_module_opt.v with optimizations:
+I used the below commands to view the synthesized design of multiple_module_opt.v with optimizations:
 	
 	```bash
 	yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
@@ -525,7 +525,7 @@ Below is the screenshot of the obtained optimized design, as we can see 2 and ga
 <details>
  <summary> Combinational logic optimizations: multiple_module_opt2.v </summary>
 	
-	I used the below commands to view the synthesized design of multiple_module_opt2.v with optimizations:
+I used the below commands to view the synthesized design of multiple_module_opt2.v with optimizations:
 	
 	```bash
 	yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
