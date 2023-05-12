@@ -416,7 +416,7 @@ I have synthesized designs with optimizations. Combinational logic optimizations
 	
 <details>
  <summary> Verilog codes </summary>
-	The verilog codes used (opt_*, dff_const*, tb_dff_const*, counter_opt.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
+	The verilog codes used (opt_*, dff_const*, tb_dff_const*, and counter_opt*) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
 	</details>
 	
 <details>
@@ -713,21 +713,42 @@ Below is the screenshot of the obtained optimized design, and the 2 flipflops ar
 </details>
 	
 <details>
- <summary> Sequential logic optimizations for unused outputs: dff_const5.v </summary>
+ <summary> Sequential logic optimizations for unused outputs: counter_opt.v </summary>
 	
-I used the below commands to view the synthesized design of dff_const5.v with optimizations:
+I used the below commands to view the synthesized design of counter_opt.v with optimizations:
 	
 ```bash
 yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
-yosys> read_verilog <name of verilog file: dff_const5.v>
-yosys> synth -top <name: dff_const5>
+yosys> read_verilog <name of verilog file: counter_opt.v>
+yosys> synth -top <name: counter_opt>
 yosys> dfflibmap -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> show
 ```
 	
-Below is the screenshot of the obtained optimized design, and the only used output (count[0]) is present:
+Below is the screenshot of the obtained optimized design, and the only used output (count[0]) is present and 1 flipflop is used:
 	
 <img width="684" alt="counter_opt" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/10549f0f-c8d0-4bc8-8069-e14d80770a53">
 	
 </details>
+	
+<details>
+ <summary> Sequential logic optimizations for 3 used outputs: counter_opt2.v </summary>
+	
+I used the below commands to view the synthesized design of counter_opt2.v with optimizations:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: counter_opt2.v>
+yosys> synth -top <name: counter_opt2>
+yosys> dfflibmap -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> show
+```
+	
+Below is the screenshot of the obtained optimized design, and 3 flipflops are used:
+	
+<img width="681" alt="counter_opt2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/0d8a2613-cae2-4ab6-a8c1-a9bece64dce1">
+	
+</details>
+
