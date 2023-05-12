@@ -611,7 +611,38 @@ Below is the screenshot of the obtained optimized design:
 <img width="438" alt="dff_const2_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/37d60203-d433-4e23-92fd-92b9d2d20334">
 
 
+</details>
 
+	
+<details>
+ <summary> Sequential logic optimizations: dff_const3.v </summary>
+	
+I used the below commands to simulate the design of dff_const3.v:
+	
+```bash
+iverilog dff_const3.v tb_dff_const3.v
+./a.out
+gtkwave tb_dff_const3.vdc
+```	
+
+Below is the screenshot of the obtained simulation, as we can see Q does nto follow Q1 immediately:
+	
+<img width="574" alt="dff_const3" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/95620b55-a454-428a-b0c7-b021f90c1b96">
+
+I used the below commands to view the synthesized design of dff_const3.v with optimizations:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: dff_const3.v>
+yosys> synth -top <name: dff_const3>
+yosys> dfflibmap -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> show
+```
+	
+Below is the screenshot of the obtained optimized design, the 2 flipflops are retained:
+
+<img width="651" alt="dff_const3synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/0e5f3ab6-d7e7-410d-a007-e0da72123889">
 
 
 </details>
