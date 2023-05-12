@@ -477,4 +477,70 @@ Below is the screenshot of the obtained optimized design, as we can see a 3-inpu
 
 
 </details>
+	
+<details>
+ <summary> Combinational logic optimizations: opt_check4.v </summary>
+	
+	I used the below commands to view the synthesized design of opt_check4.v with optimizations:
+	
+	```bash
+	yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+	yosys> read_verilog <name of verilog file: opt_check4.v>
+	yosys> synth -top <name: opt_check4>
+	yosys> opt_clean -purge
+	yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+	yosys> show
+	```
+	
+Below is the screenshot of the obtained optimized design, as we can see a 2-input xnor gate is realized as was expected when optimizations are applied:
+	
+<img width="474" alt="opt_check4" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9eef8e44-b195-4f3a-9e15-b016c4743074">
+
+
+</details>
 		
+<details>
+ <summary> Combinational logic optimizations: multiple_module_opt.v </summary>
+	
+	I used the below commands to view the synthesized design of multiple_module_opt.v with optimizations:
+	
+	```bash
+	yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+	yosys> read_verilog <name of verilog file: multiple_module_opt.v>
+	yosys> synth -top <name: multiple_module_opt>
+	yosys> flatten 
+	yosys> opt_clean -purge
+	yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+	yosys> show
+	```
+	
+Below is the screenshot of the obtained optimized design, as we can see 2 and gates and 1 or gate are realized as was expected when optimizations are applied:
+	
+<img width="419" alt="multiple_module_opt" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/5f730390-73fa-49a7-96a6-0d80a20d2547">
+
+
+
+</details>
+	
+<details>
+ <summary> Combinational logic optimizations: multiple_module_opt2.v </summary>
+	
+	I used the below commands to view the synthesized design of multiple_module_opt2.v with optimizations:
+	
+	```bash
+	yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+	yosys> read_verilog <name of verilog file: multiple_module_opt2.v>
+	yosys> synth -top <name: multiple_module_opt2>
+	yosys> flatten 
+	yosys> opt_clean -purge
+	yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+	yosys> show
+	```
+	
+Below is the screenshot of the obtained optimized design, as we can see no standard cells are realized as was expected when optimizations are applied:
+	
+<img width="421" alt="multiple_module_opt2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/91e7701e-0982-4a89-bf6d-0a90c81c6fc0">
+
+
+
+</details>
