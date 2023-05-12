@@ -746,7 +746,7 @@ yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> show
 ```
 	
-Below is the screenshot of the obtained optimized design, and 3 flipflops are used:
+Below is the screenshot of the obtained optimized design, and 3 flipflops are used in addition to the counting logic of all bits:
 	
 <img width="681" alt="counter_opt2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/0d8a2613-cae2-4ab6-a8c1-a9bece64dce1">
 	
