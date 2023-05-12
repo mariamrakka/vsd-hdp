@@ -708,6 +708,6 @@ yosys> show
 	
 Below is the screenshot of the obtained optimized design, and the 2 flipflops are retained:
 	
-<img width="502" alt="dff_const5_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/7fb4f11e-cb9a-44a6-9701-aee274fd38a3">
+<img width="629" alt="dff_const5_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/b4a8e84a-f1ad-4e2f-9120-199bd7424114">
 
 </details>
