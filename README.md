@@ -625,11 +625,11 @@ iverilog dff_const3.v tb_dff_const3.v
 gtkwave tb_dff_const3.vdc
 ```	
 
-Below is the screenshot of the obtained simulation, as we can see Q does nto follow Q1 immediately:
+Below is the screenshot of the obtained simulation, as we can see Q does not follow Q1 immediately:
 	
 <img width="574" alt="dff_const3" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/95620b55-a454-428a-b0c7-b021f90c1b96">
 
-I used the below commands to view the synthesized design of dff_const3.v with optimizations:
+I used the below commands to view the synthesized design of dff_const3.v:
 	
 ```bash
 yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
@@ -640,9 +640,74 @@ yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> show
 ```
 	
-Below is the screenshot of the obtained optimized design, the 2 flipflops are retained:
+Below is the screenshot of the obtained design, the 2 flipflops are retained and optimization could not remove any of them:
 
 <img width="651" alt="dff_const3synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/0e5f3ab6-d7e7-410d-a007-e0da72123889">
 
+
+</details>
+	
+<details>
+ <summary> Sequential logic optimizations: dff_const4.v </summary>
+	
+I used the below commands to simulate the design of dff_const4.v:
+	
+```bash
+iverilog dff_const4.v tb_dff_const4.v
+./a.out
+gtkwave tb_dff_const4.vdc
+```	
+
+Below is the screenshot of the obtained simulation, as we can see Q and Q1 are one regardless of clk and reset:
+
+<img width="614" alt="dff_const4" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/e10cc842-c807-48c6-b491-b9022abace3d">
+	
+I used the below commands to view the synthesized design of dff_const4.v with optimizations:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: dff_const4.v>
+yosys> synth -top <name: dff_const4>
+yosys> dfflibmap -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> show
+```
+	
+Below is the screenshot of the obtained optimized design, and no hardware was used as expected:
+	
+<img width="424" alt="dff_const4_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/b229eeee-ea9e-4058-ba1b-2688f440aadb">
+
+</details>
+	
+<details>
+ <summary> Sequential logic optimizations: dff_const5.v </summary>
+	
+I used the below commands to simulate the design of dff_const5.v:
+	
+```bash
+iverilog dff_const5.v tb_dff_const5.v
+./a.out
+gtkwave tb_dff_const5.vdc
+```	
+
+Below is the screenshot of the obtained simulation, as we can see when reset is zero, Q1 becomes one on the next rising edge of clk, and Q follows Q1 on the next rising edge of clk:
+
+<img width="604" alt="dff_const5" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/1e0d481a-ea0a-45dd-82fe-4d31ece6ea97">
+
+	
+I used the below commands to view the synthesized design of dff_const5.v with optimizations:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: dff_const5.v>
+yosys> synth -top <name: dff_const5>
+yosys> dfflibmap -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> show
+```
+	
+Below is the screenshot of the obtained optimized design, and the 2 flipflops are retained:
+	
+<img width="502" alt="dff_const5_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/7fb4f11e-cb9a-44a6-9701-aee274fd38a3">
 
 </details>
