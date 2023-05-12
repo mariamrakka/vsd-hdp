@@ -416,7 +416,7 @@ I have synthesized designs with optimizations. Combinational logic optimizations
 	
 <details>
  <summary> Verilog codes </summary>
-	The verilog codes used (opt_*) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
+	The verilog codes used (opt_*, dff_const*, and tb_dff_const*) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
 	</details>
 	
 <details>
@@ -540,6 +540,77 @@ yosys> show
 Below is the screenshot of the obtained optimized design, as we can see no standard cells are realized as was expected when optimizations are applied:
 	
 <img width="421" alt="multiple_module_opt2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/91e7701e-0982-4a89-bf6d-0a90c81c6fc0">
+
+
+
+</details>
+	
+<details>
+ <summary> Sequential logic optimizations: dff_const1.v </summary>
+	
+I used the below commands to simulate the design of dff_const1.v:
+	
+```bash
+iverilog dff_const1.v tb_dff_const1.v
+./a.out
+gtkwave tb_dff_const1.vdc
+```	
+
+Below is the screenshot of the obtained simulation, a we can see even when reset is zero, Q waits for next rising edge of clock:
+	
+<img width="578" alt="dff_const1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/8833cf95-1957-4cc6-8352-80f40e99364f">
+
+	
+I used the below commands to view the synthesized design of dff_const1.v with optimizations:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: dff_const1.v>
+yosys> synth -top <name: dff_const1>
+yosys> dfflibmap -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> show
+```
+	
+Below is the screenshot of the obtained optimized design:
+	
+<img width="506" alt="dff_const1_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/1809d6c2-f10e-404c-bd4a-6d8de7157bfb">
+
+
+
+</details>
+	
+<details>
+ <summary> Sequential logic optimizations: dff_const2.v </summary>
+	
+I used the below commands to simulate the design of dff_const2.v:
+	
+```bash
+iverilog dff_const2.v tb_dff_const2.v
+./a.out
+gtkwave tb_dff_const2.vdc
+```	
+
+Below is the screenshot of the obtained simulation, as we can see Q is one regardless of the value of reset and clock:
+	
+<img width="629" alt="dff_const2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ba0220c8-f045-425a-b8e6-9ea8031d45f6">
+
+I used the below commands to view the synthesized design of dff_const2.v with optimizations:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: dff_const2.v>
+yosys> synth -top <name: dff_const2>
+yosys> dfflibmap -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> show
+```
+	
+Below is the screenshot of the obtained optimized design:
+	
+<img width="438" alt="dff_const2_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/37d60203-d433-4e23-92fd-92b9d2d20334">
+
+
 
 
 
