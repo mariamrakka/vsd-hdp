@@ -801,7 +801,7 @@ I used the below commands to carry out GLS of ternary_operator_mux.v:
 	
 ```bash
 
-<path to verilog model: ../mylib/verilog_model/primitives.v> <path to sky130_fd_sc_hd__tt_025C_1v80.lib: ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib> <name netlist: ternary_operator_mux_net.v> <name testbench: tb_ternary_operator_mux.v>
+iverilog <path to verilog model: ../mylib/verilog_model/primitives.v> <path to sky130_fd_sc_hd__tt_025C_1v80.lib: ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib> <name netlist: ternary_operator_mux_net.v> <name testbench: tb_ternary_operator_mux.v>
 ./a.out
 gtkwave tb_ternary_operator_mux.vdc
 ```	
@@ -814,7 +814,54 @@ Below is the screenshot of the obtained simulation, and this matches with pre-sy
 </details>
 
 <details>
- <summary> GLS synthesis simulation mismatch: bad_mux.v </summary>
+ <summary> Simulation, synthesis, and GLS: bad_mux.v </summary>
+
+I used the below commands to simulate the design of bad_mux.v:
+	
+```bash
+iverilog bad_mux.v tb_bad_mux.v
+./a.out
+gtkwave tb_bad_mux.vdc
+```	
+
+Below is the screenshot of the obtained simulation, we can see that when inputs change, y is not evaluated which is wrong behavior:
+
+<img width="577" alt="bad_mux" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/7175bd2a-5561-49e8-ac44-727a30f6f0d4">
 
 
+I used the below commands to synthesize the design into a netlist and view the synthesized design of bad_mux.v:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: bad_mux.v>
+yosys> synth -top <name: bad_mux>
+yosys> dfflibmap -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> write_verilog <name of netlist: bad_mux_net.v>
+yosys> show
+```
+	
+Below is the screenshot of the obtained design:
+
+<img width="444" alt="bad_mux_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/b0bdcc26-59a5-4fce-8bb2-98ed16dbfc9f">
+
+	
+Below is the screenshot of the obtained netlist:
+
+<img width="681" alt="bad_mux_net" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/f38873d6-ec31-4f24-8b50-881c079fe5c7">
+	
+I used the below commands to carry out GLS of bad_mux.v:
+	
+```bash
+
+iverilog <path to verilog model: ../mylib/verilog_model/primitives.v> <path to sky130_fd_sc_hd__tt_025C_1v80.lib: ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib> <name netlist: bad_mux_net.v> <name testbench: tb_bad_mux.v>
+./a.out
+gtkwave tb_bad_mux.vdc
+```	
+	
+Below is the screenshot of the obtained simulation, and this mismatches with pre-synthesis simulation:
+	
+
+	
 </details>
+
