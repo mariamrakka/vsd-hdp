@@ -758,7 +758,7 @@ I have performed Gate Level Simulation (GLS). GLS is when the testbench is run w
 	
 <details>
  <summary> Verilog codes </summary>
-The verilog codes (*_mux.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
+The verilog codes (*_mux.v and blocking_caveat.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
 
 </details>
 	
@@ -783,9 +783,8 @@ I used the below commands to synthesize the design into a netlist and view the s
 yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> read_verilog <name of verilog file: ternary_operator_mux.v>
 yosys> synth -top <name: ternary_operator_mux>
-yosys> dfflibmap -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
-yosys> write_verilog <name of netlist: ternary_operator_mux_net.v>
+yosys> write_verilog -noattr <name of netlist: ternary_operator_mux_net.v>
 yosys> show
 ```
 	
@@ -800,7 +799,6 @@ Below is the screenshot of the obtained netlist:
 I used the below commands to carry out GLS of ternary_operator_mux.v:
 	
 ```bash
-
 iverilog <path to verilog model: ../mylib/verilog_model/primitives.v> <path to sky130_fd_sc_hd__tt_025C_1v80.lib: ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib> <name netlist: ternary_operator_mux_net.v> <name testbench: tb_ternary_operator_mux.v>
 ./a.out
 gtkwave tb_ternary_operator_mux.vdc
@@ -835,9 +833,8 @@ I used the below commands to synthesize the design into a netlist and view the s
 yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> read_verilog <name of verilog file: bad_mux.v>
 yosys> synth -top <name: bad_mux>
-yosys> dfflibmap -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
-yosys> write_verilog <name of netlist: bad_mux_net.v>
+yosys> write_verilog -noattr <name of netlist: bad_mux_net.v>
 yosys> show
 ```
 	
@@ -853,7 +850,6 @@ Below is the screenshot of the obtained netlist:
 I used the below commands to carry out GLS of bad_mux.v:
 	
 ```bash
-
 iverilog <path to verilog model: ../mylib/verilog_model/primitives.v> <path to sky130_fd_sc_hd__tt_025C_1v80.lib: ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib> <name netlist: bad_mux_net.v> <name testbench: tb_bad_mux.v>
 ./a.out
 gtkwave tb_bad_mux.vdc
@@ -861,7 +857,53 @@ gtkwave tb_bad_mux.vdc
 	
 Below is the screenshot of the obtained simulation, and this mismatches with pre-synthesis simulation:
 	
-
+<img width="572" alt="gls" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2079af8e-a38a-4e68-bc8c-53b43886aeac">
 	
 </details>
 
+<details>
+ <summary> Simulation, synthesis, and GLS: blocking_caveat.v </summary>
+
+I used the below commands to simulate the design of blocking_caveat.v:
+	
+```bash
+iverilog blocking_caveat.v tb_blocking_caveat.v
+./a.out
+gtkwave tb_blocking_caveat.vdc
+```	
+
+Below is the screenshot of the obtained simulation, and as we can see d is seeing the precious values, and hence it is acting as if there was a flop in the circuit which is not the case (incorrect behavior):
+
+<img width="599" alt="blocking_caveat" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/e0a96a0b-8dbd-40e9-af33-cce8eeb060b9">
+
+I used the below commands to synthesize the design into a netlist and view the synthesized design of blocking_caveat.v:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: blocking_caveat.v>
+yosys> synth -top <name: blocking_caveat>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> write_verilog -noattr <name of netlist: blocking_caveat_net.v>
+yosys> show
+```
+	
+Below is the screenshot of the obtained design:
+
+<img width="435" alt="blocking_caveat_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/016610f4-1824-4bc8-858e-e8c4d5f1c053">
+	
+Below is the screenshot of the obtained netlist:
+
+<img width="674" alt="blocking_caveat_net" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/29232088-b13e-42f3-a21a-08c843f1e92b">
+
+I used the below commands to carry out GLS of blocking_caveat.v:
+	
+```bash
+iverilog <path to verilog model: ../mylib/verilog_model/primitives.v> <path to sky130_fd_sc_hd__tt_025C_1v80.lib: ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib> <name netlist: blocking_caveat_net.v> <name testbench: tb_blocking_caveat.v>
+./a.out
+gtkwave tb_blocking_caveat.vdc
+```	
+	
+Below is the screenshot of the obtained simulation, and this mismatches with pre-synthesis simulation due to blocking statement:
+	
+	
+</details>
