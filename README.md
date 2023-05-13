@@ -156,7 +156,7 @@ The verilog codes of the 2x1 mux (good_mux.v) and its testbench (tb_good_mux.v) 
  I used the following commands to simulate and view the plots of the RTL design:
 	
  ```bash
- iverilog good_mux.v tb_good_mux.v
+ iverilog <name verilog: good_mux.v> <name testbench: tb_good_mux.v>
  ./a.out
  gtkwave tb_good_mux.vcd
  ```
@@ -269,7 +269,7 @@ Below is the screenshot of the generated design:
 I used the following commands to simulate the RTL design of the dff with asynchronous reset:
 	
 ```bash	
-iverilog dff_asyncres.v tb_dff_asyncres.v
+iverilog <name verilog: dff_asyncres.v> <name testbench: tb_dff_asyncres.v>
 ./a.out
 gtkwave <name vcd file: tb_dff_asyncres.vcd>
 ```	
@@ -284,7 +284,7 @@ Below is the screenshot of the simulation:
 I used the following commands to simulate the RTL design of the dff with asynchronous set:
 	
 ```bash	
-iverilog dff_async_set.v tb_dff_async_set.v
+iverilog <name verilog: dff_async_set.v> <name testbench: tb_dff_async_set.v>
 ./a.out
 gtkwave <name vcd file: tb_dff_async_set.vcd>
 ```
@@ -300,7 +300,7 @@ Below is the screenshot of the simulation:
 I used the following commands to simulate the RTL design of the dff with synchronous reset:
 	
 ```bash	
-iverilog dff_syncres.v tb_dff_syncres.v
+iverilog <name verilog: dff_syncres.v> <name testbench: tb_dff_syncres.v>
 ./a.out
 gtkwave <name vcd file: tb_dff_syncres.vcd>
 ```	
@@ -551,7 +551,7 @@ Below is the screenshot of the obtained optimized design, as we can see no stand
 I used the below commands to simulate the design of dff_const1.v:
 	
 ```bash
-iverilog dff_const1.v tb_dff_const1.v
+iverilog <name verilog: dff_const1.v> <name testbench: tb_dff_const1.v>
 ./a.out
 gtkwave tb_dff_const1.vdc
 ```	
@@ -586,7 +586,7 @@ Below is the screenshot of the obtained optimized design:
 I used the below commands to simulate the design of dff_const2.v:
 	
 ```bash
-iverilog dff_const2.v tb_dff_const2.v
+iverilog <name verilog: dff_const2.v> <name testbench: tb_dff_const2.v>
 ./a.out
 gtkwave tb_dff_const2.vdc
 ```	
@@ -620,7 +620,7 @@ Below is the screenshot of the obtained optimized design:
 I used the below commands to simulate the design of dff_const3.v:
 	
 ```bash
-iverilog dff_const3.v tb_dff_const3.v
+iverilog <name verilog: dff_const3.v> <name testbench: tb_dff_const3.v>
 ./a.out
 gtkwave tb_dff_const3.vdc
 ```	
@@ -653,7 +653,7 @@ Below is the screenshot of the obtained design, the 2 flipflops are retained and
 I used the below commands to simulate the design of dff_const4.v:
 	
 ```bash
-iverilog dff_const4.v tb_dff_const4.v
+iverilog <name verilog: dff_const4.v> <name testbench: tb_dff_const4.v>
 ./a.out
 gtkwave tb_dff_const4.vdc
 ```	
@@ -685,7 +685,7 @@ Below is the screenshot of the obtained optimized design, and no hardware was us
 I used the below commands to simulate the design of dff_const5.v:
 	
 ```bash
-iverilog dff_const5.v tb_dff_const5.v
+iverilog <name verilog: dff_const5.v> <name testbench: tb_dff_const5.v>
 ./a.out
 gtkwave tb_dff_const5.vdc
 ```	
@@ -768,7 +768,7 @@ The verilog codes (*_mux.v and blocking_caveat.v) are taken from https://github.
 I used the below commands to simulate the design of ternary_operator_mux.v:
 	
 ```bash
-iverilog ternary_operator_mux.v tb_ternary_operator_mux.v
+iverilog <name verilog: ternary_operator_mux.v> <name testbench: tb_ternary_operator_mux.v>
 ./a.out
 gtkwave tb_ternary_operator_mux.vdc
 ```	
@@ -817,7 +817,7 @@ Below is the screenshot of the obtained simulation, and this matches with pre-sy
 I used the below commands to simulate the design of bad_mux.v:
 	
 ```bash
-iverilog bad_mux.v tb_bad_mux.v
+iverilog <name verilog: bad_mux.v> <name testbench: tb_bad_mux.v>
 ./a.out
 gtkwave tb_bad_mux.vdc
 ```	
@@ -867,7 +867,7 @@ Below is the screenshot of the obtained simulation, and this mismatches with pre
 I used the below commands to simulate the design of blocking_caveat.v:
 	
 ```bash
-iverilog blocking_caveat.v tb_blocking_caveat.v
+iverilog <name verilog: blocking_caveat.v> <name testbench: tb_blocking_caveat.v>
 ./a.out
 gtkwave tb_blocking_caveat.vdc
 ```	
@@ -898,7 +898,7 @@ Below is the screenshot of the obtained netlist:
 I used the below commands to carry out GLS of blocking_caveat.v:
 	
 ```bash
-iverilog <path to verilog model: ../mylib/verilog_model/primitives.v> <path to sky130_fd_sc_hd__tt_025C_1v80.lib: ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib> <name netlist: blocking_caveat_net.v> <name testbench: tb_blocking_caveat.v>
+iverilog <path to verilog model: ../mylib/verilog_model/primitives.v> <path to verilog model: ../mylib/verilog_model/sky130_fd_sc_hd.v> <name netlist: blocking_caveat_net.v> <name testbench: tb_blocking_caveat.v>
 ./a.out
 gtkwave tb_blocking_caveat.vdc
 ```	
