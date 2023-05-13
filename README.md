@@ -905,5 +905,6 @@ gtkwave tb_blocking_caveat.vdc
 	
 Below is the screenshot of the obtained simulation, and this mismatches with pre-synthesis simulation due to blocking statement:
 	
+<img width="469" alt="blocking_conveat_gls" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/0094a4df-ef93-4a5a-8d78-38f27735b6c4">
 	
 </details>
