@@ -757,5 +757,64 @@ Below is the screenshot of the obtained optimized design, and 3 flipflops are us
 I have performed Gate Level Simulation (GLS). GLS is when the testbench is run with the netlist as design under test to ensure there are no synthesis and simulation mismatches, and it is important as it 1-) verifies the logical correctness of the post-synthesis design and 2-) ensures the timing of design is met. Synthesis and simulation mismatches can happen due to a lot of reasons including missing sensitivity list (some signal changes are not captured by the circuit because they are missing from the sensitivity list), blocking vs non-blocking assignments (inside an always block, "=" statements inside it are blocking meaning they are executed in order they are written, assignments (<=) on the other hand are non-blocking so they are executed in parallel => non-blocking should be used with sequential circuits. Note that the synthesis will yield same circuit with blocking and non-blockin; it will yield what would be obtained as if the statements where written in non-blocking format, so in case they weren't written as such a mismatch will occur with the simulation), and non-standard verilog coding.
 	
 <details>
+ <summary> Verilog codes </summary>
+The verilog codes (*_mux.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
+
+</details>
+	
+<details>
+ <summary> Simulation, synthesis, and GLS: ternary_operator_mux.v </summary>
+
+I used the below commands to simulate the design of ternary_operator_mux.v:
+	
+```bash
+iverilog ternary_operator_mux.v tb_ternary_operator_mux.v
+./a.out
+gtkwave tb_ternary_operator_mux.vdc
+```	
+
+Below is the screenshot of the obtained simulation, we can see that when sel is high y follows i1, and when sel is low y follows i0:
+
+<img width="453" alt="ternary_operator_mux" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/625dda82-ef2d-413d-87cf-b04e384ad813">
+
+I used the below commands to synthesize the design into a netlist and view the synthesized design of ternary_operator_mux.v:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: ternary_operator_mux.v>
+yosys> synth -top <name: ternary_operator_mux>
+yosys> dfflibmap -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> write_verilog <name of netlist: ternary_operator_mux_net.v>
+yosys> show
+```
+	
+Below is the screenshot of the obtained design:
+
+<img width="442" alt="ternary_operator_mux_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/0972ae92-3793-40e3-ab39-8265f06788c0">
+
+Below is the screenshot of the obtained netlist:
+	
+<img width="670" alt="mux_net" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/92d8ae38-6702-429e-a0ca-92a949f0c6b6">
+
+I used the below commands to carry out GLS of ternary_operator_mux.v:
+	
+```bash
+
+<path to verilog model: ../mylib/verilog_model/primitives.v> <path to sky130_fd_sc_hd__tt_025C_1v80.lib: ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib> <name netlist: ternary_operator_mux_net.v> <name testbench: tb_ternary_operator_mux.v>
+./a.out
+gtkwave tb_ternary_operator_mux.vdc
+```	
+	
+Below is the screenshot of the obtained simulation, and this matches with pre-synthesis simulation:
+	
+<img width="546" alt="gls_ternary" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/86ea7d0a-2cce-4fa0-adea-e4b0620ff37b">
+
+	
+</details>
+
+<details>
  <summary> GLS synthesis simulation mismatch: bad_mux.v </summary>
 
+
+</details>
