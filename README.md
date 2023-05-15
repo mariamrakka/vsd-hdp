@@ -4,6 +4,7 @@
 This github repository summarizes the progress made in the VSD-HDP tapeout program. Quick links:
 
 [Day 0](#day-0)
+
 [Day 1](#day-1)
 
 [Day 2](#day-2)
