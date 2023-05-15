@@ -997,6 +997,38 @@ Below is the screenshot of the obtained design, and we can see a latch as was ex
 </details>
 
 <details>
+ <summary> Simulation and synthesis: incomp_case.v </summary>
+
+I used the below commands to simulate the design of incomp_case.v:
+	
+```bash
+iverilog <name verilog: incomp_case.v> <name testbench: tb_incomp_case.v>
+./a.out
+gtkwave tb_incomp_case.vdc
+```	
+
+Below is the screenshot of the obtained simulation, we can see that the output latches a constant value when select has a vlaue of 2 or 3 (when sel[1] is 1):
+
+<img width="453" alt="incomp_case" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/5d106ee8-07ac-4eab-9803-721d0ba0a0ae">
+
+
+I used the below commands to view the synthesized design of incomp_case.v:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: incomp_case.v>
+yosys> synth -top <name: incomp_case>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> show
+```
+	
+Below is the screenshot of the obtained design, and we can see a latch as was expected:
+	
+<img width="623" alt="incomp_case_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/5279b522-f996-4ce6-8d73-a1a6354b9a3e">
+
+</details>
+
+<details>
  <summary> Simulation and synthesis: comp_case.v </summary>
 
 I used the below commands to simulate the design of comp_case.v:
@@ -1007,9 +1039,9 @@ iverilog <name verilog: comp_case.v> <name testbench: tb_comp_case.v>
 gtkwave tb_comp_case.vdc
 ```	
 
-Below is the screenshot of the obtained simulation, we can see that the output latches a constant value when select has a vlaue of 2 or 3 (when sel[1] is 1):
+Below is the screenshot of the obtained simulation, we can see that the output follows i2 when select has a value of 2 or 3 (when sel[1] is 1):
 
-
+<img width="639" alt="comp_case" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2d3f3a7e-9795-4a85-b6ab-9d849b2e720b">
 
 I used the below commands to view the synthesized design of comp_case.v:
 	
@@ -1021,7 +1053,8 @@ yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> show
 ```
 	
-Below is the screenshot of the obtained design, and we can see a latch as was expected:
-
+Below is the screenshot of the obtained design, and we do not see a latch as was expected:
+	
+<img width="593" alt="comp_case_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/fc321697-44b0-48ed-8988-326f7dcfdbc7">
 
 </details>
