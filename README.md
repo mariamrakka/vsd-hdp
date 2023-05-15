@@ -922,10 +922,76 @@ Below is the screenshot of the obtained simulation, and this mismatches with pre
 </details>
 
 ## Day 5
-I have 
+I have first learned about "if" and "case" statements which are used inside always blocks. "if" statements are used to convey priority logic (ony one portion can be executed), and the hardware will look like a series of muxes in hardware, but in "case" statements there is no inferred priotity (sequential execution can mean multiple portions can be executed) but also the hardware would be a series of muxes. Inferred latches can occur if there is an incomplete "if" statement (no else), in this case the hardware will have a latch storing a previous output value. This is bad coding example unless the latch is intended (like in case of a counter). Incomplete "case" can lead to inferred latches too, and to avoid that code the "case" with a default. Another caveat of "case" statements is partial assignments which also creates inferred latches, and to avoid that we should assign all the outputs in all the segments of the case. In "case" statements, one must be careful that portions should not be overlapping otherwise they could be executed due to the sequential non-prioritized execution of those statement.
+	
 	
 <details>
  <summary> Verilog codes </summary>	
+
+The verilog codes (*incomp*) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
 	
 </details>
 	
+<details>
+ <summary> Simulation and synthesis: incomp_if.v </summary>
+
+I used the below commands to simulate the design of incomp_if.v:
+	
+```bash
+iverilog <name verilog: incomp_if.v> <name testbench: tb_incomp_if.v>
+./a.out
+gtkwave tb_incomp_if.vdc
+```	
+
+Below is the screenshot of the obtained simulation, we can see that there is an inferred latch as output is latching to a constant value when select is not high:
+
+<img width="524" alt="incomp_if" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/c64ba438-2358-431b-ad91-d187cb733fa7">
+
+
+I used the below commands to view the synthesized design of incomp_if.v:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: incomp_if.v>
+yosys> synth -top <name: incomp_if>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> show
+```
+	
+Below is the screenshot of the obtained design, and a latch is seen as was expected:
+
+<img width="401" alt="incomp_if_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/71763ef1-3ec8-437a-a369-967b6d1bfa4f">
+
+</details>
+	
+<details>
+ <summary> Simulation and synthesis: incomp_if2.v </summary>
+
+I used the below commands to simulate the design of incomp_if2.v:
+	
+```bash
+iverilog <name verilog: incomp_if2.v> <name testbench: tb_incomp_if2.v>
+./a.out
+gtkwave tb_incomp_if2.vdc
+```	
+
+Below is the screenshot of the obtained simulation, we can see that the output latches a constant value when i0 and i2 are zero:
+
+<img width="500" alt="incomp_if2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/144a4706-ff21-4363-b25f-6662b1339242">
+
+
+I used the below commands to view the synthesized design of incomp_if2.v:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: incomp_if2.v>
+yosys> synth -top <name: incomp_if2>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> show
+```
+	
+Below is the screenshot of the obtained design, and we can see a latch as was expected:
+
+<img width="402" alt="incomp_if2_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/6a881ff9-3d8b-462a-832b-642f123a1855">
+
+</details>
