@@ -1060,7 +1060,7 @@ Below is the screenshot of the obtained design, and we do not see a latch as was
 </details>
 	
 <details>
- <summary> Simulation and synthesis: partial_case_assign.v </summary>
+ <summary> Simulation: partial_case_assign.v </summary>
 
 I used the below commands to view the synthesized design of partial_case_assign.v:
 	
@@ -1075,5 +1075,49 @@ yosys> show
 Below is the screenshot of the obtained design, and we see one latch for x output as was expected, and the boolean expressions of x and y that were expected are also inferred by the design obtained:
 	
 <img width="569" alt="partial_case_assign" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/6be0228a-1611-4144-98aa-0e09724639fa">
+
+</details>
+
+<details>
+ <summary> Simulation, synthesis, and GLS: bad_case.v </summary>
+
+I used the below commands to simulate the design of bad_case.v:
+	
+```bash
+iverilog <name verilog: bad_case.v> <name testbench: tb_bad_case.v>
+./a.out
+gtkwave tb_bad_case.vdc
+```	
+
+Below is the screenshot of the obtained simulation, we can see that when sel is "11", the simulator is getting confused and output y is taking a constant "1" value:
+	
+<img width="635" alt="bad_case" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/4af4ae42-39ea-4412-9cad-ad63d5c69920">
+
+I used the below commands to synthesize and view the synthesized design of bad_case.v:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: bad_case.v>
+yosys> synth -top <name: bad_case>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> write_verilog -noattr bad_case_net.v
+yosys> show
+```
+	
+Below is the screenshot of the obtained design, and there is no inferred latch:
+	
+<img width="417" alt="bad_case_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ce2801e6-6848-420a-a647-741e362343ea">
+	
+I used the below commands to carry out GLS of bad_case.v:
+	
+```bash
+iverilog <path to verilog model: ../mylib/verilog_model/primitives.v> <path to verilog model: ../mylib/verilog_model/sky130_fd_sc_hd.v> <name netlist: bad_case_net.v> <name testbench: tb_bad_case.v>
+./a.out
+gtkwave tb_bad_case.vdc
+```	
+	
+Below is the screenshot of the obtained simulation, and this mismatches with pre-synthesis simulation. When sel is "11", y takes value of i3 and no latching happens here:
+	
+<img width="635" alt="gls_bad_case" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/33125774-e5bb-4649-8614-1d04bc6926d2">
 
 </details>
