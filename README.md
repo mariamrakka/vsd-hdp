@@ -928,7 +928,7 @@ I have first learned about "if" and "case" statements which are used inside alwa
 <details>
  <summary> Verilog codes </summary>	
 
-The verilog codes (*incomp*) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
+The verilog codes (*incomp*.v and *_case.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
 	
 </details>
 	
@@ -993,5 +993,35 @@ yosys> show
 Below is the screenshot of the obtained design, and we can see a latch as was expected:
 
 <img width="402" alt="incomp_if2_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/6a881ff9-3d8b-462a-832b-642f123a1855">
+
+</details>
+
+<details>
+ <summary> Simulation and synthesis: comp_case.v </summary>
+
+I used the below commands to simulate the design of comp_case.v:
+	
+```bash
+iverilog <name verilog: comp_case.v> <name testbench: tb_comp_case.v>
+./a.out
+gtkwave tb_comp_case.vdc
+```	
+
+Below is the screenshot of the obtained simulation, we can see that the output latches a constant value when select has a vlaue of 2 or 3 (when sel[1] is 1):
+
+
+
+I used the below commands to view the synthesized design of comp_case.v:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: comp_case.v>
+yosys> synth -top <name: comp_case>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> show
+```
+	
+Below is the screenshot of the obtained design, and we can see a latch as was expected:
+
 
 </details>
