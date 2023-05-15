@@ -1058,3 +1058,22 @@ Below is the screenshot of the obtained design, and we do not see a latch as was
 <img width="593" alt="comp_case_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/fc321697-44b0-48ed-8988-326f7dcfdbc7">
 
 </details>
+	
+<details>
+ <summary> Simulation and synthesis: partial_case_assign.v </summary>
+
+I used the below commands to view the synthesized design of partial_case_assign.v:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: partial_case_assign.v>
+yosys> synth -top <name: partial_case_assign>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> show
+```
+	
+Below is the screenshot of the obtained design, and we see one latch for x output as was expected, and the boolean expressions of x and y that were expected are also inferred by the design obtained:
+	
+<img width="569" alt="partial_case_assign" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/6be0228a-1611-4144-98aa-0e09724639fa">
+
+</details>
