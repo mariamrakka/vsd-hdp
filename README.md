@@ -1060,7 +1060,7 @@ Below is the screenshot of the obtained design, and we do not see a latch as was
 </details>
 	
 <details>
- <summary> Simulation: partial_case_assign.v </summary>
+ <summary> Synthesis: partial_case_assign.v </summary>
 
 I used the below commands to view the synthesized design of partial_case_assign.v:
 	
