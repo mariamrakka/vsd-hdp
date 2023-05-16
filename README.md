@@ -929,7 +929,7 @@ Then I have learned about looping constructs: for loop (inside always block) and
 <details>
  <summary> Verilog codes </summary>	
 
-The verilog codes (*incomp*.v and *_case.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
+The verilog codes (*incomp*.v, *_case.v, and mux_generate.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
 	
 </details>
 	
@@ -1122,3 +1122,49 @@ Below is the screenshot of the obtained simulation, and this mismatches with pre
 <img width="635" alt="gls_bad_case" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/33125774-e5bb-4649-8614-1d04bc6926d2">
 
 </details>
+
+<details>
+ <summary> Simulation, synthesis, and GLS: mux_generate.v </summary>
+
+I used the below commands to simulate the design of mux_generate.v:
+	
+```bash
+iverilog <name verilog: mux_generate.v> <name testbench: tb_mux_generate.v>
+./a.out
+gtkwave tb_mux_generate.vdc
+```	
+
+Below is the screenshot of the obtained simulation, we can see it's a 4:1 mux functionality:
+	
+<img width="637" alt="mux_generate" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/68db59a3-f58b-42cd-a6e7-55775213a6ac">
+
+I used the below commands to synthesize and view the synthesized design of mux_generate.v:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: mux_generate.v>
+yosys> synth -top <name: mux_generate>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> write_verilog -noattr mux_generate_net.v
+yosys> show
+```
+	
+Below is the screenshot of the obtained design, and it is a 4:1 mux:
+	
+
+<img width="477" alt="mux_generate" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/7088fd71-6d8c-4ca1-b7dd-de5aff78fa12">
+
+I used the below commands to carry out GLS of mux_generate.v:
+	
+```bash
+iverilog <path to verilog model: ../mylib/verilog_model/primitives.v> <path to verilog model: ../mylib/verilog_model/sky130_fd_sc_hd.v> <name netlist: mux_generate_net.v> <name testbench: tb_mux_generate.v>
+./a.out
+gtkwave tb_mux_generate.vdc
+```	
+	
+Below is the screenshot of the obtained simulation, and this matches with pre-synthesis simulation:
+
+<img width="635" alt="mux_generate_gls" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/c18f62ac-7ddd-4c93-874a-fc02755a236c">
+
+</details>
+	
