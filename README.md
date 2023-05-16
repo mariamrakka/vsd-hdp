@@ -1253,6 +1253,7 @@ I used the below commands to synthesize and view the synthesized design of rca.v
 ```bash
 yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> read_verilog <name of verilog file: rca.v>
+yosys> read_verilog <name of verilog file: fa.v>
 yosys> synth -top <name: rca>
 yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
 yosys> write_verilog -noattr rca_net.v
@@ -1260,9 +1261,8 @@ yosys> show
 ```
 	
 Below is the screenshot of the obtained design, and it is an 8-bit RCA:
-	
 
-
+<img width="543" alt="rca_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/106a4de4-23a4-49c1-b60f-d7275028d9c8">
 
 I used the below commands to carry out GLS of rca.v:
 	
@@ -1274,8 +1274,7 @@ gtkwave tb_rca.vdc
 	
 Below is the screenshot of the obtained simulation, and this matches with pre-synthesis simulation:
 
-
-
+<img width="554" alt="rca_gls" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/7236dd1d-81d5-4248-9863-f147ee0b46c8">
 
 </details>
 	
