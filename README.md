@@ -929,7 +929,7 @@ Then I have learned about looping constructs: for loop (inside always block) and
 <details>
  <summary> Verilog codes </summary>	
 
-The verilog codes (*incomp*.v, *_case.v, and mux_generate.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
+The verilog codes (incomp*.v, *_case.v, *_generate.v, demux_case.v, and RCA.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
 	
 </details>
 	
@@ -1165,6 +1165,117 @@ gtkwave tb_mux_generate.vdc
 Below is the screenshot of the obtained simulation, and this matches with pre-synthesis simulation:
 
 <img width="635" alt="mux_generate_gls" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/c18f62ac-7ddd-4c93-874a-fc02755a236c">
+
+</details>
+	
+<details>
+ <summary> Simulation: demux_case.v </summary>
+
+I used the below commands to simulate the design of demux_case.v:
+	
+```bash
+iverilog <name verilog: demux_case.v> <name testbench: tb_demux_case.v>
+./a.out
+gtkwave tb_demux_case.vdc
+```	
+
+Below is the screenshot of the obtained simulation, we can see it's a 1:8 demux functionality:
+	
+<img width="640" alt="demux_case" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/5270c179-191c-4691-ae64-f9dc75c1921e">
+
+
+</details>
+	
+<details>
+ <summary> Simulation, synthesis, and GLS: demux_generate.v </summary>
+
+I used the below commands to simulate the design of demux_generate.v:
+	
+```bash
+iverilog <name verilog: demux_generate.v> <name testbench: tb_demux_generate.v>
+./a.out
+gtkwave tb_demux_generate.vdc
+```	
+
+Below is the screenshot of the obtained simulation, we can see it's a 1:8 demux functionality (same as demux_case.v):
+	
+<img width="612" alt="demux_generate" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/f85b43b6-c2fd-431f-a020-c666dba1d948">
+
+
+I used the below commands to synthesize and view the synthesized design of demux_generate.v:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: demux_generate.v>
+yosys> synth -top <name: demux_generate>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> write_verilog -noattr demux_generate_net.v
+yosys> show
+```
+	
+Below is the screenshot of the obtained design, and it is a 1:8 demux:
+	
+<img width="530" alt="demux_gnerate_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/c4cf0c7e-ea2d-4274-b92c-a29501922479">
+
+
+I used the below commands to carry out GLS of demux_generate.v:
+	
+```bash
+iverilog <path to verilog model: ../mylib/verilog_model/primitives.v> <path to verilog model: ../mylib/verilog_model/sky130_fd_sc_hd.v> <name netlist: demux_generate_net.v> <name testbench: tb_demux_generate.v>
+./a.out
+gtkwave tb_demux_generate.vdc
+```	
+	
+Below is the screenshot of the obtained simulation, and this matches with pre-synthesis simulation:
+
+<img width="489" alt="Screen Shot 2023-05-15 at 8 09 26 PM" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/5529ad20-c7d1-43b5-b6ca-a85e2f41ec33">
+
+
+</details>
+	
+<details>
+ <summary> Simulation, synthesis, and GLS: rca.v </summary>
+
+I used the below commands to simulate the design of rca.v:
+	
+```bash
+iverilog <name verilog: rca.v> <name verilog: fa.v> <name testbench: tb_rca.v>
+./a.out
+gtkwave tb_rca.vdc
+```	
+
+Below is the screenshot of the obtained simulation, we can see it's an 8-bit RCA functionality:
+	
+<img width="491" alt="rca" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/24818b94-0b13-4af9-a863-143ee0f0057e">
+
+I used the below commands to synthesize and view the synthesized design of rca.v:
+	
+```bash
+yosys> read_liberty -lib <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> read_verilog <name of verilog file: rca.v>
+yosys> synth -top <name: rca>
+yosys> abc -liberty <path to sky130_fd_sc_hd__tt_025C_1v80.lib>
+yosys> write_verilog -noattr rca_net.v
+yosys> show
+```
+	
+Below is the screenshot of the obtained design, and it is an 8-bit RCA:
+	
+
+
+
+I used the below commands to carry out GLS of rca.v:
+	
+```bash
+iverilog <path to verilog model: ../mylib/verilog_model/primitives.v> <path to verilog model: ../mylib/verilog_model/sky130_fd_sc_hd.v> <name netlist: rca_net.v> <name testbench: tb_rca.v>
+./a.out
+gtkwave tb_rca.vdc
+```	
+	
+Below is the screenshot of the obtained simulation, and this matches with pre-synthesis simulation:
+
+
+
 
 </details>
 	
