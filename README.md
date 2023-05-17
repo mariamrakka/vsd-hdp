@@ -1290,7 +1290,7 @@ I chose a 4-bit updown counter in order to practice the flow I learned in the fi
 
 The original verilog code and its associated testbench of the updown counter can be found on https://www.fpga4student.com/2017/03/verilog-code-for-counter-with-testbench.html
 	
-I have modified the testbench (named tb_mariam_updown_counter) in order to dump the vcd file and in order to simulate for 300ps. Note that I have also renamed the verilog module as mariam_updown_counter. The modified testbench can be found below:
+I have modified the testbench (named tb_mariam_updown_counter) in order to dump the vcd file and I changed when some signals change values too. Note that I have also renamed the verilog module as mariam_updown_counter. The modified testbench can be found below:
 	
 ```bash
 // FPGA projects using Verilog/ VHDL
