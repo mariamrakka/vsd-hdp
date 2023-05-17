@@ -15,6 +15,8 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [Day 5](#day-5)
 
+[My Design](#my-design)
+
 ## Day 0
 
 I installed the following tools:
@@ -1278,3 +1280,51 @@ Below is the screenshot of the obtained simulation, and this matches with pre-sy
 
 </details>
 	
+## My Design
+	
+I chose a 4-bit updown counter in order to practice the flow I learned in the first training module (days 1-5). The updown counter counts either up or down.
+	
+	
+<details>
+ <summary> Verilog codes </summary>	
+
+The original verilog code and its associated testbench of the updown counter can be found on https://www.fpga4student.com/2017/03/verilog-code-for-counter-with-testbench.html
+	
+I have modified the testbench (named tb_mariam_updown_counter) in order to dump the vcd file and in order to simulate for 300ps. Note that I have also renamed the verilog module as mariam_updown_counter. The modified testbench can be found below:
+	
+```bash
+// FPGA projects using Verilog/ VHDL
+// fpga4student.com: FPGA projects, Verilog projects, VHDL projects
+// Verilog code for up-down counter with testbench
+// Testbench Verilog code for up-down counter
+// modified by Mariam Rakka
+`timescale 1ns / 1ps
+module tb_mariam_updown_counter;
+	reg clk, reset,up_down;
+	wire [3:0] counter;
+	mariam_updown_counter uut(.clk(clk), .reset(reset), .up_down(up_down), .counter(counter));
+
+	initial begin 
+	$dumpfile("tb_mariam_updown_counter.vcd");
+	$dumpvars(0,tb_mariam_updown_counter);
+	clk=0;
+	reset=1;
+	up_down=0; #20;
+	reset=0; #200;
+	up_down=1; #220;
+	#300 $finish;
+	end
+
+always #5 clk=~clk;
+//initial begin
+//reset=1;
+//up_down=0;
+//#20;
+//reset=0;
+//#200;
+//up_down=1;
+//end
+endmodule 
+```
+	
+</details>
