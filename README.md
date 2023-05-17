@@ -1316,14 +1316,6 @@ module tb_mariam_updown_counter;
 	end
 
 always #5 clk=~clk;
-//initial begin
-//reset=1;
-//up_down=0;
-//#20;
-//reset=0;
-//#200;
-//up_down=1;
-//end
 endmodule 
 ```
 	
