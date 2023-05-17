@@ -1332,7 +1332,7 @@ iverilog <name verilog: mariam_updown_counter.v> <name testbench: tb_mariam_updo
 gtkwave tb_mariam_updown_counter.vdc
 ```	
 
-Below is the screenshot of the obtained simulation, we can see that when reset is high, counter is 0. Otherwise when reset is low, if updown is high, counter counts up by a value of 1 (until 15 in decimal is reached as 15 is 1111 in binary and this is the highest value of our 4-bit counter, after which, counter counts up again starting from 0) on positive edges of the clock, but if updown is low, counter counts down by a value of 1 (until 0 in decimal is reached as 0 is 0000 in binary and this is the lowest value of our 4-bit counter, after which, counter counts down again starting from 15) on positive edges of the clock:
+Below is the screenshot of the obtained simulation, we can see that when reset is high, counter is 0. Otherwise when reset is low, if updown is low, counter counts up by a value of 1 (until 15 in decimal is reached as 15 is 1111 in binary and this is the highest value of our 4-bit counter, after which, counter counts up again starting from 0) on positive edges of the clock, but if updown is high, counter counts down by a value of 1 (until 0 in decimal is reached as 0 is 0000 in binary and this is the lowest value of our 4-bit counter, after which, counter counts down again starting from 15) on positive edges of the clock:
 	
 <img width="634" alt="mydesign" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/7e97c3ef-2e07-41e2-bc7d-b8d6ed2bdd24">
 
