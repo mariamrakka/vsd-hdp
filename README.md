@@ -17,6 +17,8 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [My Design](#my-design)
 
+[Day 6-9](#day-6-9)
+
 ## Day 0
 
 <details>
@@ -1315,8 +1317,12 @@ Below is the screenshot of the obtained simulation, and this matches with pre-sy
 	
 ## My Design
 	
-I chose a 4-bit updown counter in order to practice the flow I learned in the first training module (days 1-5). The updown counter counts either up or down.
+<details>
+ <summary> Summary </summary>
 	
+I chose a 4-bit updown counter in order to practice the flow I learned in the first training module (days 1-5). The updown counter counts either up or down.
+
+</details>	
 	
 <details>
  <summary> Verilog codes </summary>	
