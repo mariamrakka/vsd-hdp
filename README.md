@@ -1538,14 +1538,88 @@ From input side perspective: Tclk=Tinp-ext+Tint where Tint=Tinputlogic+Tsetup, h
 	
 From output side perspective: Tclk=Tint+Topext where Tint=Tcq+Toplogic and Topext includes Tsetup, here external delay accounted for, but output load is not and this might lead to setup violations => need to model output load (from specs) by adding constraints. Register-input time paths are constrained by output external delay, clock, and output load.
 	
-Rule of thump: 70% for external delay and 30% internal delay
+Rule of thumb: The Tclk is 70% for external delay and 30% internal delay. The synthesis tools infer the cell delay numbers from the .lib file.
+	
+Some .lib file terminologies: 
+	
+1-) max capacitance limit: determines the maximum loading capacitance, beyond which the tool should break out the circuit and add buffers.
+	
+2-) delay model lookup table: delay = f(input transition+output load), so for every cell there is a table that has the delay values corresponding to a pair of input transition value (index_2) and output load value (index_1). Numbers not in table are interpolated.
+	
+3-) _and2_2 is wider, faster and has more area than _and2_0
+		
+4-) unateness: positive unateness is when the input rises (one pin), the output either does not change or it also rises (true for AND, OR). Negative unateness is when the input rises (one pin), the output either does not change or it falls (true for NOT, NAND, NOR). XOR is non-unate as input rise in one pin can cause either rise or fall in output. In D fliflop, with respect to clock, Q has no unateness, but with respect to  => This information is used by the tool to propagate the signal. 
+	
+5-) timing_type: combinational or falling_edge/rising_edge conveys combinatioal or sequential logic respectively. setup_falling and setup_rising indicate that the setup time is measured at the falling and rising edge respectively. 
 	
 </details>
 	
 <details>
- <summary> Verilog codes </summary>	
+ <summary> Useful dc shell commands </summary>	
+	
+In order to show the library name, the file name, and the path, use the following command:
+	
+```bash
+list_lib
+```	
+	
+In order to list the library cells of name containing "and" (this includes nand) one by one, use the following commands:
+	
+```bash
+foreach_in_collection <looping variable: my_lib_cell> [get_lib_cells */*and] {
+set <another variable: my_lib_cell_name [get_object_name $my_lib_cell];
+echo $my_lib_cell_name; 
+}
+```
 
-The verilog codes (incomp*.v, *_case.v, *_generate.v, demux_case.v, and RCA.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
+In order to view pins of a library, display direction (this is the attribute we are querying, when =2 it means pin is output) of all pins we use the following commands:
+	
+```bash
+get_lib_pins <path/librarycellnamefromprevcommand/*> 
+foreach_in_collection <variable name: my_pins> [get_lib_pins <path/librarycellnamefromprevcommand/*>] {
+set <another variable: my_pin_name [get_object_name $my_pins];
+set <another variable: pin_dir> [get_lib_attribute $my_pin_name <attribute name:direction>];
+echo $my_pin_name $pin_dir;
+}
+```
+	
+In order to select a pin (output) and view its functionality and area, then view the capacitance of a certain pin, check whether it is a clock pin or not, use the following commands:
+
+```bash
+get_lib_attribute <nameoflibpinfromprevcommands> function
+get_lib_attribute <nameofcellfromprevcommands> area
+get_lib_attribute <nameoflibpinfromprevcommands> capacitance
+get_lib_attribute <nameoflibpinfromprevcommands> clock
+```
+
+In order to find output pin and its functionality for each cell in a list, write a script (my_script.tcl, shown below), then source it:
+	
+```bash
+set <variable name: my_list> [list <path/librarycellnamefromprevcommand \
+path/librarycellnamefromprevcommand\
+path/librarycellnamefromprevcommand ]
+foreach <variable name: my_cell> $my_list {
+	foreach_in_collection <variable name: my_lib_pin> [get_lib_pins $(my_cell)/*] {
+		set <variable name: my_lib_pin_name> [get_object_name $my_lib_pin];
+		set <variable name: a> [get_lib_attribute $my_lib_pin_name direction];
+		if { $a > 1 } {
+			set <variable name: fn> [get_lib_attribute $my_lib_pin_name function];
+			echo $my_lib_pin_name $a $fn;
+		}
+	}
+```
+
+In order to find out all cells in library that are sequential, use the following command:
+
+```bash
+get_lib_cells */* -filter "is_sequential == true"
+```
+
+In order to write all available attributes that can be used to do queries to a file, use the following command:
+	
+```bash
+list_attributes -app > <name: a>
+```
 	
 </details>
 	
