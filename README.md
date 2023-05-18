@@ -19,7 +19,13 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 ## Day 0
 
-I installed the following tools:
+<details>
+ <summary> Summary </summary>
+	
+I installed the needed tools.
+
+</details>	
+	
  <details>
  <summary> Yosys </summary>
 
@@ -156,8 +162,14 @@ Below is the screenshot showing sucessful launch:
 </details>
 
 ## Day 1
-This is how I simulated and synthesized a 2x1 mux using iverilog and yosys respectively. iverilog generates from the RTL design and its testbench a value changing dump file (vcd). gtkwave is the tool used to plot the simulation results of the design. Yosys is a tool which synthesizes RTL designs into a netlist. It is also used to test the synthesized netlist when we provide it with a testbench.
 
+<details>
+ <summary> Summary </summary>
+
+This section shows how I simulated and synthesized a 2x1 mux using iverilog and yosys respectively. iverilog generates from the RTL design and its testbench a value changing dump file (vcd). gtkwave is the tool used to plot the simulation results of the design. Yosys is a tool which synthesizes RTL designs into a netlist. It is also used to test the synthesized netlist when we provide it with a testbench.
+
+</details>	
+	
 <details>
  <summary> Verilog codes </summary>
 The verilog codes of the 2x1 mux (good_mux.v) and its testbench (tb_good_mux.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
@@ -213,10 +225,15 @@ yosys> show
 	
 ## Day 2
 
+<details>
+ <summary> Summary </summary>
+
 I first synthesized a multiple module (made of two submodules) at the multiple module level (both in hierarchical and flattened forms) then at the submodule level. Synthesis at the submodule level is important for two reasons: 1-) when we have multiple instances of same module (we synthesize once and replicate this netlist multiple times and stitch together the replicas to get the multiple module netlist, and 2-) when we want to divide and conquer (in massive designs) so that the tool can generate a portion by portion of the overall netlist and then we can stitch together the netlist portions to get the multiple module netlist.
 After that, I sumulated the different flop designs using iverilog and gtkwave, then synthesized the designs.
 Finally, I synthesized 2 designs that were special; their synthesis used optimizations.
 
+</details>	
+	
 <details>
  <summary> Verilog codes </summary>
 The verilog codes of the multiple module (multiple_modules.v), the D-flipflop with asynchronous reset (dff_asyncres.v), the D-flipflop with asynchronous set (dff_async_set.v), the D-flipflop with synchronous reset (dff_syncres.v), their respective testbenches (tb_*), mult_2.v and mult_8.v are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
@@ -426,7 +443,13 @@ Below is the screenshot of the netlist:
 </details>
 	
 ## Day 3
+	
+<details>
+ <summary> Summary </summary>
+
 I have synthesized designs with optimizations. Combinational logic optimizations include 1-) constant propagation (when the combination is just propagating a constant) and 2-) boolean logic optimization (when boolean rules are used to simplify the expression). Sequential logic optimizations include 1-) sequential constant propagation (when constant is propagated with clock involved), 2-) state optimization (when unused states are optimized), 3-) retiming (when logic is split to decrease timing of the different logic portions and increase frequency), and 4-) sequential logic cloning (when physical aware synthesis is done to optimize the floop plan)
+
+</details>	
 	
 <details>
  <summary> Verilog codes </summary>
@@ -768,7 +791,12 @@ Below is the screenshot of the obtained optimized design, and 3 flipflops are us
 
 ## Day 4
 
+<details>
+ <summary> Summary </summary>
+
 I have performed Gate Level Simulation (GLS). GLS is when the testbench is run with the netlist as design under test to ensure there are no synthesis and simulation mismatches, and it is important as it 1-) verifies the logical correctness of the post-synthesis design and 2-) ensures the timing of design is met. Synthesis and simulation mismatches can happen due to a lot of reasons including missing sensitivity list (some signal changes are not captured by the circuit because they are missing from the sensitivity list), blocking vs non-blocking assignments (inside an always block, "=" statements inside it are blocking meaning they are executed in order they are written, assignments (<=) on the other hand are non-blocking so they are executed in parallel => non-blocking should be used with sequential circuits. Note that the synthesis will yield same circuit with blocking and non-blockin; it will yield what would be obtained as if the statements where written in non-blocking format, so in case they weren't written as such a mismatch will occur with the simulation), and non-standard verilog coding.
+	
+</details>
 	
 <details>
  <summary> Verilog codes </summary>
@@ -924,10 +952,15 @@ Below is the screenshot of the obtained simulation, and this mismatches with pre
 </details>
 
 ## Day 5
+	
+<details>
+ <summary> Summary </summary>
+
 I have first learned about "if" and "case" statements which are used inside always blocks. "if" statements are used to convey priority logic (ony one portion can be executed), and the hardware will look like a series of muxes in hardware, but in "case" statements there is no inferred priotity (sequential execution can mean multiple portions can be executed) but also the hardware would be a series of muxes. Inferred latches can occur if there is an incomplete "if" statement (no else), in this case the hardware will have a latch storing a previous output value. This is bad coding example unless the latch is intended (like in case of a counter). Incomplete "case" can lead to inferred latches too, and to avoid that code the "case" with a default. Another caveat of "case" statements is partial assignments which also creates inferred latches, and to avoid that we should assign all the outputs in all the segments of the case. In "case" statements, one must be careful that portions should not be overlapping otherwise they could be executed due to the sequential non-prioritized execution of those statement.
 Then I have learned about looping constructs: for loop (inside always block) and generate for loop (cannot be used inside always block). The for loop is used to evaluate expressions in blocking format (provides code efficiency as complexity of circuits increases) while the generate for loop is used to instantiate hardware (provides code efficiency when hardware instantiation increases in complexity). 
 	
-	
+</details>
+
 <details>
  <summary> Verilog codes </summary>	
 
@@ -1481,6 +1514,23 @@ module mariam_updown_counter(clk, reset, up_down, counter);
   assign _24_[3] = _12_;
 endmodule
 ```
+	
+</details>
+	
+## Day 7-9
+	
+<details>
+ <summary> Summary </summary>
+I have first learned about Static Timing Analysis (STA). It is important to note that min and max delay are two sides of the same coin: if there was no min delay we could have met any max delay requirement by pushing the clock. But when we push the clock we interfere with the time of the "capture" flop. Delay is a function of inflow of current (i.e. input transition): if there is fast current sourcing, we will get less delay (fast-rise). Delay is also a function of load capacitance. The timing arcs in combinational cells consist the delay information from every input pin to every outp-ut pin it can control. The timing arcs in a sequantial cell consist of delay from clock to Q for D flipflop or of delay from clock to Q and that from D to Q in case of a D latch. In both cases, timing arcs in a sequential cell also consist of setup/hold delays from clock to D. Note that setup/hold are around the sampling. Below is a picture noting the timing arcs in the sequential case.
+	
+<img width="653" alt="sta_note" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/a6992e61-eab3-472b-a94d-8571e87cabac">
+	
+</details>
+	
+<details>
+ <summary> Verilog codes </summary>	
+
+The verilog codes (incomp*.v, *_case.v, *_generate.v, demux_case.v, and RCA.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
 	
 </details>
 	
