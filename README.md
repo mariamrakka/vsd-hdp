@@ -1832,6 +1832,31 @@ Below is a case where we need to use a set_driving_cell constraint, which is use
 <details>
  <summary> Inserting constraints: lab14_circuit.v </summary>
 	
+The design of this circuit is similar to that of lab18_circuit.v, but has additional inputs, gate and output in the module as shown below:
+	
+<img width="1221" alt="design_lab14" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/0f016ae1-b3b1-45be-869a-e817045422eb">
+
+	
+We constraint the model above by using all constraints we discussed in lab8_circuit.v and in addition we add either the constraints in the first set of commands below then recompile to get an optimization as our constraint added will lead to a violation (because previous compilation did not take into account this newly added path) that will be fixed post compilation, or we add the constraints that follow in second set of commands which use a virtual clock (either ways work, but note that virtual clock does not need a source name and we need to be careful to have the latency in between equivalent to 0.1ns, and we have that as out of 10ns from virtual clock, 5ns is to input delay and 4.9ns is to output delay hence what is left is 0.1ns for the logic so this is correct):
+	
+```bash
+set_max_latency <value:0.1> -from [all_inputs] -to [get_port OUT_Z];
+compile_ultra;
+report_timing -to <name: OUT_Z>;
+```
+
+```bash
+create_clock -name MYVCLK -per <value: 10>;
+set_input_delay -max <value: 5> [get_ports <name: IN_C>] -clock [get_clocks MYVCLK];
+set_input_delay -max <value: 5> [get_ports <name: IN_D>] -clock [get_clocks MYVCLK];
+set_output_delay -max <value: 4.9> [get_ports <name: OUT_Z>] -clock [get_clocks MYVCLK];
+compile_ultra;
+report_timing -to <name: OUT_Z>;
+```
+	
+Below is the reported timing from the both approaches (one screenshot because both apply same constraints and optimizations and hence we get same timing report):
+	
+<img width="423" alt="constraints_lab14" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/a99c6fe5-900d-4a3b-baeb-ea07b68c3181">
 
 	
 </details>
