@@ -1631,13 +1631,6 @@ list_attributes -app > <name: a>
 ## Day 8
 	
 <details>
- <summary> Verilog codes </summary>
-	
-The verilog codes used (lab8_circuit.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
-	
-</details>
-	
-<details>
  <summary> Summary </summary>
 	
 I learned about advanced constraints. There is a delay in routing the clock which is not seen by the synthesis too due to the below ASIC flow, where clock routing is done post synthesis in the Clock Tree Synthesis (CTS) step shown below:
@@ -1662,6 +1655,8 @@ Important terminology associted with constraints:
 	
 <details>
  <summary> Verilog codes </summary>	
+	
+The verilog codes used (lab8_circuit.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
 	
 </details>
 	
