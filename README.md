@@ -15,9 +15,11 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [Day 5](#day-5)
 
-[My Design](#my-design)
+[My Design](#day-6)
 
-[Day 7-9](#day-7-9)
+[Day 7](#day-7)
+
+[Day 8](#day-8)
 
 ## Day 0
 
@@ -455,8 +457,10 @@ I have synthesized designs with optimizations. Combinational logic optimizations
 	
 <details>
  <summary> Verilog codes </summary>
-	The verilog codes used (opt_*, dff_const*, tb_dff_const*, and counter_opt*) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
-	</details>
+
+The verilog codes used (opt_*, dff_const*, tb_dff_const*, and counter_opt*) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
+
+</details>
 	
 <details>
  <summary> Combinational logic optimizations: opt_check.v </summary>
@@ -1315,7 +1319,7 @@ Below is the screenshot of the obtained simulation, and this matches with pre-sy
 
 </details>
 	
-## My Design
+## Day 6
 	
 <details>
  <summary> Summary </summary>
@@ -1523,7 +1527,7 @@ endmodule
 	
 </details>
 	
-## Day 7-9
+## Day 7
 	
 <details>
  <summary> Summary </summary>
@@ -1551,30 +1555,11 @@ Some .lib file terminologies:
 	
 5-) timing_type: combinational or falling_edge/rising_edge conveys combinatioal or sequential logic respectively. setup_falling and setup_rising indicate that the setup time is measured at the falling and rising edge respectively. 
 	
-There is a delay in routing the clock which is not seen by the synthesis too due to the below ASIC flow, where clock routing is done post synthesis in the Clock Tree Synthesis (CTS) step shown below:
-	
-<img width="717" alt="sta_note" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/0203b6cd-8363-49a6-a6bc-8fc100bb6f7b">
-
-	
-The clock generation happens through aan osillator, PLL, or external clock source. All these sources have inherent varitions in the clock period due to stochastic effects, so a practical clock has a non-zero rise time and there is also gitter (capture edge of clock doesn't come exactly where it is expected and hence capture window is reduced). In a practical clock network, all flops may not see the clock edge at the same instance, this is known as clock skew => These delays should be considered by the sythesis through constraints.
-	
-Clock modeling should take into consideration the latency of source (time taken by source to generate the clock), period, clock network latency (time taken by the clock distribution network), clock skew (clock path delay mismatches which causes difference in the arrival of the clock), and jitter. After CTS however, the skew and clock network constraints must be removed. These sources are shown below:
-	
-<img width="556" alt="sta_note5" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/326edcbf-f523-4fba-823e-e482ae84dadb">
-
-I also learned how to convey all the constraits we learned about using the Synopsys Design Constraints format understood by the DC.
-	
-Important terminology associted with constraints:
-	
-1-) ports: primary IOs of the design 
-	
-2-) nets: interconnections between pins (associated with gates) or between pin and port
-	
 	
 </details>
 	
 <details>
- <summary> Useful dc shell commands: part 1 </summary>	
+ <summary> Useful dc shell commands </summary>	
 	
 In order to show the library name, the file name, and the path, use the following command:
 	
@@ -1642,6 +1627,44 @@ list_attributes -app > <name: a>
 	
 </details>
 	
+
+## Day 8
+	
+<details>
+ <summary> Verilog codes </summary>
+	
+The verilog codes used (lab8_circuit.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
+	
+</details>
+	
+<details>
+ <summary> Summary </summary>
+	
+I learned about advanced constraints. There is a delay in routing the clock which is not seen by the synthesis too due to the below ASIC flow, where clock routing is done post synthesis in the Clock Tree Synthesis (CTS) step shown below:
+	
+<img width="717" alt="sta_note" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/0203b6cd-8363-49a6-a6bc-8fc100bb6f7b">
+	
+The clock generation happens through aan osillator, PLL, or external clock source. All these sources have inherent varitions in the clock period due to stochastic effects, so a practical clock has a non-zero rise time and there is also gitter (capture edge of clock doesn't come exactly where it is expected and hence capture window is reduced). In a practical clock network, all flops may not see the clock edge at the same instance, this is known as clock skew => These delays should be considered by the sythesis through constraints.
+	
+Clock modeling should take into consideration the latency of source (time taken by source to generate the clock), period, clock network latency (time taken by the clock distribution network), clock skew (clock path delay mismatches which causes difference in the arrival of the clock), and jitter. After CTS however, the skew and clock network constraints must be removed. These sources are shown below:
+	
+<img width="556" alt="sta_note5" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/326edcbf-f523-4fba-823e-e482ae84dadb">
+
+I also learned how to convey all the constraits we learned about using the Synopsys Design Constraints format understood by the DC.
+	
+Important terminology associted with constraints:
+	
+1-) ports: primary IOs of the design 
+	
+2-) nets: interconnections between pins (associated with gates) or between pin and port
+	
+</details>
+	
+<details>
+ <summary> Verilog codes </summary>	
+	
+</details>
+	
 <details>
  <summary> Useful dc shell commands: part 2 </summary>	
 	
@@ -1695,4 +1718,8 @@ set_output_load -min <value> [get_ports <name of all output ports, use *>];
 ```
 	
 </details>
-
+	
+<details>
+ <summary> Inserting Constraints: lab8_circuit.v </summary>	
+	
+</details>
