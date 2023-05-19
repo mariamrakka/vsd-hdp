@@ -1649,7 +1649,7 @@ Important terminology associted with constraints:
 	
 1-) ports: primary IOs of the design 
 	
-2-) nets: interconnections between pins (associated with gates) or between pin and port
+2-) nets: interconnections between pins (associated with gates) or between pin and port. A net can have only one driver (multidriven nets are corrupted, but within one standard cell this is fine as the sizing decides what drives what etc like in a latch), but it can drive multiple pins.
 	
 </details>
 	
