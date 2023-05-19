@@ -1532,7 +1532,6 @@ I have learned about Static Timing Analysis (STA). First, it is important to not
 <img width="653" alt="sta_note" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/a6992e61-eab3-472b-a94d-8571e87cabac">
 
 Timing paths have start points (input ports or/and clock pins of registers) and end points (output ports or/and D pin of DFF/DLAT). Tming paths always start at one start point and end at one end point: clock to D timing paths are the register-register timing paths, clock to output and input to D timing paths are IO timing paths, input to output timing paths are indesirable to have in designs. A critical path is that which decides or limits the clock frequency because it has the most delay incurred. If I reduce the delay in the critical path, I can increase the freq (fclk=1/Tclk, where Tclk>= Tcq+Tcomb+Tsetup). It is Tclk that decides Tcomb and not vice versa. That is why we need the constraints, 1-) I set the clock period and my synthesis tool will work to optimize the register-register time paths (by choosing what cells to connect in combinational logic part) to meet that constraint (Tcq and Tsetup are picked up from .lib) => register-register timing paths are constraints by clock. 2-) I need to contstraint the input delay in order to have synchronous paths (from external registers to internal registers) working on the same clock => input-register timing paths are constrained by the input external delay and clock. 3-) I have to constraint the output delay as to have synchronous paths (from internal registers to external registers) working on the same clock => register-output timing paths are constrained by the output external delay and clock. Note that register-output and input-register timing paths are collectively the IO timing paths (delay associated to them is called IO delay modeling). IO pathes also need to be constrained for max delay (setup) and min delay (hold).
-	
 
 From input side perspective: Tclk=Tinp-ext+Tint where Tint=Tinputlogic+Tsetup, here external delay is accounted for, but the input signals are not ideal, the transitions (non-zero rise time) will lead Tinputlogic to increase hence violating the setup time => need to model those input transitions by adding constraints => Input-register time paths are constrained by input external delay, clock, and input transitions.
 	
@@ -1552,10 +1551,30 @@ Some .lib file terminologies:
 	
 5-) timing_type: combinational or falling_edge/rising_edge conveys combinatioal or sequential logic respectively. setup_falling and setup_rising indicate that the setup time is measured at the falling and rising edge respectively. 
 	
+There is a delay in routing the clock which is not seen by the synthesis too due to the below ASIC flow, where clock routing is done post synthesis in the Clock Tree Synthesis (CTS) step shown below:
+	
+<img width="717" alt="sta_note" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/0203b6cd-8363-49a6-a6bc-8fc100bb6f7b">
+
+	
+The clock generation happens through aan osillator, PLL, or external clock source. All these sources have inherent varitions in the clock period due to stochastic effects, so a practical clock has a non-zero rise time and there is also gitter (capture edge of clock doesn't come exactly where it is expected and hence capture window is reduced). In a practical clock network, all flops may not see the clock edge at the same instance, this is known as clock skew => These delays should be considered by the sythesis through constraints.
+	
+Clock modeling should take into consideration the latency of source (time taken by source to generate the clock), period, clock network latency (time taken by the clock distribution network), clock skew (clock path delay mismatches which causes difference in the arrival of the clock), and jitter. After CTS however, the skew and clock network constraints must be removed. These sources are shown below:
+	
+<img width="556" alt="sta_note5" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/326edcbf-f523-4fba-823e-e482ae84dadb">
+
+I also learned how to convey all the constraits we learned about using the Synopsys Design Constraints format understood by the DC.
+	
+Important terminology associted with constraints:
+	
+1-) ports: primary IOs of the design 
+	
+2-) nets: interconnections between pins (associated with gates) or between pin and port
+	
+	
 </details>
 	
 <details>
- <summary> Useful dc shell commands </summary>	
+ <summary> Useful dc shell commands: part 1 </summary>	
 	
 In order to show the library name, the file name, and the path, use the following command:
 	
@@ -1623,3 +1642,57 @@ list_attributes -app > <name: a>
 	
 </details>
 	
+<details>
+ <summary> Useful dc shell commands: part 2 </summary>	
+	
+To query the ports in dc shell, use the following commands (note that port, pin, clock, etc are all names which are case sensitive):
+	
+```bash
+get_ports clk;
+get_ports *clk*;
+get_ports *;
+get_ports * -filter "direction == in";
+get_ports * -filter "direction == out";	
+```
+
+To query the clocks in dc shell, use the following commands:
+	
+```bash
+get_clocks *;
+get_clocks *clk*;
+get_clocks * -filter "period > 10";
+get_attribute [get_clocks my_clk] is_generated;	
+report_clocks my_clk;
+```
+	
+To query the physical and/or hierarchical cells (and check whether they are hierarchical or physical) in dc shell, use the following commands:
+	
+```bash
+get_cells * -hier;
+get_attribute [get_cells u_combo_logic] is_hierarchical; 	
+get_attribute [get_cells u_combo_logic/U1] is_hierarchical;
+```
+	
+To create a clock in dc (note: clocks must be created on the clock generators like PLL or oscillators or primary IO pins for external clocks. Clocks must not be created on hierarchical pins because they are not clock generators) (note2: creating a clock by default assumes a 50% duty cycle and starting phase is high, to change the phase/duty cycle use -wave {1st_rise_edge_time 2nd_rise_edge_time} with the first command), set the network latency and uncertainty constraints(remember to reduce the uncertatinty delay post CTS to reflect only jitter), use the following commands:
+
+```bash
+create_clock -name <clock name> -per <period> [get_ports<clock definition point i.e. pin to define clock at>];
+set_clock_latency <latency> <name of clock>;
+set_clock_uncertainty <value of jitter and skew delay> <name of clock>;
+```
+	
+To set the IO path constraints (the values are with respect to the clock edge, i.e. after it), use the following commands: 
+
+```bash
+set_input_delay -max <value> -clock [get_clocks <name clock>][get_ports <name of all input ports, use *>];
+set_input_delay -min <value> -clock [get_clocks <name clock>][get_ports <name of all input ports, use *>];
+set_input_transition -max <value> [get_ports <name of all input ports, use *>];
+set_input_transition -min <value> [get_ports <name of all input ports, use *>];
+set_output_delay -max <value> -clock [get_clocks <name clock>][get_ports <name of all output ports, use *>];
+set_output_delay -min <value> -clock [get_clocks <name clock>][get_ports <name of all output ports, use *>];
+set_output_load -max <value> [get_ports <name of all output ports, use *>];
+set_output_load -min <value> [get_ports <name of all output ports, use *>];
+```
+	
+</details>
+
