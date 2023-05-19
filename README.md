@@ -1531,7 +1531,7 @@ endmodule
 	
 <details>
  <summary> Summary </summary>
-I have learned about Static Timing Analysis (STA). First, it is important to note that min delay (Thold<=Tcq_inflop+Tcomb) and max delay (Tclk>= Tcq_inflop+Tcomb+Tsetup_captureflop) are two sides of the same coin: if there was no min delay we could have met any max delay requirement by pushing the clock. But when we push the clock we interfere with the time of the "capture" flop. Delay is a function of inflow of current (i.e. input transition): if there is fast current sourcing, we will get less delay (fast-rise). Delay is also a function of load capacitance. The timing arcs in combinational cells consist the delay information from every input pin to every outp-ut pin it can control. The timing arcs in a sequantial cell consist of delay from clock to Q for D flipflop or of delay from clock to Q and that from D to Q in case of a D latch. In both cases, timing arcs in a sequential cell also consist of setup/hold delays from clock to D. Note that setup/hold are around the sampling. Below is a picture noting the timing arcs in the sequential case.
+I have learned about Static Timing Analysis (STA). First, note that setup time is the time the input data signals must be stable (either high or low) before the active clock edge occurs while hold time is the time the input data signals must be stable (either high or low) after the active clock edge occurs. It is important to note that min delay (Thold<=Tcq_inflop+Tcomb) and max delay (Tclk>= Tcq_inflop+Tcomb+Tsetup_captureflop) are two sides of the same coin: if there was no min delay we could have met any max delay requirement by pushing the clock. But when we push the clock we interfere with the time of the "capture" flop. Delay is a function of inflow of current (i.e. input transition): if there is fast current sourcing, we will get less delay (fast-rise). Delay is also a function of load capacitance. The timing arcs in combinational cells consist the delay information from every input pin to every outp-ut pin it can control. The timing arcs in a sequantial cell consist of delay from clock to Q for D flipflop or of delay from clock to Q and that from D to Q in case of a D latch. In both cases, timing arcs in a sequential cell also consist of setup/hold delays from clock to D. Note that setup/hold are around the sampling. Below is a picture noting the timing arcs in the sequential case.
 	
 <img width="653" alt="sta_note" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/a6992e61-eab3-472b-a94d-8571e87cabac">
 
@@ -1661,11 +1661,14 @@ The verilog codes used (lab8_circuit.v) are taken from https://github.com/kunalg
 </details>
 	
 <details>
- <summary> Useful dc shell commands: part 2 </summary>	
+ <summary> Useful dc shell commands </summary>	
 	
-To query the ports in dc shell, use the following commands (note that port, pin, clock, etc are all names which are case sensitive):
+To query the pins, check whether a pin is a clock, check all clocks reaching a pin (here clocks created by commands further down will be shown), and query ports in dc shell, use the following commands (note that port, pin, clock, etc are all names which are case sensitive):
 	
 ```bash
+get_pins *;
+get_attribute [get_pins <pin_name>] clock;
+get_attribute [get_pins <pin_name>] clocks;
 get_ports clk;
 get_ports *clk*;
 get_ports *;
@@ -1673,7 +1676,7 @@ get_ports * -filter "direction == in";
 get_ports * -filter "direction == out";	
 ```
 
-To query the clocks in dc shell, use the following commands:
+To query the clocks in dc shell (if is_generated is false this means the clock is a master clock), use the following commands:
 	
 ```bash
 get_clocks *;
@@ -1691,12 +1694,12 @@ get_attribute [get_cells u_combo_logic] is_hierarchical;
 get_attribute [get_cells u_combo_logic/U1] is_hierarchical;
 ```
 	
-To create a clock in dc (note: clocks must be created on the clock generators like PLL or oscillators or primary IO pins for external clocks. Clocks must not be created on hierarchical pins because they are not clock generators) (note2: creating a clock by default assumes a 50% duty cycle and starting phase is high, to change the phase/duty cycle use -wave {1st_rise_edge_time 2nd_rise_edge_time} with the first command), set the network latency and uncertainty constraints(remember to reduce the uncertatinty delay post CTS to reflect only jitter), use the following commands:
+To create a clock in dc (note: clocks must be created on the clock generators like PLL or oscillators or primary IO pins for external clocks. Clocks must not be created on hierarchical pins because they are not clock generators) (note2: creating a clock by default assumes a 50% duty cycle and starting phase is high, to change the phase/duty cycle use -wave {1st_rise_edge_time 2nd_rise_edge_time} with the first command), set the network latency and uncertainty constraints (remember to reduce the uncertatinty delay post CTS to reflect only jitter, and by default the comand below sets the setup uncertainty value), use the following commands:
 
 ```bash
-create_clock -name <clock name> -per <period> [get_ports<clock definition point i.e. pin to define clock at>];
-set_clock_latency <latency> <name of clock>;
-set_clock_uncertainty <value of jitter and skew delay> <name of clock>;
+create_clock -name <clock name> -per <period> [get_ports <clock definition point i.e. pin to define clock at>];
+set_clock_latency <latency> [get_clocks <name of clock>];
+set_clock_uncertainty <value of jitter and skew delay> [get_clocks <name of clock>];
 ```
 	
 To set the IO path constraints (the values are with respect to the clock edge, i.e. after it), use the following commands: 
@@ -1716,5 +1719,74 @@ set_output_load -min <value> [get_ports <name of all output ports, use *>];
 	
 <details>
  <summary> Inserting Constraints: lab8_circuit.v </summary>	
+	
+To create a clock, use the following command:
+	
+```bash
+create_clock -name <clock name: MYCLK> -per <period: 10> [get_ports <name: clk>];
+```
+	
+The design of the circuit after creating the master clock (which will propagate to all clock pins because it is created at clk pin which is connected to all clock pins in the circuit) is shown below:
+	
+<img width="1159" alt="sta_design" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/06456eeb-8b39-4717-a084-5b550e8e7879">
+	
+To remove the already created clock then create another clock with a modified waveform, then view it, use the following command:
+	
+```bash
+remove_clock <name: MYCLK>
+create_clock -name <clock name: MYCLK> -per <period: 10> [get_ports <pin name: clk>] -wave {<1st rising edge:5> <second rising edge: 10>};
+report_clocks *;
+```
+	
+To add constraints to the clock created above (model source clock latency and clock network attributes) and print the timing report for setup and hold, use the following commands:
+	
+```bash
+set_clock_latency -source <latency: 1> [get_clocks <name of clock: MYCLK>];
+set_clock_latency <latency: 1> [get_clocks <name of clock: MYCLK>];
+set_clock_uncertainty -setup <value of jitter and skew delay: 0.5> [get_clocks <name of clock: MYCLK>];
+set_clock_uncertainty -hold <min value of jitter and skew delay: 0.1> [get_clocks <name of clock: MYCLK>];
+report_timing -to <destination pin name: REGC_reg/D> -delay max;
+report_timing -to <destination pin name: REGC_reg/D> -delay min;
+```
+
+The resulting timing reports are shown below. In first report, we can see that arrival time (Tcq+Tcomb) is less than or equal required time (Tclk-Tuncertainty-Tsetup), their subtracted value is the slack, which when met means we are good. In second report, we can also see that (Thold+Tuncertainty) is less than or equal (Tcq+Tcomb)min. The tool subtracts the uncertainty for setup purposes and adds the uncertainty for hod purposes:
+
+<img width="529" alt="timing_report" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/034b4b58-a994-4db8-b64d-6a1994ea0ff2">
+	
+<img width="526" alt="timing_report_hold" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/41edf239-4ebb-43e9-88bd-2c6f3ee97115">
+	
+In order to report information about all ports (for now we will not see transition delays on input ports and no delays due to loads on output ports), use the command below:
+	
+```bash
+report_port -verbose;
+```
+
+To add IO constraints (for external input delay, input transitions, external output delay, and output loads) and print the timing report, use the commands below:
+	
+```bash
+set_input_delay -max <value: 5> -clock [get_clocks <name: MYCLK>] [get_ports <name: IN_A>];
+set_input_delay -max <value: 5> -clock [get_clocks <name: MYCLK>] [get_ports <name: IN_B>];
+set_input_delay -min <value: 1> -clock [get_clocks <name: MYCLK>] [get_ports <name: IN_A>];
+set_input_delay -min <value: 1> -clock [get_clocks <name: MYCLK>] [get_ports <name: IN_B>];
+set_input_transition -max <value: 0.3> [get_ports <name: IN_A>];
+set_input_transition -max <value: 0.3> [get_ports <name: IN_B>];
+set_input_transition -min <value: 0.1> [get_ports <name: IN_A>];
+set_input_transition -min <value: 0.1> [get_ports <name: IN_B>];
+report_timing -from <source pin name: IN_A> -trans -cap -nosplit > <name output file: a_trans>;
+set_output_delay -max <value: 5> -clock [get_clocks <name: MYCLK>] [get_ports <name: OUT_Y>];
+set_output_delay -min <value: 1> -clock [get_clocks <name: MYCLK>] [get_ports <name: OUT_Y>];
+set_load -max <value: 0.4> [get_ports <name: OUT_Y>];
+report_timing -to <destination pin name: OUT_Y> -trans -cap -nosplit > <name output file: out_load>;
+report_port -verbose;
+```
+	
+Below is the timing report reported from IN_A (slack is 4.08 now):
+	
+<img width="537" alt="timing_report_ina" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/b8e67ecb-e2fa-45ad-a7db-66ef90caeae3">
+
+Below is the timing report reported from OUT_Y (slack is 1.88 now):
+
+<img width="538" alt="timing_report_out" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/70d7f19d-2ae8-4961-b240-09c4ce4862b4">
+
 	
 </details>
