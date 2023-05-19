@@ -1656,7 +1656,7 @@ Important terminology associted with constraints:
 <details>
  <summary> Verilog codes </summary>	
 	
-The verilog codes used (lab8_circuit.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
+The verilog codes used (lab8_circuit.v and lab14_circuit.v) are taken from https://github.com/kunalg123/sky130RTLDesignAndSynthesisWorkshop.git
 	
 </details>
 	
@@ -1718,7 +1718,7 @@ set_output_load -min <value> [get_ports <name of all output ports, use *>];
 </details>
 	
 <details>
- <summary> Inserting Constraints: lab8_circuit.v </summary>	
+ <summary> Inserting constraints: lab8_circuit.v </summary>	
 	
 To create a clock, use the following command:
 	
@@ -1787,6 +1787,51 @@ Below is the timing report reported from IN_A (slack is 4.08 now):
 Below is the timing report reported from OUT_Y (slack is 1.88 now):
 
 <img width="538" alt="timing_report_out" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/70d7f19d-2ae8-4961-b240-09c4ce4862b4">
+	
+A generated clock is used to later on model the propagation delay (flight delay) of the clock seen at the output port. To create a generated clock and constraint the above design taking into consideration the generated clock (modeling the propagation delay), use the following commands:
+	
+```bash
+create_generated_clock -name <name: MYGEN_CLK> -master [get_clocks <name master clock: MYCLK>] -div <division value usefor for clock division: 1> [get_ports OUT_CLK];
+set_clock_latency -max <value: 1> [get_clocks MYGEN_CLK];
+set_output_delay -max <value: 5> -clock [get_clocks <name: MYGEN_CLK>] [get_ports <name: OUT_Y>];
+set_output_delay -min <value: 1> -clock [get_clocks <name: MYGEN_CLK>] [get_ports <name: OUT_Y>];
+report_timing -to <destination pin name: OUT_Y>;
+```
+	
+Below is a screenshot of the reported timing:
+	
+<img width="536" alt="timing_report_generated" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/905f5449-7f15-4268-8d4b-cff59c14def1">
+	
+The below screenshot summarizes important notes about input delay:
+	
+![input_delay_notes](https://github.com/mariamrakka/vsd-hdp/assets/49097440/c74f0f4d-5891-4583-8006-797a4094c910)
+
+The below screenshot summarizes important notes about output delay:	
+	
+<img width="1341" alt="output_delay_notes" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/89814e5c-3345-43b6-9bd9-02a84cd0ac0c">
+
+If we have two outputs, we can either use the commands in the below first screenshot or those in the below second screenshot to constraint the lower path:
+	
+<img width="1376" alt="io_constraingts_revisited" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/4a362c0c-0886-4c1f-8a9f-9ee00e1d5f86">
+
+<img width="1512" alt="io_constraints_revisited__part2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9c139bbc-83be-4245-b717-cbfb2fb39702">
+	
+Below are two interesting cases where we need to add constraints from blocks (with negative edge clock) outside our module, and the corresponding commands to add those constraints are shown:
+	
+<img width="1484" alt="io_constraints_part3" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/cebc4257-c163-4574-8650-3f6943d9ff8a">
+
+<img width="1401" alt="io_constraints_part4" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/e49de88f-3fd7-44f9-a07e-370567a80c99">
+
+Below is a case where we need to use a set_driving_cell constraint, which is useful and accurate to model transition of pins between modules:
+	
+<img width="1503" alt="set_driving_cell" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/01430c96-44dd-4f27-af67-1bce7c4089d4">
+
+	
+</details>
+	
+<details>
+ <summary> Inserting constraints: lab14_circuit.v </summary>
+	
 
 	
 </details>
