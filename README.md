@@ -23,6 +23,8 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [My Design Part 2](#day-9)
 
+[Day 10](#day-10)
+
 ## Day 0
 
 <details>
@@ -1985,4 +1987,17 @@ Screenshots of the .rpt report can be found below, as we can see the tool optimi
 <img width="631" alt="Screen Shot 2023-05-20 at 9 46 37 PM" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/647968f6-2821-4267-96fa-5b0167523d07">
 
 
+</details>
+	
+## Day 10
+	
+<details>
+ <summary> Summary </summary>
+	
+I learnt about circuit design and spice simulations. In circuit design we see how connecting transistors and other components in a certain way would result in a certain functionality. Spice simulations are used to verify that a circuit is functioning as expected, to generate delays of a cell (source of delay tables).
+	
+First, I learnt about the NMOS transistors and their characteristics. NMOS is an n-channel (on p-substrate), has 4 terminals, has 2 isolation regions, has 2 n+ diffusion regions, has a gate oxide, has a poly-Si (metal gate) which is placed on top of gate oxide, and has 4 terminals (bulk, source, drain, gate). PMOS is just an inverted NMOS (p+ on n-substrate) but all other characteristics are common. The threshold voltage accurate describes the transistor. For an NMOS, if Vgs=0, and we drain drain, source and bulk, we get 2 back to back p-n junction diodes. Now if we apply a potential Vgs, a negatively charged region (depletion region) forms between n+ regions. Now if we keep increasing Vgs until Vgs=threshold voltage=Vto (Vsb=0 here, and Vto is a function of process manufacturing), we get strong surface inversion. If we keep increasing Vgs now, a continuous channel is created between n+ (gate attracts negative n+ as no p+ are left to repel, they are all depleted) -> cutoff region. If Vsb is positive (with D grounded and Vgs small voltage to form depletion region), the depletion layer width increases near S), now as Vgs increases in this case, depletion layer width increases, but in this case (unlock above case where Vsb=0) the negative charges formed due to depletion are attracted towards the S terminal which is connected to positive node of voltage source, this needs additional potential to achieve strong surface inversion whereby it happens for Vgs=Vto+V1 (V1=lembda*sqrt(abs(-2Phi+Vsb))-sqrt(abs(-2Phi)) and lambda=sqrt(2*q*N*A*Epsilon_Si)/Cox).
+	
+
+	
 </details>
