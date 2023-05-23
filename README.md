@@ -1999,5 +1999,69 @@ I learnt about circuit design and spice simulations. In circuit design we see ho
 First, I learnt about the NMOS transistors and their characteristics. NMOS is an n-channel (on p-substrate), has 4 terminals, has 2 isolation regions, has 2 n+ diffusion regions, has a gate oxide, has a poly-Si (metal gate) which is placed on top of gate oxide, and has 4 terminals (bulk, source, drain, gate). PMOS is just an inverted NMOS (p+ on n-substrate) but all other characteristics are common. The threshold voltage accurate describes the transistor. For an NMOS, if Vgs=0, and we drain drain, source and bulk, we get 2 back to back p-n junction diodes. Now if we apply a potential Vgs, a negatively charged region (depletion region) forms between n+ regions. Now if we keep increasing Vgs until Vgs=threshold voltage=Vto (Vsb=0 here, and Vto is a function of process manufacturing), we get strong surface inversion. If we keep increasing Vgs now, a continuous channel is created between n+ (gate attracts negative n+ as no p+ are left to repel, they are all depleted) -> cutoff region. If Vsb is positive (with D grounded and Vgs small voltage to form depletion region), the depletion layer width increases near S), now as Vgs increases in this case, depletion layer width increases, but in this case (unlock above case where Vsb=0) the negative charges formed due to depletion are attracted towards the S terminal which is connected to positive node of voltage source, this needs additional potential to achieve strong surface inversion whereby it happens for Vgs=Vto+V1 (V1=lembda*sqrt(abs(-2Phi+Vsb))-sqrt(abs(-2Phi)) and lambda=sqrt(2*q*N*A*Epsilon_Si)/Cox).
 	
 
+If Vgs increased beyond strong inversion (beyond Vt) and apply drain voltage then the voltage across channel is not constant anymore, and V(x) is the voltage at point x along the channel, and Vgs-V(x) is the gate-to-channel voltage at that point. The charges induced in the channel is proportional to Vgs-V(x)-Vt, in particular, Q(x)= -Cox ((Vgs-V(x))-Vt) where Cox=Epsilon_ox/tox where tox is oxide thickness. From device point of view there are drift (due to potential difference) and diffusion currents (due to difference in carrier concentration). Here focus is on the drift current, Id, (velocity of charge) that is flowing over the channel width. Id= -Vn(x)*Q(x)*Width where velocity Vn(x)=mobility*electric=Mu_N*dV/dx, so sunstituting and integrating dx over channel length will give the V-I relationship of NMOS => Id= Mu_N*Cox *W/L *[(Vgs-Vt)*Vds-Vds^2/2], we call Mu_N*Cox=Kn' or process conductance and kn'*(W/L)=Kn is the gain factor. -> Linear region (for Vds <= Vgs - Vt), Id=Kn(Vgs-Vt)Vds.
+
+If Vds = Vgs-Vt, pinch-off phenomena starts, and the channel begins to disappear (voltage across channel remains ~ constant at Vgs-Vt). When Vds>Vgs-Vt, the channel pinches off, and current saturates. -> Saturation region (for Vds > Vgs-vt), Id=kn/2(Vgs-vt)^2. The change in channel can be modeled accurately by including lambda (channel length modulation) in the equation: Id=kn/2(Vgs-vt)^2*(1+lambda*Vds). 
 	
+A correct spice setup includes the model files (technology model files representing the MOSFETs through parameters and equations) and spice netlist (describes the circuit we are trying to simulate in a specific syntax)
+	
+</details>
+	
+<details>
+
+ <summary> Codes </summary>
+	
+The used models of MOSFEts and netlists for simualtions are taken from https://github.com/kunalg123/sky130CircuitDesignWorkshop.git	
+	
+</details>
+	
+<details>
+
+ <summary> Important spice syntax </summary>
+	
+Before writing a netlist, we need to define names for the nodes in the circuit.
+	
+To include a technology file then define a resistor, transistor, voltage source, and a capacitor use the syntax below:
+	
+```bash
+.LIB "<name: xxx>.mod" CMOS_MODELS
+R<name> <1st node> <second node> <value>
+M<name> <drain> <gate> <source> <bulk> <name in tech file> w=<value> L=<value>
+V<name> <1st node> <second node> <value>
+C<name> <1st node> <second node> <value>
+```
+	
+Technology file (xxx.mod) of NMOS and PMOS should have the following syntax:
+	
+```bash
+.lib cmos_models
+.Model <name that should match in netlist> NMOS (TOX = .. VTH0 = .. U0 = .. GAMMA1 = ..)
+.Model <name that should match in netlist> PMOS (TOX = .. VTH0 = .. U0 = .. GAMMA1 = ..)
+.endl
+```
+	
+To use ngspice for plotting, use the following commands:
+	
+```bash
+ngspice <spice file name>
+plot -<name node>
+```
+	
+</details>
+
+<details>
+
+ <summary> Ngspice simulation: day1_nfet_idvds_L2_W5.spice  </summary>
+	
+To use ngspice for plotting, use the following commands:
+	
+```bash
+ngspice <name: day1_nfet_idvds_L2_W5.spice>
+plot -<name: vdd#branch>
+```
+	
+Below is the screenshot of the obtained result of Id vs Vds for different Vgs. We can see that as Vds increases, Id goes from cutoff to linear region to saturation region:
+	
+<img width="562" alt="ngspice1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/1162c8b0-fda5-49ee-a3a0-84faa15adf74">
+
 </details>
