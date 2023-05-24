@@ -2206,6 +2206,8 @@ When the pmos width is wider than that of nmos, the switching voltage of the VTC
 	
 </details>
 	
+<details>
+	
  <summary> Codes </summary>
 	
 The used models of MOSFEts and netlists for simualtions are taken from https://github.com/kunalg123/sky130CircuitDesignWorkshop.git
