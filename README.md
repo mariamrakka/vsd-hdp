@@ -2193,6 +2193,8 @@ Below is the screenshot of the obtained result of the VTC, where switching thres
 	
 </details>
 	
+<details>
+	
 <summary> Ngspice simulation: day3_inv_tran_Wp084_Wn036.spice  </summary>
 	
 To use ngspice for plotting, use the following commands:
