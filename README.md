@@ -2097,6 +2097,8 @@ The VTC of a CMOS (Vout vs Vin) is derived by first converting IdN vs VdsN and I
 	
 </details>
 	
+<details>	
+	
  <summary> Codes </summary>
 	
 The used models of MOSFEts and netlists for simualtions are taken from https://github.com/kunalg123/sky130CircuitDesignWorkshop.git	
