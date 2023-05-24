@@ -27,6 +27,10 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [Day 11](#day-11)
 
+[Day 12](#day-12)
+
+[Day 13](#day-13)
+
 ## Day 0
 
 <details>
@@ -2139,6 +2143,78 @@ Below is the screenshot of the obtained result of Id vs Vgs for constant Vds. We
 <img width="468" alt="Screen Shot 2023-05-23 at 5 44 41 PM" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/1ccf77e7-7902-4cc0-910b-48929344d446">
 	
 To calculate the thrshold voltage in ngspice, use the plot above and extend a line tangent to the linear line (the slope), until it meets the x-axis and that would be the value of the threshold voltage. 
-	
 
+</details>
+	
+## Day 12
+	
+<details>
+
+ <summary> Summary </summary>
+	
+I learned how to simulate a CMOS circuit using spice in order to obtain the VTC and evaluate the static behavior. Spice deck needed to write a netlist: component connectivity, component values, identify nodes and name them. When the pmos width is wider than that of nmos, the switching voltage of the VTC shifts to the right slightly (advantage). The switching voltage Vm is that where Vin=Vout (nmos and pmos in saturation), and it defines the robustness of the CMOS. It is derived by setting IdsP=-IdsN to get Vm=R*Vdd/(1+R) where R=(Kp*VdsatP)/(Kn*VdsatN) and where Kp=Wp/Lp*Kp' and Kn=Wn/Ln*Kn'. Given target Vm, we can derive from the previous equation the needed W/L ratios. As width of pmos increases as an integer multiple of that of nmos (for same L), the rise delay and fall delay decreases rapidly (time to charge decreases as width is wider) and increases  respectively. For one some sizing (factor of 2), we observe an equal rise and fall times (symmetric property which is a typical characteristic of a clock inverter/buffer where resistance of pmos is approximately equal to resistance of nmos in that case due to the W/L ratios). Other sizing for inverters is used to get regular inverter/buffer that would be preferred in the data path. 
+	
+</details>
+	
+<details>	
+	
+ <summary> Codes </summary>
+	
+The used models of MOSFEts and netlists for simualtions are taken from https://github.com/kunalg123/sky130CircuitDesignWorkshop.git
+	
+</details>
+
+<details>
+
+ <summary> Important spice syntax </summary>
+	
+To define a pulse, use the syntax as defined in the picture below:
+	
+<img width="1175" alt="pulse" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2afa04c5-e02b-47e9-8480-56855e688f6a">
+
+	
+</details>	
+	
+<details>
+
+ <summary> Ngspice simulation: day3_inv_vtc_Wp084_Wn036.spice  </summary>
+	
+To use ngspice for plotting, use the following commands:
+
+```bash
+ngspice <name: day3_inv_vtc_Wp084_Wn036.spice>
+plot <name: out> vs <name: in>
+```
+	
+Below is the screenshot of the obtained result of the VTC, where switching threshold is around 0.876v:
+	
+<img width="515" alt="ngspice4" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/bd6f663d-7f0c-4618-aa55-801e621761d7">
+
+	
+</details>
+	
+<summary> Ngspice simulation: day3_inv_tran_Wp084_Wn036.spice  </summary>
+	
+To use ngspice for plotting, use the following commands:
+
+```bash
+ngspice <name: day3_inv_tran_Wp084_Wn036.spice>
+plot <name: out> vs <name: time> <name: in>
+```
+	
+Below is the screenshot of the obtained result of the transient analysis, where rise delay and fall delay are around 0.322 and 0.285 at 0.9v (50%) respectively:
+	
+<img width="516" alt="spice5" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/b2b477df-8cf9-4428-8c6f-929a6459aba9">
+
+
+</details>
+	
+## Day 13
+	
+<details>
+
+ <summary> Summary </summary>
+	
+I learned about noise margin, which is another characteristic that defines static behavior of the inverter (robustness).	
+	
 </details>
