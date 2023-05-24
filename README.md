@@ -2040,6 +2040,12 @@ Technology file (xxx.mod) of NMOS and PMOS should have the following syntax:
 .endl
 ```
 	
+To simulate a spice netlist with sweeping (left side will be sweeped for each value on the right side), use the following syntax in the netlist:
+	
+```bash
+.<mode: dc> <voltage node to sweep: Vin> <start value: 0> <end value: 2.5> <steps: 0.1> <voltage node to sweep: Vdd> <start value: 0> <end value: 2.5> <steps: 2.5> 
+```
+
 To use ngspice for plotting, use the following commands:
 	
 ```bash
@@ -2063,5 +2069,72 @@ plot -<name: vdd#branch>
 Below is the screenshot of the obtained result of Id vs Vds for different Vgs. We can see that as Vds increases, Id goes from cutoff to linear region to saturation region:
 	
 <img width="562" alt="ngspice1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/1162c8b0-fda5-49ee-a3a0-84faa15adf74">
+
+</details>
+
+## day 11
+	
+<details>
+
+ <summary> Summary </summary>
+	
+I learned about velocity saturation and the basics of CMOS inverter Voltage Transfer Characteristics (VTC). If we inspect the I-V charachteristic of an NMOS, when Vgs>=Vt, then we see two regions, one with linear increase of current when Vds<=Vgs-vt and one with saturated current when Vds>Vgs-Vt. When W/L is constant but W and L (from long channel to short channel device) have decreased in value, we stop seeing quadratic dependance of Ids on Vgs after a certain Vgs value, and we see linear dependance, and also peak current decreases from long channel case due to velocity saturation effect. At higher electric fields, velocity becomes constant (after it was linear for lower fields) due to scattering effects. Velocity Vn(x)= Mu_n*epsilon/(1 + epsilon/epsilon_c) for epsilon <= epsilon_c and Vn(x)=Vsat for epsilon >= epsilon_c. We note that long channel (L>250nm) has 3 modes of operation: cutoff, resistive, and saturation, while short channel (L<250nm) has 4 modes of operation: cutoff, resistive, velocity saturation, and saturation. For short channel case: Id=0 for Vgs<Vt (cutoff) and otherwise, Id=Kn*[((Vgs-Vt)*Vmin)-Vmin^2/2]*[1+lambda*Vds] where Vmin=min(Vgs-Vt, Vds, Vdsat) according to region of operation (Vdsat is the voltage at which device velocity saturates and is independent of Vgs or Vds, and it is a technology operation). 
+	
+A CMOS acts like a switch, open when |Vgs|<|Vt| and closed (with finite ON resistance) when |Vgs|>|Vt|. When Vin=Vdd, the pmos is off, nmos is on, and Vout is 0 (open switch). When Vin is 0, PMOS is on and NMOS is off and Vout is Vdd (closed switch). In either case, there is a resistance with the switch which represents the equivalent resistance of the nmos (Rn) and pmos (Rp) respectively as shown in the picture below.
+	
+<img width="1427" alt="cmos" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/e57ebfb0-3e6e-4f2a-82f3-56cdc993e8c9">
+	
+The VTC of a CMOS (Vout vs Vin) is derived by first converting IdN vs VdsN and IdP (IdP=-IdN) vs VdsP to IdN vs Vout for different Vin (load curve for PMOS) as shown in first picture, then getting similarly IdN vs Vout for different Vin (load curve for NMOS) as shown in second picture. Finally, for we superimpose load of NMOS on PMOS, and for intersection points between common Vin values gives us the common Vout value in the VTC. VTC has 5 regions: 1-) PMOS linear, NMOS off, 2-) PMOS linear, NMOS saturation, 3-) PMOS and NMOS in saturation, 4-) PMOS saturation, NMOS linear, and 5-) PMOS off, NMOS linear as shown in third picture (1, 3, and 5 regions are of importance).  	
+	
+<img width="1504" alt="vtc1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/b6fa5dc3-a564-45b5-a559-d37411dcfdb9">
+	
+<img width="1015" alt="VTC_2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/a7fd3a23-3a8c-4171-b9a4-c550958a3cf1">
+	
+<img width="504" alt="VTC_3" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/1210d506-816c-4726-83dd-e331c3b02ded">
+
+	
+</details>
+	
+ <summary> Codes </summary>
+	
+The used models of MOSFEts and netlists for simualtions are taken from https://github.com/kunalg123/sky130CircuitDesignWorkshop.git	
+	
+</details>
+
+<details>
+
+ <summary> Ngspice simulation: day2_nfet_idvds_L015_W039.spice  </summary>
+	
+To use ngspice for plotting, use the following commands:
+	
+```bash
+ngspice <name: day2_nfet_idvds_L015_W039.spice>
+plot -<name: vdd#branch>
+```
+	
+Below is the screenshot of the obtained result of Id vs Vds for different Vgs. We can see that for low value of Vgs, Id shows quadratic behavior and for high Vgs, Id shows linear behavior due to velocity saturation effect (we have short channel here):
+	
+<img width="496" alt="ngspice_2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/55fb03a7-fe27-4074-8898-f3af01e94f27">
+
+
+</details>
+	
+<details>
+
+ <summary> Ngspice simulation: day2_nfet_idvgs_L015_W039.spice  </summary>
+	
+To use ngspice for plotting, use the following commands:
+	
+```bash
+ngspice <name: day2_nfet_idvgs_L015_W039.spice>
+plot -<name: vdd#branch>
+```
+	
+Below is the screenshot of the obtained result of Id vs Vgs for constant Vds. We can see that for low value of Vgs, Id shows quadratic behavior and for high Vgs, Id shows linear behavior due to velocity saturation effect (we have short channel here):
+	
+<img width="468" alt="Screen Shot 2023-05-23 at 5 44 41 PM" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/1ccf77e7-7902-4cc0-910b-48929344d446">
+	
+To calculate the thrshold voltage in ngspice, use the plot above and extend a line tangent to the linear line (the slope), until it meets the x-axis and that would be the value of the threshold voltage. 
+	
 
 </details>
