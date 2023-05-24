@@ -25,6 +25,8 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [Day 10](#day-10)
 
+[Day 11](#day-11)
+
 ## Day 0
 
 <details>
@@ -2072,7 +2074,7 @@ Below is the screenshot of the obtained result of Id vs Vds for different Vgs. W
 
 </details>
 
-## day 11
+## Day 11
 	
 <details>
 
