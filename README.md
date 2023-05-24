@@ -31,6 +31,8 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [Day 13](#day-13)
 
+[Day 14](#day-14)
+
 ## Day 0
 
 <details>
@@ -2152,7 +2154,7 @@ To calculate the thrshold voltage in ngspice, use the plot above and extend a li
 
  <summary> Summary </summary>
 	
-I learned how to simulate a CMOS circuit using spice in order to obtain the VTC and evaluate the static behavior. Spice deck needed to write a netlist: component connectivity, component values, identify nodes and name them. When the pmos width is wider than that of nmos, the switching voltage of the VTC shifts to the right slightly (advantage). The switching voltage Vm is that where Vin=Vout (nmos and pmos in saturation), and it defines the robustness of the CMOS. It is derived by setting IdsP=-IdsN to get Vm=R*Vdd/(1+R) where R=(Kp*VdsatP)/(Kn*VdsatN) and where Kp=Wp/Lp*Kp' and Kn=Wn/Ln*Kn'. Given target Vm, we can derive from the previous equation the needed W/L ratios. As width of pmos increases as an integer multiple of that of nmos (for same L), the rise delay and fall delay decreases rapidly (time to charge decreases as width is wider) and increases  respectively. For one some sizing (factor of 2), we observe an equal rise and fall times (symmetric property which is a typical characteristic of a clock inverter/buffer where resistance of pmos is approximately equal to resistance of nmos in that case due to the W/L ratios). Other sizing for inverters is used to get regular inverter/buffer that would be preferred in the data path. 
+I learned how to simulate a CMOS circuit using spice in order to obtain the VTC and evaluate the static behavior. Spice deck needed to write a netlist: component connectivity, component values, identify nodes and name them. The switching voltage Vm is that where Vin=Vout (nmos and pmos in saturation), and it defines the robustness of the CMOS. It is derived by setting IdsP=-IdsN to get Vm=R*Vdd/(1+R) where R=(Kp*VdsatP)/(Kn*VdsatN) and where Kp=Wp/Lp*Kp' and Kn=Wn/Ln*Kn'. Given target Vm, we can derive from the previous equation the needed W/L ratios. 
 	
 </details>
 	
@@ -2193,6 +2195,23 @@ Below is the screenshot of the obtained result of the VTC, where switching thres
 	
 </details>
 	
+	
+## Day 13
+	
+<details>
+
+ <summary> Summary </summary>
+	
+When the pmos width is wider than that of nmos, the switching voltage of the VTC shifts to the right slightly (advantage). As width of pmos increases as an integer multiple of that of nmos (for same L), the rise delay and fall delay decreases rapidly (time to charge decreases as width is wider) and increases  respectively. For one some sizing (factor of 2), we observe an equal rise and fall times (symmetric property which is a typical characteristic of a clock inverter/buffer where resistance of pmos is approximately equal to resistance of nmos in that case due to the W/L ratios). Other sizing for inverters is used to get regular inverter/buffer that would be preferred in the data path. 
+	
+</details>
+	
+ <summary> Codes </summary>
+	
+The used models of MOSFEts and netlists for simualtions are taken from https://github.com/kunalg123/sky130CircuitDesignWorkshop.git
+	
+</details>
+	
 <details>
 	
 <summary> Ngspice simulation: day3_inv_tran_Wp084_Wn036.spice  </summary>
@@ -2211,7 +2230,7 @@ Below is the screenshot of the obtained result of the transient analysis, where 
 
 </details>
 	
-## Day 13
+## Day 14
 	
 <details>
 
