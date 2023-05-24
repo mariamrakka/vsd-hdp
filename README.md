@@ -2204,7 +2204,7 @@ ngspice <name: day3_inv_tran_Wp084_Wn036.spice>
 plot <name: out> vs <name: time> <name: in>
 ```
 	
-Below is the screenshot of the obtained result of the transient analysis, where rise delay and fall delay are around 0.322 and 0.285 at 0.9v (50%) respectively:
+Below is the screenshot of the obtained result of the transient analysis, where rise delay and fall delay are around 0.322ns and 0.285ns at 0.9v (50%) respectively:
 	
 <img width="516" alt="spice5" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/b2b477df-8cf9-4428-8c6f-929a6459aba9">
 
