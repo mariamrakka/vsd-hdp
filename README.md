@@ -2238,6 +2238,34 @@ Below is the screenshot of the obtained result of the transient analysis, where 
 
  <summary> Summary </summary>
 	
-I learned about noise margin, which is another characteristic that defines static behavior of the inverter (robustness).	
+I learned about noise margin, which is another characteristic that defines static behavior of the inverter (robustness). When Vin<=VIL (logic 0), Vout is expected to ber VOH, and when Vin>=VIH (logic 1), vout is expected to be VOL (note that the slope at VIL and VIH is -1). The noise margin is defined as VIH-VIL (undefined region: voltage ranges at which the logic does not differentiate between 0 and 1). Noise margin high (interpereted as logic 1) = VOH-VIH and noise margin low (interpreted as logic 0) = VIL-VOL. Ideally, we want a CMOS inverter to have a noise margin of 0. When the width of the pmos increases with respect to nmos width, noise margin high increases while noise margin low stays the same then drops as the pmos is responsible for the high value output. Digital design relies on the areas of noise margin high and noise margin low. 
 	
 </details>
+	
+<details>
+	
+ <summary> Codes </summary>
+	
+The used models of MOSFEts and netlists for simualtions are taken from https://github.com/kunalg123/sky130CircuitDesignWorkshop.git
+	
+</details>
+	
+<details>
+	
+<summary> Ngspice simulation: day4_inv_noisemargin_wp1_wn036.spice  </summary>
+	
+To use ngspice for plotting, use the following commands:
+
+```bash
+ngspice <name: day4_inv_noisemargin_wp1_wn036.spice>
+plot <name: out> vs <name: in>
+```
+	
+Below is the screenshot of the obtained result of the VTC, and VIL is around 0.7v and VOH is around 1.7v. VOL is around 0.08v and VIH is around 1v (noise margin low is around 0.62v and noise margin high=0.7):
+
+<img width="636" alt="ngspice6" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/8a7f3f5e-10cf-49b9-a558-ac912c6f6d1c">
+
+
+
+</details>
+
