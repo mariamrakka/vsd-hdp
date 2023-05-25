@@ -33,6 +33,8 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [Day 14](#day-14)
 
+[Day 15](#day-15)
+
 ## Day 0
 
 <details>
@@ -2265,7 +2267,74 @@ Below is the screenshot of the obtained result of the VTC, and VIL is around 0.7
 
 <img width="636" alt="ngspice6" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/8a7f3f5e-10cf-49b9-a558-ac912c6f6d1c">
 
+</details>
+
+
+## Day 15
+	
+<details>
+
+ <summary> Summary </summary>
+	
+I learned about power supply scaling and device variation, where the effect of those on the CMOS is another characteristic that defines static behavior of the inverter (robustness). 
+	
+CMOS inverter can operate at supply voltage of even 0.5v and advantages are: at 0.5v, the gain (rate of change of output as input changes, change in output voltage dibided by change in input voltage at slopes of -1) is huge (close to 50% compared to 2.5v) and energy consumed is 1/2*CV^2 so less energy is consumed (close to 90% improvement compared to 2.5v). Disadvantage of using 0.5 power supply: very slow operation as fall time and rise time are huge -> huge impact on performance. 
+	
+Etching is the process of creating patterns on substrates, in which materials will be removed selectively from a thin film on a substrate. Variation in L and W takes place because of non-ideal mask, which in turn impacts the drain current. Variation in oxide thickness is due to non-idealities in the fabriaction process that leads to non-ideal oxidation process, which in process affacts the drain current. In a chain of inverters, sources of variation affect the inverters on sides more severely. To mimic device variations, Wn and Wp were varied from a strong pmos-weak nmos to a weak pmos-strong nmos, and from the VTCs we could see that there is a small shift in Vm, the switching voltgae, and small variations in the noise margins (high and low) -> the CMOS inverter is highly robust to device variation. 
+	
+</details>
+	
+<details>
+	
+ <summary> Codes </summary>
+	
+The used models of MOSFEts and netlists for simualtions are taken from https://github.com/kunalg123/sky130CircuitDesignWorkshop.git
+	
+</details>
+	
+<summary> Important spice syntax </summary>
+	
+To define a loop in order to scale the power supply, use the syntax as defined in the picture below:
+	
+
+<img width="766" alt="loop" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2b0bc598-e128-41f4-a0af-89c6637f65bd">
+
+	
+</details>	
+	
+<details>
+	
+<summary> Ngspice simulation: day5_inv_supplyvariation_Wp1_Wn036.spice  </summary>
+	
+To use ngspice for plotting, use the following commands:
+
+```bash
+ngspice <name: day5_inv_supplyvariation_Wp1_Wn036.spice>
+```
+	
+Below is the screenshot of the obtained result of the VTC curves for different supply voltages, gain in curve corresponding to 1.8v is (1.706-0.076)/(1.008-0.772)=6.907. Gain in curve corresponding to 0.8v is (0.770-0.021)/(0.511-0.428)=9.024 (increases as supply voltage decreases, but then decreases again because supply would not be enough for the device to operate):
+
+<img width="689" alt="voltagesupply1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/655d6e68-1198-4522-9aff-506ffa0f155f">
+
+<img width="448" alt="gains" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2a57ef4a-6d37-4857-8ae7-3eee708d785a">
+
+</details>
+	
+<details>
+	
+<summary> Ngspice simulation: day5_inv_devicevariation_wp7_wn042.spice  </summary>
+	
+To use ngspice for plotting, use the following commands:
+
+```bash
+ngspice <name: day5_inv_devicevariation_wp7_wn042.spice>
+plot <name: out> vs <name: in>
+```
+	
+Below is the screenshot of the obtained result of the VTC curve, and since Wp is larger than Wn we can see that the output logic 1 is held for longer than output logic 0 (because of strong pfet and weak nfet), and subsequently the switching voltage shifts to the right (compared to Vdd/2, in an ideal CMOS) to a value of 0.987v which is very close to Vdd/2=0.9, so even with huge device variation, the CMOS device is pretty robust:
+
+<img width="645" alt="devicevariation" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/dcca50be-9b5d-4cba-8bdd-3c10428eb7b4">
 
 
 </details>
-
+	
