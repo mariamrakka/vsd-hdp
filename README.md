@@ -2292,6 +2292,8 @@ The used models of MOSFEts and netlists for simualtions are taken from https://g
 	
 </details>
 	
+<details>
+	
 <summary> Important spice syntax </summary>
 	
 To define a loop in order to scale the power supply, use the syntax as defined in the picture below:
