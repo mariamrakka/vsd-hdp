@@ -1,0 +1,74 @@
+Startpoint: up_down (input port clocked by MYCLK)
+Endpoint: _49_ (rising edge-triggered flip-flop clocked by MYCLK)
+Path Group: MYCLK
+Path Type: min
+
+Fanout       Cap      Slew     Delay      Time   Description
+-------------------------------------------------------------------------------------
+                    0.0000    0.0000    0.0000   clock MYCLK (rise edge)
+                              3.0000    3.0000   clock network delay (ideal)
+                              1.0000    4.0000 ^ input external delay
+                    0.1000    0.0000    4.0000 ^ up_down (in)
+     5    0.0143                                 up_down (net)
+                    0.1000    0.0000    4.0000 ^ _37_/A (sky130_fd_sc_hd__xor2_1)
+                    0.1026    0.1592    4.1592 v _37_/X (sky130_fd_sc_hd__xor2_1)
+     1    0.0040                                 _22_ (net)
+                    0.1026    0.0000    4.1592 v _38_/B (sky130_fd_sc_hd__xnor2_1)
+                    0.0710    0.3384    4.4976 v _38_/Y (sky130_fd_sc_hd__xnor2_1)
+     1    0.0016                                 _10_ (net)
+                    0.0710    0.0000    4.4976 v _49_/D (sky130_fd_sc_hd__dfrtp_1)
+                                        4.4976   data arrival time
+
+                    0.0000    0.0000    0.0000   clock MYCLK (rise edge)
+                              3.0000    3.0000   clock network delay (ideal)
+                              0.1000    3.1000   clock uncertainty
+                              0.0000    3.1000   clock reconvergence pessimism
+                                        3.1000 ^ _49_/CLK (sky130_fd_sc_hd__dfrtp_1)
+                             -0.2045    2.8955   library hold time
+                                        2.8955   data required time
+-------------------------------------------------------------------------------------
+                                        2.8955   data required time
+                                       -4.4976   data arrival time
+-------------------------------------------------------------------------------------
+                                        1.6021   slack (MET)
+
+
+Startpoint: up_down (input port clocked by MYCLK)
+Endpoint: _51_ (rising edge-triggered flip-flop clocked by MYCLK)
+Path Group: MYCLK
+Path Type: max
+
+Fanout       Cap      Slew     Delay      Time   Description
+-------------------------------------------------------------------------------------
+                    0.0000    0.0000    0.0000   clock MYCLK (rise edge)
+                              3.0000    3.0000   clock network delay (ideal)
+                              4.0000    7.0000 v input external delay
+                    0.5000    0.0000    7.0000 v up_down (in)
+     5    0.0132                                 up_down (net)
+                    0.5000    0.0000    7.0000 v _39_/B (sky130_fd_sc_hd__maj3_1)
+                    0.2511    1.9908    8.9908 v _39_/X (sky130_fd_sc_hd__maj3_1)
+     2    0.0057                                 _23_ (net)
+                    0.2511    0.0000    8.9908 v _43_/A3 (sky130_fd_sc_hd__o31a_1)
+                    0.1599    1.3073   10.2981 v _43_/X (sky130_fd_sc_hd__o31a_1)
+     1    0.0040                                 _26_ (net)
+                    0.1599    0.0000   10.2981 v _44_/B (sky130_fd_sc_hd__xnor2_1)
+                    0.2853    0.3747   10.6728 v _44_/Y (sky130_fd_sc_hd__xnor2_1)
+     1    0.0016                                 _12_ (net)
+                    0.2853    0.0000   10.6728 v _51_/D (sky130_fd_sc_hd__dfrtp_1)
+                                       10.6728   data arrival time
+
+                    0.0000   10.0000   10.0000   clock MYCLK (rise edge)
+                              3.0000   13.0000   clock network delay (ideal)
+                             -0.5000   12.5000   clock uncertainty
+                              0.0000   12.5000   clock reconvergence pessimism
+                                       12.5000 ^ _51_/CLK (sky130_fd_sc_hd__dfrtp_1)
+                             -0.9608   11.5392   library setup time
+                                       11.5392   data required time
+-------------------------------------------------------------------------------------
+                                       11.5392   data required time
+                                      -10.6728   data arrival time
+-------------------------------------------------------------------------------------
+                                        0.8663   slack (MET)
+
+
+tns 0.00
