@@ -35,6 +35,8 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [Day 15](#day-15)
 
+[My Design Part 3](#day-16)
+
 ## Day 0
 
 <details>
@@ -2340,3 +2342,82 @@ Below is the screenshot of the obtained result of the VTC curve, and since Wp is
 
 </details>
 	
+## Day 16 
+	
+<details>
+	
+<summary> </summary>
+	
+I performed post-synthesys STA on my design using different ss (slow slow),ff (fast fast),tt (typical typical) PVT corners, then I reported the WNS (Worst Negative Slack), TNS (Total Negative Slack = sum of the negative slack paths), and WHS (Worst Hold Slack) values. Note that the skywater tt, ss and ff corners are found in https://github.com/Geetima2021/vsdpcvrd.git
+	
+I used the previously defined constraints in "mariam_updown_counter.sdc" file and I defined the OpenSTA commands for different corners (tt, ff, ss) in "my_script_tt.tcl", "my_script_ff.tcl", "my_script_ss.tcl" file. As there is one tt corner, 5 ff corners, and 7 ss corners, I would only change the name of corresponding .lib file in the three main scripts
+	
+</details>
+	
+<details>
+ <summary> Adding constraits: mariam_updown_counter.sdc </summary>
+	
+Recall that I already defined the consraints in the .sdc file as below:
+	
+```bash
+create_clock -name MYCLK -per 10 [get_ports clk];
+set_clock_latency -source 2 [get_clocks MYCLK];
+set_clock_latency 1 [get_clocks MYCLK];
+set_clock_uncertainty -setup 0.5 [get_clocks MYCLK];
+set_clock_uncertainty -hold 0.1 [get_clocks MYCLK];
+set_input_delay -max 4 -clock [get_clocks MYCLK] [get_ports up_down];
+set_input_delay -min 1 -clock [get_clocks MYCLK] [get_ports up_down];
+set_input_transition -max 0.5 [get_ports up_down];
+set_input_transition -min 0.1 [get_ports up_down];
+set_load -max 0.13 [get_ports counter];
+set_load -min 0.1 [get_ports counter];
+```
+	
+</details>
+	
+<details>
+ <summary> Using OpenSTA: my_script_*.tcl </summary>
+	
+The my_script_tt.tcl for tt corner is defined as below (note that -delay_path min_max produces the wht and wst respectively):
+	
+```bash
+read_liberty ../../vsdpcvrd/resources/timing_libs/sky130_fd_sc_hd__tt_025C_1v80.lib
+read_verilog mariam_updown_counter_net.v
+link_design mariam_updown_counter
+read_sdc mariam_updown_counter.sdc
+report_checks -fields {nets cap slew input_pins} -digits {4} -path_delay min_max > mariam_report_tt_025C_1v80.rpt
+report_tns >> mariam_report_tt_025C_1v80.rpt
+```
+	
+The my_script_ff.tcl for ff corner is defined as below (note that -delay_path min_max produces the wht and wst respectively):
+	
+```bash
+read_liberty ../../vsdpcvrd/resources/timing_libs/sky130_fd_sc_hd__ff_*
+read_verilog mariam_updown_counter_net.v
+link_design mariam_updown_counter
+read_sdc mariam_updown_counter.sdc
+report_checks -fields {nets cap slew input_pins} -digits {4} -path_delay min_max > mariam_report_ff_*.rpt
+report_tns >> mariam_report_ff_*.rpt
+```
+	
+The my_script_ss.tcl for ss corner is defined as below (note that -delay_path min_max produces the wht and wst respectively):
+	
+```bash
+read_liberty ../../vsdpcvrd/resources/timing_libs/sky130_fd_sc_hd__ss_*
+read_verilog mariam_updown_counter_net.v
+link_design mariam_updown_counter
+read_sdc mariam_updown_counter.sdc
+report_checks -fields {nets cap slew input_pins} -digits {4} -path_delay min_max > mariam_report_ss_*.rpt
+report_tns >> mariam_report_ss_*.rpt
+```
+	
+To run this script in OpenSTA, I used the following command as much as needed (i.e. once for tt, 5 times for ff, and 7 times for ss):
+	
+```bash
+sta my_script_tt.tcl
+sta my_script_ff.tcl
+sta my_script_ss.tcl
+```
+
+Note that all reports generated for pvt corners are included in this repository under the directory sta_out_corners.
+</details
