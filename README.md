@@ -2346,7 +2346,7 @@ Below is the screenshot of the obtained result of the VTC curve, and since Wp is
 	
 <details>
 	
-<summary> </summary>
+<summary> Summary </summary>
 	
 I performed post-synthesys STA on my design using different ss (slow slow),ff (fast fast),tt (typical typical) PVT corners, then I reported the WNS (Worst Negative Slack), TNS (Total Negative Slack = sum of the negative slack paths), and WHS (Worst Hold Slack) values. Note that the skywater tt, ss and ff corners are found in https://github.com/Geetima2021/vsdpcvrd.git
 	
