@@ -2420,4 +2420,13 @@ sta my_script_ss.tcl
 ```
 
 Note that all reports generated for pvt corners are included in this repository under the directory sta_out_corners.
+	
+Below you can find the values obtained in the report and a corresponding plot:
+	
+	
+<img width="494" alt="mypvt0" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/7981c89a-5e51-45d2-bb52-e0c24f9335ad">
+	
+![mypvt](https://github.com/mariamrakka/vsd-hdp/assets/49097440/6736e86e-8ba0-4e57-9940-b84d27d875b6)
+
+
 </details
