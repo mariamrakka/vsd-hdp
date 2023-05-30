@@ -2437,8 +2437,30 @@ Below you can find the values obtained in the report and a corresponding plot:
 <details>
  <summary> Summary </summary>
 	
-ok
+I learnt about RISC-V ISA, physical implementation, and SoC design using OpenLane. Chip is at the center of a package, and a chip has PADs which allow signals to pass in and out of the chip (from core where the digital logic sits to outside or vice versa). Note that the die defines the size of the chip. A typical core consists of a CPU SoC, ADCs/DACs, SPI, PLL, and SRAM. PLL, SRAM, and DAC/ADC are called as foundary IPs. Foundary is a big factory that has machines where chips get manufactured. IP is intellectual property (needs intelligence to be built). SPI and CPU SoC are macros. Macros are pure digital logic. We need an interface (some files) to communicate with the foundary. 
+	
+The application software or apps are handled by the system software (OS, compiler, assembler) in order to run on the hardware. The OS handles IO operations, allocates memory, and handles low level system functions. The compiler transforms the high level language into low level instructions according to the unerlying hardware. The assembler then converts the instructions (abstract ISA, or 'architecture' of computer) to respective binary that is eventually fed to the hardware. The RTL implements the instructions (the ISA), then RTL is synthesized into netlist which is physically implemented in hardware. 
+	
+Digital ASIC design requires RTL of the IPs, EDA tools, and PDKs. Open source deigital ASIC design is facilitated by open-source RTL designs (in github for example), open-source EDA tools (OpenRoad, OpenLane, Qflow), and open-source PDKs. A PDK=Process Design Kit is the iterface between the fabrication and design (which were separated in the past). PDK includes device models, design rules, standard cell libraries, I/O libraries, etc.. Regular PDKs are distributed under NDAs, but open PDKs (130nm, released by Google) do not require NDAs. ASIC design Flow: Synthesis (takes RTL as input, output is gate-level netlist. Standard cells have regular layouts), FP+PP (floor planning. Planning chip and macro. Includes power planning), Place (placing cells on the floor plan. Global and detailed placement), CTS (creating clock distribution network to route the clock), Route (implementing the interconnect using metal layers. Global and detailed routing takes place in divide and conquer approach), Sign off (output is GDSII. Physical verifications (DRC, LVS), and timing verifications (STA)). The PDK is used in all these steps. Developing an open ASIC design flow is tough as there are worries in tool qualification, tool calibration, and missing tools. 
+	
+OpenLane is an open ASIC design flow (relies on multiple open-source tools). The main goal is produce a clean GDSII (no LVS, DRC, STA violations) without human intervention. OpenLane is tuned for skywater 130 open PDK. OpenLane can be used to produce GDSII for either macros or chips. It has two modes: autonomous (one click of button) or manual (step by step). It provides a mean to sweep configurations allowing design space exploration, and has a large number of design examples available publicly. Below is the detailed ASIC design flow in OpenLane. 
 
+<img width="945" alt="openlane2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/c6dbf878-b529-48b0-861c-5149db478804">
+	
+Note that DFT (design for testing) step is optional and facilitated by Fault tool. Note that we need to deal with antenna rules violations: when a metal wire segment is fabricated, it can act as an antenna which leads to damage some transistor gates during fabrication => two solutions: bridging and inserting antenna diodes. The two solutions are shown side-to-side below: 
+	
+<img width="893" alt="openlane3" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/81caa1b3-c418-4d2b-bf11-d87213313435">
+
+OpenLane deals with those antenna violations and gives the user option to user either OpenLane or OpenRoad solution. The pdk directory inside the OpenLane directory has skywater-pdk which contains PDK files provided by foundry, open_pdks that contains scripts to setup pdks for opensource tools, and sky130A which contains sky130 PDK files.
+
+</details>
+	
+<details>
+	
+<summary> Codes </summary>
+	
+The used designs are taken from https://github.com/The-OpenROAD-Project/OpenLane
+	
 </details>
 	
 <details>
@@ -2492,6 +2514,53 @@ make test
 As all the above steps were successful, I got the following terminal result:
 	
 <img width="653" alt="openlane1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/d92d7e22-8a80-44c0-b06b-088bb16c3ed1">
+	
+</details>
+	
+<details>
+	
+<summary> OpenLane: picorv32a  </summary>
+	
+To invoke OpenLane, I used the commands below in the OpenLane directory (note that without interactive switch, OpenLane will run in automatic mode):
+	
+```bash
+make mount
+./flow.tcl -interactive
+package require openlane 0.9
+```
+	
+To prepare the design, I used the following command (designs/picorv32a contains the verilog file, .sdc file, needed PDK, and config.tcl that has configurations for the design that will overwrite the default OpenLane settings. When the design is prepared, the LEF files are merged, and a "runs" directory is created inside the picorv32a directory, and inside it a directory with the current date is created. Inside that directory, all folder structures required by OpenLanes are present empty, except for temp folder. temp folder has the merged LEF files. Note that when synthesis is performed for example a file will be created inside the results/synthesis directory. Inside the runs/<RUN_today_date> directory there is a config.tcl file which contains the default OpenLane configuration settings, and it is important to check whether our modifications are reflected in it): 
+	
+```bash
+prep -design picorv32a
+```
+	
+To run the synthesis of the picorv32a design, I used the following command (During this step yosys and ABC tools are utilized to convert RTL design to the gate level netlist, which will be found in the folder runs/<RUN_today_date>/results/synthesis): 
+	
+```bash
+run_synthesis
+```
+	
+The obtained logs and reports are found in runs/<RUN_today_date>/logs/synthesis and runs/<RUN_today_date>/reports/synthesis respectively. Below are screenshots of the logs I obtained for STA results:
+	
+<img width="721" alt="stareport1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/f6a68649-1104-4efd-a9aa-88e0d741794f">
+
+<img width="723" alt="stareport2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2dcab5ea-0f64-416c-b951-18e647c60513">
+
+<img width="513" alt="stareport3" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/5618e334-0611-4bbb-a6ea-94aa1586db60">
 
 	
+To calculate the flop ratio, I used the following formula, and the numbers are extracted from the report whose screenshot is included below:
+	
+```bash	
+Flop ratio = # of D Flipflops / Total # of cells
+dfxtp_2 = 1596,
+Number of cells = 9541,
+Flop ratio = 1596/9541 = 0.1673 = 16.73%	
+```
+	
+<img width="510" alt="dff_formula1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/009c27f1-e108-4cb9-9c13-5bb436af71de">
+
+<img width="513" alt="dff_formula2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/352f62ad-086d-472c-aa0f-216f301bb78f">
+
 </details>
