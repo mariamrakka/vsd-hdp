@@ -2430,7 +2430,7 @@ Below you can find the values obtained in the report and a corresponding plot:
 	
 ![mypvt](https://github.com/mariamrakka/vsd-hdp/assets/49097440/6736e86e-8ba0-4e57-9940-b84d27d875b6)
 
-</details
+</details>
 	
 ## Day 17
 
@@ -2488,5 +2488,10 @@ cd OpenLane
 make
 make test
 ```
+	
+As all the above steps were successful, I got the following terminal result:
+	
+<img width="653" alt="openlane1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/d92d7e22-8a80-44c0-b06b-088bb16c3ed1">
+
 	
 </details>
