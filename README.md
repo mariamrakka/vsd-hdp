@@ -2433,10 +2433,12 @@ Below you can find the values obtained in the report and a corresponding plot:
 </details
 	
 ## Day 17
-	
+
 <details>
  <summary> Summary </summary>
 	
+ok
+
 </details>
 	
 <details>
