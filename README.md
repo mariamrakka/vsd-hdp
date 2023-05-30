@@ -2439,6 +2439,8 @@ Below you can find the values obtained in the report and a corresponding plot:
 	
 </details>
 	
+<details>
+	
 <summary> OpenLane: Installation </summary>
 
 To install OpenLane tools, I have used the following commands:
@@ -2467,7 +2469,7 @@ docker run hello-world
 To check dependencies, use the following commands:	
 	
 ```bash
- git --version
+git --version
 docker --version
 python3 --version
 python3 -m pip --version
