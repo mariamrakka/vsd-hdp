@@ -37,6 +37,8 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [My Design Part 3](#day-16)
 
+[Day 17](#day-17)
+
 ## Day 0
 
 <details>
@@ -2428,5 +2430,59 @@ Below you can find the values obtained in the report and a corresponding plot:
 	
 ![mypvt](https://github.com/mariamrakka/vsd-hdp/assets/49097440/6736e86e-8ba0-4e57-9940-b84d27d875b6)
 
-
 </details
+	
+## Day 17
+	
+<details>
+ <summary> Summary </summary>
+	
+</details>
+	
+<summary> OpenLane: Installation </summary>
+
+To install OpenLane tools, I have used the following commands:
+
+```bash	
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt install -y build-essential python3 python3-venv python3-pip make git
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io
+sudo docker run hello-world
+sudo groupadd docker
+sudo usermod -aG docker $USER
+sudo reboot 
+```
+
+After reboot, I used this command: 
+
+```bash
+docker run hello-world
+```	
+
+To check dependencies, use the following commands:	
+	
+```bash
+ git --version
+docker --version
+python3 --version
+python3 -m pip --version
+make --version
+python3 -m venv -h
+```
+	
+I have used the below commands to install PDKs and tools:
+	
+```bash
+cd $HOME
+git clone https://github.com/The-OpenROAD-Project/OpenLane
+cd OpenLane
+make
+make test
+```
+	
+</details>
