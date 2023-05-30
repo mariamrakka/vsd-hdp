@@ -2443,7 +2443,7 @@ ok
 	
 <details>
 	
-<summary> OpenLane: Installation </summary>
+<summary> OpenLane, PDKs, and tools: Installation </summary>
 
 To install OpenLane tools, I have used the following commands:
 
