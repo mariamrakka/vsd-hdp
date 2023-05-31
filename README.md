@@ -2531,7 +2531,7 @@ make mount
 package require openlane 0.9
 ```
 	
-To prepare the design, I used the following command (designs/picorv32a contains the verilog file, .sdc file, needed PDK, and config.tcl that has configurations for the design that will overwrite the default OpenLane settings. When the design is prepared, the LEF files are merged, and a "runs" directory is created inside the picorv32a directory, and inside it a directory with the current date is created. Inside that directory, all folder structures required by OpenLanes are present empty, except for temp folder. temp folder has the merged LEF files. Note that when synthesis is performed for example a file will be created inside the results/synthesis directory. Inside the runs/<RUN_today_date> directory there is a config.tcl file which contains the default OpenLane configuration settings, and it is important to check whether our modifications are reflected in it): 
+To prepare the design, I used the following command (designs/picorv32a contains the verilog file, .sdc file, needed PDK, and config.json that has configurations for the design that will overwrite the default OpenLane settings. When the design is prepared, the LEF files are merged, and a "runs" directory is created inside the picorv32a directory, and inside it a directory with the current date is created. Inside that directory, all folder structures required by OpenLanes are present empty, except for temp folder. temp folder has the merged LEF files. Note that when synthesis is performed for example a file will be created inside the results/synthesis directory. Inside the runs/<RUN_today_date> directory there is a config.tcl file which contains the default OpenLane configuration settings, and it is important to check whether our modifications are reflected in it): 
 	
 ```bash
 prep -design picorv32a
@@ -2575,4 +2575,36 @@ Flop ratio = 1596/9541 = 0.1673 = 16.73%
 	
 I learned about chip floor planning. First step of floor planning is defining height and width of the core. Recall that logic cells are placed inside the core. Utilization factor of the core = Area (occupied by netlist)/Total area of the core. Ideally a 50-60% utilization (of cells only usually) is good. Aspect ratio = Height of core /width of core. The second step of floor planning is defining the locations of preplaced cells. We cut big logic cells into different blocks, we extended IO pins, block box the blocks, and then separate the black boxes as two different IPs or modules. IPs are implemented once and can be instantiated multiple times, and IPs are preplaced cells as their arrangement is done by user-defined locations and placed on the chip before automated placement-and-routing. The automatic placement-and-routing will place the remainingh logical cells on the chips. It is important to place the preplaced cells in locations that are relevant to the design as this lcoation won't change. Third step in floop planning is to define the decoupling capacitances around the preplaced cells. Decoupling capacitances are used to decouple circuits from the main supply, and they are placed closer to the cell. The decoupling capacitances are important during the switching activity as it makes sure signal is delivered with attentuation that lies in the noise margin regions (as opposed to huge attentuation that can take place because the main supply is physically far away from the cells. The decoupling capacitances replenish their own charge when there is no switching activity. The forth step is power planning. This is used for global communication between the different macros as the receiving macro (load) should receive the same signal sent from the sending macro (driver). Using one power supply to feen in the signal can cause problems in ground bounce or supply droop if multiple decoupling transistors try to charge or discharge at the same time. The solution to this problem is to ue multiple sources for the power supply, where each cell will take its power from the nearest supply. The problem of placing those multiple power supplies is called power planning. The fifth step in floor planning is pin placement. The connectivity between the cells is defined in the netlist, and pin placement is the problem of placing those pins on the chip's die. Note that clock pins are bigger than other pins as this pin drives more cells. The sixth step is logical cell placement blockage where a blockage is placed in die area outside core to present tools from placing cells in that area.
 
+</details>
+	
+<summary> OpenLane: picorv32a  </summary>
+
+To run the floorplanning after synthesis of the picorv32a design, I used the following command (During this, the 6 steps mentioned in summary are done, and a .def is created in the results/floorplan directory inside the chosen design directory. The results can be found in OpenLane/designs/<design name: picorv32a>/RUN_*/runs): 
+	
+```bash
+run_floorplan
+```
+	
+Note that some of the floorplan switches (can be included with the command above) are FP_CORE_UTIL (floorplan core utilization), FP_ASPECT_RATIO (floorplan aspect ratio), FP_CORE_MARGIN (Core to die margin area), FP_IO_MODE (defines pin configurations: 1 = equidistant and 0 = not equidistant), FP_CORE_VMETAL (vertical metal layer), and FP_CORE_HMETAL (horizontal metal layer). The default values of these are defined in OpenLane/configuration/floorplan.tcl. In order to overwite these, we can define those switches in OpenLane/designs/<design name: picorv32a>/config.json. Note that in OpenLane, horizontal and vertical metal are one value added to the value we specify.
+	
+To view the layout the floorplan in magic, I used the command below in the results/floorplan directory (note that in my case the pdk was previously downloaded on my desktop in the open_pdks directory):
+	
+```bash
+magic read -T /home/mariam/Desktop/open_pdks/sky130/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.min.lef def read picorv32a.def &
+```
+	
+A screenshot of the obtained layout is below:
+	
+<img width="590" alt="floorplanlayout" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/e8fdf4a3-d814-47a0-8716-74b53962bcb3">
+
+
+After zooming in (left click, right click, z), below is the obtained screenshots (note that when we highlight (s after positioning the cursor), we can type "what" in the tkcon window and it will provide the layer of the highlighted object. The standard cells can be found on left bottom corner of the layout, as floorplan does not place those):
+	
+<img width="647" alt="highlight" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9997d9e1-4526-4642-806f-eb14c5dd6c36">
+	
+
+<img width="614" alt="standardcell_layout" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/713c5a4a-96fa-4133-9a55-c16a84dab523">
+
+
+	
 </details>
