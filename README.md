@@ -39,6 +39,8 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [Day 17](#day-17)
 
+[Day 18](#day-18)
+
 ## Day 0
 
 <details>
@@ -2562,5 +2564,15 @@ Flop ratio = 1596/9541 = 0.1673 = 16.73%
 <img width="510" alt="dff_formula1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/009c27f1-e108-4cb9-9c13-5bb436af71de">
 
 <img width="513" alt="dff_formula2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/352f62ad-086d-472c-aa0f-216f301bb78f">
+
+</details>
+	
+	
+## Day 18
+
+<details>
+ <summary> Summary </summary>
+	
+I learned about chip floor planning. First step of floor planning is defining height and width of the core. Recall that logic cells are placed inside the core. Utilization factor of the core = Area (occupied by netlist)/Total area of the core. Ideally a 50-60% utilization (of cells only usually) is good. Aspect ratio = Height of core /width of core. The second step of floor planning is defining the locations of preplaced cells. We cut big logic cells into different blocks, we extended IO pins, block box the blocks, and then separate the black boxes as two different IPs or modules. IPs are implemented once and can be instantiated multiple times, and IPs are preplaced cells as their arrangement is done by user-defined locations and placed on the chip before automated placement-and-routing. The automatic placement-and-routing will place the remainingh logical cells on the chips. It is important to place the preplaced cells in locations that are relevant to the design as this lcoation won't change. Third step in floop planning is to define the decoupling capacitances around the preplaced cells. Decoupling capacitances are used to decouple circuits from the main supply, and they are placed closer to the cell. The decoupling capacitances are important during the switching activity as it makes sure signal is delivered with attentuation that lies in the noise margin regions (as opposed to huge attentuation that can take place because the main supply is physically far away from the cells. The decoupling capacitances replenish their own charge when there is no switching activity. The forth step is power planning. This is used for global communication between the different macros as the receiving macro (load) should receive the same signal sent from the sending macro (driver). Using one power supply to feen in the signal can cause problems in ground bounce or supply droop if multiple decoupling transistors try to charge or discharge at the same time. The solution to this problem is to ue multiple sources for the power supply, where each cell will take its power from the nearest supply. The problem of placing those multiple power supplies is called power planning. The fifth step in floor planning is pin placement. The connectivity between the cells is defined in the netlist, and pin placement is the problem of placing those pins on the chip's die. Note that clock pins are bigger than other pins as this pin drives more cells. The sixth step is logical cell placement blockage where a blockage is placed in die area outside core to present tools from placing cells in that area.
 
 </details>
