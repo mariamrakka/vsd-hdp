@@ -2573,8 +2573,18 @@ Flop ratio = 1596/9541 = 0.1673 = 16.73%
 <details>
  <summary> Summary </summary>
 	
-I learned about chip floor planning. First step of floor planning is defining height and width of the core. Recall that logic cells are placed inside the core. Utilization factor of the core = Area (occupied by netlist)/Total area of the core. Ideally a 50-60% utilization (of cells only usually) is good. Aspect ratio = Height of core /width of core. The second step of floor planning is defining the locations of preplaced cells. We cut big logic cells into different blocks, we extended IO pins, block box the blocks, and then separate the black boxes as two different IPs or modules. IPs are implemented once and can be instantiated multiple times, and IPs are preplaced cells as their arrangement is done by user-defined locations and placed on the chip before automated placement-and-routing. The automatic placement-and-routing will place the remainingh logical cells on the chips. It is important to place the preplaced cells in locations that are relevant to the design as this lcoation won't change. Third step in floop planning is to define the decoupling capacitances around the preplaced cells. Decoupling capacitances are used to decouple circuits from the main supply, and they are placed closer to the cell. The decoupling capacitances are important during the switching activity as it makes sure signal is delivered with attentuation that lies in the noise margin regions (as opposed to huge attentuation that can take place because the main supply is physically far away from the cells. The decoupling capacitances replenish their own charge when there is no switching activity. The forth step is power planning. This is used for global communication between the different macros as the receiving macro (load) should receive the same signal sent from the sending macro (driver). Using one power supply to feen in the signal can cause problems in ground bounce or supply droop if multiple decoupling transistors try to charge or discharge at the same time. The solution to this problem is to ue multiple sources for the power supply, where each cell will take its power from the nearest supply. The problem of placing those multiple power supplies is called power planning. The fifth step in floor planning is pin placement. The connectivity between the cells is defined in the netlist, and pin placement is the problem of placing those pins on the chip's die. Note that clock pins are bigger than other pins as this pin drives more cells. The sixth step is logical cell placement blockage where a blockage is placed in die area outside core to present tools from placing cells in that area.
+I learned about chip floor planning and placement and routing. First step of floor planning is defining height and width of the core. Recall that logic cells are placed inside the core. Utilization factor of the core = Area (occupied by netlist)/Total area of the core. Ideally a 50-60% utilization (of cells only usually) is good. Aspect ratio = Height of core /width of core. The second step of floor planning is defining the locations of preplaced cells. We cut big logic cells into different blocks, we extended IO pins, block box the blocks, and then separate the black boxes as two different IPs or modules. IPs are implemented once and can be instantiated multiple times, and IPs are preplaced cells as their arrangement is done by user-defined locations and placed on the chip before automated placement-and-routing. The automatic placement-and-routing will place the remainingh logical cells on the chips. It is important to place the preplaced cells in locations that are relevant to the design as this lcoation won't change. Third step in floop planning is to define the decoupling capacitances around the preplaced cells. Decoupling capacitances are used to decouple circuits from the main supply, and they are placed closer to the cell. The decoupling capacitances are important during the switching activity as it makes sure signal is delivered with attentuation that lies in the noise margin regions (as opposed to huge attentuation that can take place because the main supply is physically far away from the cells. The decoupling capacitances replenish their own charge when there is no switching activity. The forth step is power planning. This is used for global communication between the different macros as the receiving macro (load) should receive the same signal sent from the sending macro (driver). Using one power supply to feen in the signal can cause problems in ground bounce or supply droop if multiple decoupling transistors try to charge or discharge at the same time. The solution to this problem is to ue multiple sources for the power supply, where each cell will take its power from the nearest supply. The problem of placing those multiple power supplies is called power planning (in OpenLane, this is done post placement). The fifth step in floor planning is pin placement. The connectivity between the cells is defined in the netlist, and pin placement is the problem of placing those pins on the chip's die. Note that clock pins are bigger than other pins as this pin drives more cells. The sixth step is logical cell placement blockage where a blockage is placed in die area outside core to present tools from placing cells in that area.
+	
+Placement is perfomed in two stages: global amd detailed. In global placement, tool finds optimal position for all cells which may not be legal and cells may overlap. Optimization is done through reduction of half parameter wire length. In detailed placement, the tool changes the position of cells post global placement so as to legalise them. The first step in placement and routing is binding the netlist with physical cells. This means taking every component in the netlist and giving them a proper width and height. These widths and heights are taken from the library. The library has various options of widths and heights for the same cell (bigger is faster). The second step in placement and routing is placement. In this step, the netlist is placed on the floor plan (which already has the preplaced cells by now). The placement is important as it affects the delays. The third step is optimized placement, where the wire capacitances are estimated and the placement is optimized by adding buffers (repeaters that replicate the original signal) where needed to maintain the integrity of the signal. The distances for signals are calculated according to slew values. Criss cross can occur when placing, and should be avoided. All stages of floorplanning and place and route need library characterization. 
 
+</details>
+	
+<details>
+	
+<summary> Codes </summary>
+	
+The used designs are taken from https://github.com/The-OpenROAD-Project/OpenLane
+	
 </details>
 	
 <details>
@@ -2592,7 +2602,7 @@ Note that some of the floorplan switches (can be included with the command above
 To view the layout the floorplan in magic, I used the command below in the results/floorplan directory (note that in my case the pdk was previously downloaded on my desktop in the open_pdks directory):
 	
 ```bash
-magic read -T /home/mariam/Desktop/open_pdks/sky130/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.min.lef def read picorv32a.def &
+magic read -T /home/mariam/Desktop/open_pdks/sky130/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.min.lef def read picorv32.def &
 ```
 	
 A screenshot of the obtained layout is below:
@@ -2606,6 +2616,27 @@ After zooming in (left click, right click, z), below is the obtained screenshots
 	
 
 <img width="614" alt="standardcell_layout" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/713c5a4a-96fa-4133-9a55-c16a84dab523">
+
+To run the placement after floorplanning of the picorv32a design, I used the following command (If overflow value progressively reduces during the placement run, this means the design will converge and placement will be successful): 
+	
+```bash
+run_placement
+```
+
+To view the layout after placement in magic, I used the command below in the results/placement directory (note that in my case the pdk was previously downloaded on my desktop in the open_pdks directory):
+	
+```bash
+magic read -T /home/mariam/Desktop/open_pdks/sky130/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.max.lef def read picorv32.def &
+```
+	
+A screenshot of the obtained layout is below:	
+	
+<img width="433" alt="placement1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/1093188a-f5d5-4a1d-99a4-26224cff2ca5">
+
+
+After zooming in, this is the obtained placement: 
+	
+<img width="441" alt="placement2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/26a3b489-ec94-49df-b69a-205d3579a740">
 
 	
 </details>
