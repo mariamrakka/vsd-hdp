@@ -2631,7 +2631,7 @@ magic read -T /home/mariam/Desktop/open_pdks/sky130/sky130A/libs.tech/magic/sky1
 	
 A screenshot of the obtained layout is below:	
 	
-<img width="433" alt="placement1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/1093188a-f5d5-4a1d-99a4-26224cff2ca5">
+<img width="447" alt="placement1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9bba4567-34b2-4fe0-aa18-1ba30d1bd388">
 
 
 After zooming in, this is the obtained placement: 
