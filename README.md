@@ -2577,6 +2577,8 @@ I learned about chip floor planning. First step of floor planning is defining he
 
 </details>
 	
+<details>
+	
 <summary> OpenLane: picorv32a  </summary>
 
 To run the floorplanning after synthesis of the picorv32a design, I used the following command (During this, the 6 steps mentioned in summary are done, and a .def is created in the results/floorplan directory inside the chosen design directory. The results can be found in OpenLane/designs/<design name: picorv32a>/RUN_*/runs): 
@@ -2604,7 +2606,6 @@ After zooming in (left click, right click, z), below is the obtained screenshots
 	
 
 <img width="614" alt="standardcell_layout" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/713c5a4a-96fa-4133-9a55-c16a84dab523">
-
 
 	
 </details>
