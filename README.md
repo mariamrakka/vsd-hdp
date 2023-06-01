@@ -41,6 +41,8 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [Day 18](#day-18)
 
+[Day 19](#day-19)
+
 ## Day 0
 
 <details>
@@ -2575,8 +2577,22 @@ Flop ratio = 1596/9541 = 0.1673 = 16.73%
 	
 I learned about chip floor planning and placement and routing. First step of floor planning is defining height and width of the core. Recall that logic cells are placed inside the core. Utilization factor of the core = Area (occupied by netlist)/Total area of the core. Ideally a 50-60% utilization (of cells only usually) is good. Aspect ratio = Height of core /width of core. The second step of floor planning is defining the locations of preplaced cells. We cut big logic cells into different blocks, we extended IO pins, block box the blocks, and then separate the black boxes as two different IPs or modules. IPs are implemented once and can be instantiated multiple times, and IPs are preplaced cells as their arrangement is done by user-defined locations and placed on the chip before automated placement-and-routing. The automatic placement-and-routing will place the remainingh logical cells on the chips. It is important to place the preplaced cells in locations that are relevant to the design as this lcoation won't change. Third step in floop planning is to define the decoupling capacitances around the preplaced cells. Decoupling capacitances are used to decouple circuits from the main supply, and they are placed closer to the cell. The decoupling capacitances are important during the switching activity as it makes sure signal is delivered with attentuation that lies in the noise margin regions (as opposed to huge attentuation that can take place because the main supply is physically far away from the cells. The decoupling capacitances replenish their own charge when there is no switching activity. The forth step is power planning. This is used for global communication between the different macros as the receiving macro (load) should receive the same signal sent from the sending macro (driver). Using one power supply to feen in the signal can cause problems in ground bounce or supply droop if multiple decoupling transistors try to charge or discharge at the same time. The solution to this problem is to ue multiple sources for the power supply, where each cell will take its power from the nearest supply. The problem of placing those multiple power supplies is called power planning (in OpenLane, this is done post placement). The fifth step in floor planning is pin placement. The connectivity between the cells is defined in the netlist, and pin placement is the problem of placing those pins on the chip's die. Note that clock pins are bigger than other pins as this pin drives more cells. The sixth step is logical cell placement blockage where a blockage is placed in die area outside core to present tools from placing cells in that area.
 	
-Placement is perfomed in two stages: global amd detailed. In global placement, tool finds optimal position for all cells which may not be legal and cells may overlap. Optimization is done through reduction of half parameter wire length. In detailed placement, the tool changes the position of cells post global placement so as to legalise them. The first step in placement and routing is binding the netlist with physical cells. This means taking every component in the netlist and giving them a proper width and height. These widths and heights are taken from the library. The library has various options of widths and heights for the same cell (bigger is faster). The second step in placement and routing is placement. In this step, the netlist is placed on the floor plan (which already has the preplaced cells by now). The placement is important as it affects the delays. The third step is optimized placement, where the wire capacitances are estimated and the placement is optimized by adding buffers (repeaters that replicate the original signal) where needed to maintain the integrity of the signal. The distances for signals are calculated according to slew values. Criss cross can occur when placing, and should be avoided. All stages of floorplanning and place and route need library characterization. 
+Placement is perfomed in two stages: global amd detailed. In global placement, tool finds optimal position for all cells which may not be legal and cells may overlap. Optimization is done through reduction of half parameter wire length. In detailed placement, the tool changes the position of cells post global placement so as to legalise them. The first step in placement and routing is binding the netlist with physical cells. This means taking every component in the netlist and giving them a proper width and height. These widths and heights are taken from the library. The library has various options of widths and heights for the same cell (bigger is faster). The second step in placement and routing is placement. In this step, the netlist is placed on the floor plan (which already has the preplaced cells by now). The placement is important as it affects the delays. The third step is optimized placement, where the wire capacitances are estimated and the placement is optimized by adding buffers (repeaters that replicate the original signal) where needed to maintain the integrity of the signal. The distances for signals are calculated according to slew values and transition delay. Criss cross can occur when placing, and should be avoided. 
+	
+All stages of floorplanning and place and route need library characterization. Standard cells are placed inside libraries, which defines their functionalities and their different versions: different sizes and threshold voltages. For one standard cell, the cell design flow defined in the library consists of:
+	
+1-) inputs: pdks from foundary: DRC and LVS rules, SPICE models, library and user-defined specs 
+	
+2-) design steps: circuit design where sizing takes place, layout design (where the function is implemented via pmos and nmos connections, then the pmos and nmos network graphs are derived, then the Euler's path is determined, then a stick diagram is drawn, then stick diagram is converted to layout by sticking to the DRC rules defined by the foundary), and characterization
+	
+3-) Outputs: circuit description language, GDSII, LEF, extracted spice netlist (.cir) which includes the parasitics, timing, noise, power .libs, function
 
+	
+Characterization flow (part of 2-) above): firdst step is to read the models, second step is to read the extracted spice netlist, third step is to define the behaviour of the circuit, the fourth step is to read the subcircuits, fifth step is to attach the necessary power sources, sixth step is to apply the stimulus, seventh step is to provided needed capacitances for output, and finally eighth step is to provide the necessary simulation command. These 8 steps are fed via a configuration file to the characterization software called "GUNA". And the software will generate timing, noise, power .libs, function (part of 3-) above). There are hence three characterization types: timing characterization, power characterization, and noise characterization.
+	
+Timing characterization: timing threshold definitions are points whose definitions help us calculate slew from the waveforms (definitions are for slew_low_rise_thr, slew_high_rise_thr, slew_low_fall_thr, and slew_high_fall_thr), and the delay of the cell between input and output plots (definitions are for in_rise_thr, in_fall_thr, out_rise_thr, and out_fall_thr). The choice of the threshold definitions is important to get correct propagation delay and transition time. Propagation delay = time(out_*_thr) - time(in_*_thr). Transition time = time(slew_high_*_thr) - time(slew_low_*_thr). Typical values: slew_low_rise_thr=20%, slew_high_rise_thr=80%, slew_low_fall_thr=20%, slew_high_fall_thr=80%, in_rise_thr=50%, in_fall_thr=50%, out_rise_thr=50%, and out_fall_thr=50%. 
+	
+	
 </details>
 	
 <details>
@@ -2638,5 +2654,22 @@ After zooming in, this is the obtained placement:
 	
 <img width="441" alt="placement2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/26a3b489-ec94-49df-b69a-205d3579a740">
 
+	
+</details>
+	
+## Day 19
+
+<details>
+<summary> Summary </summary>
+	
+	
+	
+</details>
+
+<details>
+	
+<summary> Codes </summary>
+	
+The used designs are taken from https://github.com/The-OpenROAD-Project/OpenLane
 	
 </details>
