@@ -2590,7 +2590,7 @@ All stages of floorplanning and place and route need library characterization. S
 	
 Characterization flow (part of 2-) above): firdst step is to read the models, second step is to read the extracted spice netlist, third step is to define the behaviour of the circuit, the fourth step is to read the subcircuits, fifth step is to attach the necessary power sources, sixth step is to apply the stimulus, seventh step is to provided needed capacitances for output, and finally eighth step is to provide the necessary simulation command. These 8 steps are fed via a configuration file to the characterization software called "GUNA". And the software will generate timing, noise, power .libs, function (part of 3-) above). There are hence three characterization types: timing characterization, power characterization, and noise characterization.
 	
-Timing characterization: timing threshold definitions are points whose definitions help us calculate slew from the waveforms (definitions are for slew_low_rise_thr, slew_high_rise_thr, slew_low_fall_thr, and slew_high_fall_thr), and the delay of the cell between input and output plots (definitions are for in_rise_thr, in_fall_thr, out_rise_thr, and out_fall_thr). The choice of the threshold definitions is important to get correct propagation delay and transition time. Propagation delay = time(out_*_thr) - time(in_*_thr). Transition time = time(slew_high_*_thr) - time(slew_low_*_thr). Typical values: slew_low_rise_thr=20%, slew_high_rise_thr=80%, slew_low_fall_thr=20%, slew_high_fall_thr=80%, in_rise_thr=50%, in_fall_thr=50%, out_rise_thr=50%, and out_fall_thr=50%. 
+Timing characterization: timing threshold definitions are points whose definitions help us calculate slew from the waveforms (definitions are for slew_low_rise_thr, slew_high_rise_thr, slew_low_fall_thr, and slew_high_fall_thr), and the delay of the cell between input and output plots (definitions are for in_rise_thr, in_fall_thr, out_rise_thr, and out_fall_thr). The choice of the threshold definitions is important to get correct propagation delay and transition time. Propagation delay = time(out_*_thr) - time(in_*_thr). Fall/Rise Transition time = time(slew_high_*_thr) - time(slew_low_*_thr). Typical values: slew_low_rise_thr=20%, slew_high_rise_thr=80%, slew_low_fall_thr=20%, slew_high_fall_thr=80%, in_rise_thr=50%, in_fall_thr=50%, out_rise_thr=50%, and out_fall_thr=50%. 
 	
 	
 </details>
@@ -2662,7 +2662,39 @@ After zooming in, this is the obtained placement:
 <details>
 <summary> Summary </summary>
 	
+I have learned about CMOS inverter ngspice simulations, the CMOS fabrication process (and how layout helps with it), and the sky130 technology file. OpenLane allows users to make changes on the fly, using the following command before rerunning the design step (for example floorplanning):
+
+```bash
+set ::env(<name of variable that can be extracted from OpenLane/configurations/<design step: floorplan>.tcl: FP_IO_MODE>) <value: 2>
+```
+
+To simulate the inverter, first its spice needs to be created. Recall that a spice deck includes component connectivity, component values, nodes. The netlist to simulate includes model description, netlist description, simulation type and parameters, and needed libraries. Recall that the switching threshold (Vm, used to evaluate static behavior) of a CMOS inverter is the point on the voltage transfer characteristic curve where input voltage equals output voltage: at which both PMOS and NMOS are in saturation region which gives rise to a leakage current. 
 	
+16-mask CMOS process steps:
+	
+1-) Selecting a substrate: selecting body/substrate material (P-substrate)
+
+2-) Creating active region for transistors: first create isolation between active region pockets by SiO2, then perform Si3N4 deposition, then photoresist deposition, and then apply photolithography (part of photoresist is covered by mask to protect it against UV light). Areas that are not protected against UV light are then washed out using developing solution and etching is done, then photoresist is chemically removed. Then we place CMOS in oxidation furnace,and field oxide is grown (process is called LOCOS or Local Oxidation of Silicon). After that, Si3N4 is stripped using hot phospheric acid. 
+	
+3-) N-well and P-well formation: Photoresist is deposited and mask is used to define the protected area. UV light reacts with exposed area, and then we wash the area which is unprotected. After that, the mask is removed (this is lithography). Ion implemention by Boron for P-well is then done, followed by ion implementation of Phosphorous for N-well formation (after photoresist, mask application, and wash out). Then the CMOS is put in a high temperature furnace for a high temperature for a long time, which will diffuse the N-well and P-well (the pockets). In N-well the pmos will be created and in P-well the nmos will be created.
+
+4-) Formation of gate terminal: the nmos and pmos gates are formed by depositing photoresist, using mask, exposing UV, applying wash out, removing the mask, doping with Boron to modify the doping concentration in the P-well. Similar steps are repeated for P-well to control the threshold voltage or doping concentration in the N-well. Extra oxide is diluted then re-grown again to give high quality oxide. A polisilicon layer is then deposited to form the gate, then N-type material is doped on the gate to make it low resistance. Then photoresist is dumped, mask is used, unprotected material is washed out, mask is removed, and the remaining areas of polisilicon are etched away.  
+
+5-) Lightly Doped Drain (LDD) formation: LDD is formed to prevent hot electron effect and short channel effect: P+, P-, P doping profile is needed for pmos and N+, N-, N profile is needed for nmos. Photolithography is applied, Phosphorous is doped to create N- implants on P-well side. The lithography is repeated for N-well side and we get P- implant after doping Boron. A thick Si3N4 or SiO2 is deposited on whole material and plasma anisotropic etching takes place  to create the side-wall spacers where source and drain will be later affected in next step.
+
+6-) Source and drain formation: think layer of screen oxide is added to avoid channelling during implantation. Then after photolithography, Aresenic implantation/doping takes place above P-well (below side-wall spacers). Then after photolithography, Boron implantation/doping takes place above N-well (below side-wall spacers). The material is put in high temperature furnace (called high temperature annealing).
+
+7-) Contacts and local interconnect formation: Etching/removal of screen oxide by HF solution. Then Ti is deposited on material for low resistant contacts using sputtering (hitting Ti by Ar+ and the then Ti will be deposited on the substrate with heating). Then lithograpphy is used, and RCA cleaning is used to etch TiN. Result = TiN used only for local communication. 
+
+8-) Higher level metal formation: A thick layer of SiO2 doped with phosphorous or boron is deposited on the material. CMP is used for planarizing the wafer (polishing it), then photolithograpphy is used in areas where we want the metal to be formed, then TiN is deposited. Tungsten is then deposited, followed by CMP again. Al is then deposited on the material, and photolithography is used. Result is we get the first layer of metal. To get higher layers, SiO2 is deposited again, CMP is used, lithography is used, TiN is deposited, Tungsten is deposited, followed by CMP again. Al is then deposited on the material, and photolithography is used. The result is a metal layer which is higher and thicker (thicker Al). Si3N4 is deposited on top to protect the whole chip. Finally, mask16 is used to open contact holes on this top layer and connect the highest metal layer to the top. 
+	
+Below is the obtained CMOS after finishing the fabrication process explained above:
+	
+<img width="1003" alt="fabrication" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/50be3978-5069-416f-ad7b-2145f26da6d6">
+
+In CMOS magic layout the first layer is called the local interconnect layer or Locali. The P diffusion and N diffusion regions with Polysilicon verify that this is the layout of a CMOS inverter. Also, drain and source connections are another sanity cehck: drains of both pmos and nmos are connected to output port (Y) and the sources of nmos/pmos are connected to  GND/VDD respectively (moving cursor and clicking S twice helps us identify the connections in magic).
+
+Library Exchange Format (LEF): A format that tells us about cell pins and boundaries, VDD and GND lines. It contains no information about the logic of circuit and is also used to protect the IP.
 	
 </details>
 
@@ -2670,6 +2702,42 @@ After zooming in, this is the obtained placement:
 	
 <summary> Codes </summary>
 	
-The used designs are taken from https://github.com/The-OpenROAD-Project/OpenLane
+The used designs are taken from https://github.com/The-OpenROAD-Project/OpenLane and https://github.com/nickson-jose/vsdstdcelldesign.git
+	
+</details>
+	
+<details>
+	
+<summary> OpenLane: sky130_inv.mag </summary>
+	
+To get the technology file inside the cloned github, I used the following commands (inside OpenLane directory):	
+	
+```bash
+git clone https://github.com/nickson-jose/vsdstdcelldesign.git
+cp /home/mariam/Desktop/open_pdks/sky130/sky130A/libs.tech/magic/sky130A.tech ./vsdstdcelldesign 
+```
+
+To view the layout of the CMOS inverter, I used the following command (inside vsdstdcelldesign directory):
+	
+```bash
+magic -T sky130A.tech sky130_inv.mag &	
+```
+	
+The obtained layout design can be found below (this layout will be used to intergate the inverter with the picorv32a design): 
+	
+<img width="392" alt="cmoslayout" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/d84d23e2-2f45-43fd-9cb8-ed9c4f8e0cca">
+
+Using the magic environment, I used the following commands in tkcon to extract .spice from .mag (this generates the sky130_inv.spice file in the same directory. This SPICE deck is edited to include pshort.lib and nshort.lib which are the pmos and nmos libraries respectively. The minimum grid size of inverter is measured from the magic layout and incorporated into the deck as: .option scale=10m. The model names in the MOSFET definitions are changed to pshort.model.0 and nshort.model.0 for pmos and nmos respectively):
+
+```bash
+extract all
+ext2spice cthresh 0 rethresh 0
+ext2spice
+```
+	
+The extracted netlist is shown in the screenshot below:
+	
+<img width="486" alt="extractednetlist" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/5c12d629-9b8e-445b-a4ba-7b5c079aac94">
+
 	
 </details>
