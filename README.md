@@ -2696,13 +2696,15 @@ In CMOS magic layout the first layer is called the local interconnect layer or L
 
 Library Exchange Format (LEF): A format that tells us about cell pins and boundaries, VDD and GND lines. It contains no information about the logic of circuit and is also used to protect the IP.
 	
+The technology file is a one setup file that tells magic everything it needs to know about a project (all layer types, patters, connectvitity, DRC rules, GDS generation rules, rules to read LEF and Def files, rules for interactive wiring, etc...). There are two sections: CIF and GDS styles. CIF is human readable. 
+	
 </details>
 
 <details>
 	
 <summary> Codes </summary>
 	
-The used designs are taken from https://github.com/The-OpenROAD-Project/OpenLane and https://github.com/nickson-jose/vsdstdcelldesign.git
+The used designs are taken from https://github.com/The-OpenROAD-Project/OpenLane, https://github.com/nickson-jose/vsdstdcelldesign.git, and http://opencircuitdesign.com/open_pdks/archive/drc_tests.tgz
 	
 </details>
 	
@@ -2778,7 +2780,98 @@ Fall transition = (4.06461e-9 - 4.03953e-9) = 25.08 ps
 Cell rise delay = (2.17613e-9 - 2.15e-9) = 26.13 ps
 Cell fall delay = (4.05241e-9 - 4.04991e-9) = 25.00 ps
 ```
-
-
 	
+</details>
+	
+<details>
+	
+<summary> OpenLane: drc_tests </summary>
+	
+To download the needed files, I used the following commands:
+
+```bash
+wget http://opencircuitdesign.com/open_pdks/archive/drc_tests.tgz
+tar xfz drc_tests.tgz
+```
+	
+To invoke magic, I used the following commands in the /drc_tests directory:
+	
+```bash
+magic -d XR
+```
+
+To load the sky130 tech-rules, I clicked on (in the magic wizard) file, open, and I selected "met3.mag" which has the rules for layer3. Below is a screenshot of the layout I obtained (there are layout geometries with DRC errors, and each component of layout is named after a DRC rule number in the google documentation. Selecting the component and writing "drc why" in the tkcon shows the rules that has been violated):
+	
+<img width="363" alt="drc1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/b1e9d6d4-cd84-429a-83b2-27aa9abfbe79">
+
+To fix poly.9 error in magic's layout, first I loaded the file using magic's tkcon as follows:
+	
+```bash
+load poly.mag
+```
+	
+I then edited the sky130A.tech file to add the following two highlighted commands:
+	
+<img width="462" alt="tech1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/c2e442a2-a6bc-4f84-874f-5219cde8fa40">
+	
+<img width="454" alt="tech2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/34b859d0-1a0b-447a-8eca-3c679684c15a">
+	
+I then used the following commands in the tkcon window to load the updated sky130A.tech file (this will lead to the correct implementation of the drc rule and an error being flagged in magic):
+	
+```bash
+tech load sky130A.tech
+drc check
+```
+	
+The resulting layout with the flagged violation is shown below:
+
+<img width="407" alt="drc2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/bf55097f-252f-47bf-8e26-c3b6585cb4fc">
+	
+To implement poly resistor spacing to diff and tap, I modified a rule in the sky130A.tech file, as highlighted below:	
+
+<img width="451" alt="tech3" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/c662e26a-67c4-4259-8859-a2989ced2c2c">
+	
+I then used the following commands in the tkcon window to load the updated sky130A.tech file:
+
+```bash
+tech load sky130A.tech
+drc check
+```
+	
+The resulting layout with the flagged violation is shown below:
+
+<img width="517" alt="drc3" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ba80a8a8-7089-4575-b763-54918204aa9e">	
+	
+Note that challenging DRC rules are described as geometric constructs (rather than in simple commands as shown above). Templayers can be used as building bloks for other layers (but are not present in output of GDS file). There are two modes defined in the tech file for drc rules, fast and full. Fast is used when the user does not require magic to look below the metal layer for drc checking (as that would slow the iteractive wizard), and full makes magic look at all the layers and check them.
+	
+To add the challenging drc rule in the tech file (only checked in full variant style so it does not create a burden), I first loaded the file in magic's tkcon as follows:
+	
+```bash
+load nwell.mag
+```
+	
+I then added the following highlighted commands to the sky130A.tech file:
+	
+<img width="452" alt="tech4" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ca7690af-9b97-4491-92f4-5afd92db8779">
+	
+<img width="451" alt="tech5" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/d47a980f-8dc0-4a55-9239-c2547f7d4f53">
+
+I then used the following commands in the tkcon window to load the updated sky130A.tech file:
+
+```bash
+tech load sky130A.tech
+drc check
+drc style drc(full)
+drc check
+```
+	
+We can then see the error in magic as shown below:
+	
+<img width="396" alt="drc4" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/e4190164-bc7b-4d64-a295-270350d99726">
+	
+The problem goes away when nsubstrate constact is added in the nwell as shown below:
+	
+<img width="215" alt="drc5" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ce78a294-1afc-45d4-a498-d6ecbc9a63fa">
+
+
 </details>
