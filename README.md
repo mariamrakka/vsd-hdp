@@ -2708,7 +2708,7 @@ The used designs are taken from https://github.com/The-OpenROAD-Project/OpenLane
 	
 <details>
 	
-<summary> OpenLane: sky130_inv.mag </summary>
+<summary> OpenLane: sky130_inv.mag, sky130_inv.spice </summary>
 	
 To get the technology file inside the cloned github, I used the following commands (inside OpenLane directory):	
 	
@@ -2735,9 +2735,50 @@ ext2spice cthresh 0 rethresh 0
 ext2spice
 ```
 	
-The extracted netlist is shown in the screenshot below:
 	
-<img width="486" alt="extractednetlist" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/5c12d629-9b8e-445b-a4ba-7b5c079aac94">
+I modified the extracted netlist to include the library files and define the power supply, ground and input pulses, and specify the type of analysis. The lines I added are found below (note that I commented .subckt and .ends, and I changed names of pmos and nmos to pshort_model.0 and nshort_model.0 respectively, and I changed x0 and x1 to M1000 and M1001):
+	
+```bash
+.include ./libs/pshort.lib
+.include ./libs/nshort.lib
+VDD VPWR 0 3.3V
+VSS VGND 0 0V
+Va A VGND PULSE(0V 3.3V 0 0.1ns 0.1ns 2ns 4ns)
+.tran 1n 20n
+.control 
+run
+.endc
+.end
+```
+	
+The final netlist looks like this:
+	
+<img width="452" alt="netlist_new_cmos" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/795fb39f-a0dc-4b2d-b2bb-9e05fb7cda53">
+
+
+In the same directory of the netlist (sky130_inv.spice), I used the following commands to run the simulation:
+	
+```bash
+ngspice sky130_inv.spice
+plot <output: y> vs time <input: a>
+```
+
+The obtained simulation is shown below:
+	
+<img width="336" alt="netlist_sim_cmos" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/fb326174-f01f-4cca-a659-c4b850567a28">
+
+
+The cell chacarterization is done via the waveforms obtained from spice simualtion, and the results are noted below:
+	
+The above timing parameters can be computed by noting down various values from the ngspice waveform (recall that Rise transition: Time taken for the output to rise from 20% of max value to 80% of max value, Fall transition: Time taken for the output to fall from 80% of max value to 20% of max value, Cell rise delay: time(50% output rise) - time(50% input fall), Cell fall delay: time(50% output fall) - time(50% input rise)):
+
+```bash
+Rise transition = (2.1957e-9 - 2.15099e-9) = 44.71 ps
+Fall transition = (4.06461e-9 - 4.03953e-9) = 25.08 ps
+Cell rise delay = (2.17613e-9 - 2.15e-9) = 26.13 ps
+Cell fall delay = (4.05241e-9 - 4.04991e-9) = 25.00 ps
+```
+
 
 	
 </details>
