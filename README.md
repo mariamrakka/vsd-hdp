@@ -43,6 +43,8 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [Day 19](#day-19)
 
+[Day 20](#day-20)
+
 ## Day 0
 
 <details>
@@ -2873,5 +2875,69 @@ The problem goes away when nsubstrate constact is added in the nwell as shown be
 	
 <img width="215" alt="drc5" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ce78a294-1afc-45d4-a498-d6ecbc9a63fa">
 
+</details>
+	
+## Day 20
 
+<details>
+<summary> Summary </summary>
+	
+I first leaned how to extarct a LEF file (defining a port and their purpose) (the LEF file is used in picorv32a design), then I learned about pre-layout timing analysis and CTS. 
+</details>
+
+<details>
+	
+<summary> Codes </summary>
+	
+The used designs are taken from https://github.com/The-OpenROAD-Project/OpenLane and https://github.com/nickson-jose/vsdstdcelldesign.git
+</details>
+	
+<details>
+	
+<summary> OpenLane: sky130_inv.mag </summary>
+	
+Ports should be at intersection of horizontal and vertical tracks. The CMOS ports A and Y are on li1 layer. A and Y must be on the intersection of horizontal and vertical tracks. I accessed the tracks.info file for the pitch and direction information by using the commands below:
+
+```bash
+vi /home/mariam/Desktop/open_pdks/sky130/sky130A/libs.tech/openlane/sky130_fd_sc_hd/tracks.info
+```	
+	
+Below is a screenshot of the obtained file:
+	
+<img width="352" alt="tracksfile" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/625f35d0-0902-4d9c-8eb0-23ddbd35fee0">
+
+To force ports to lie on the intersection point, I used the following commmands in tkcon:
+
+```bash
+grid 0.46um 0.34um 0.23um 0.17um
+save sky130_vsdinv.mag
+```	
+
+The resulting layout is shown in the screenshot below (grids will be used for routing):
+	
+<img width="363" alt="grid" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/4a160df0-6f17-480a-bd25-ef28ed4188bc">
+	
+
+To extract LEF (In a LEF file, a cell that contains ports is written as a macro, and the ports are declared pins of the macro) from a given layout in standard format, one must first define ports. To define a port through magic's wizard first source the .mag file for the design, then click "Edit, Text" which opens up a dialogue box. Use the box to input a label name along with a sticky label of the layer name with which the port needs to be associated. Note that I have not done this step for the CMOS because it is already done for us.
+	
+The next step in extracting LEF is defining the purpose of ports. For example to define that of A, use the following commands in tkcon: 1-) port class input
+2-) port use signal. To define that of  VGND, use the following commands in tkcon: 1-) port class inout 2-) port use ground. Note that I have not done this step for the CMOS because it is already done for us.
+	
+To write the LEF file, I first invoked magic using the below command:
+	
+```bash
+magic -T sky130A.tech sky130_vsdinv.mag &	
+```
+	
+Then, I used the following command in the tckon window:
+	
+```bash
+lef write	
+```
+	
+A screenshot of the obtained LEF is shown below:
+	
+<img width="447" alt="lef" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2e299eae-b576-4c2a-a528-54660c30680b">
+
+	
 </details>
