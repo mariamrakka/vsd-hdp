@@ -2895,7 +2895,7 @@ The used designs are taken from https://github.com/The-OpenROAD-Project/OpenLane
 	
 <details>
 	
-<summary> OpenLane: sky130_inv.mag </summary>
+<summary> OpenLane: picorv32a with sky130_vsdinv </summary>
 	
 Ports should be at intersection of horizontal and vertical tracks. The CMOS ports A and Y are on li1 layer. A and Y must be on the intersection of horizontal and vertical tracks. I accessed the tracks.info file for the pitch and direction information by using the commands below:
 
@@ -2982,7 +2982,9 @@ To view the layout after placement in magic, I used the command below in the res
 magic read -T /home/mariam/Desktop/open_pdks/sky130/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.max.lef def read picorv32.def &
 ```
 	
-A screenshot of the obtained layout is below, zoomed in to see the custom CMOS added:	
+A screenshot of the obtained layout is below, zoomed in to see one of the custom CMOS added (custom CMOS is selected in screenshot):	
 	
+<img width="397" alt="vsdinvplacement" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9c2875bf-378d-4ae1-bf76-78c5dbb60e72">
+
 	
 </details>
