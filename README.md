@@ -3021,18 +3021,17 @@ run_cts
 	
 Note that even though CTS was successful, this did not generate a .v file in the result/synthesis directory or anywhere else (even time stamp on the .v file in synthesis directory was not updated meaning cts did not overwrite that file). When I looked at OpenLane/scripts/openroad it had a cts.tcl file that did not use write_verilog!. Also, no reports where generated for cts inside reports/cts, but there were logs generated in logs/cts, and these showed no errors or warnings. The results/cts directory contained .odb, .def, and .sdc files.
 
-Then, I invoked OpenROAD as follows (note I used .v file inside synthesis directory because this is the only one I had!):
-
-```bash
-openroad
-write_db pico_cts.db
-read_db pico_cts.db
-read_verilog /home/mariam/OpenLane/designs/picorv32a/runs/RUN_2023.06.03_02.47.58/results/synthesis/picorv32.v
-read_liberty $::env(LIB_SYNTH_COMPLETE)
-link_design picorv32a
-read_sdc /home/mariam/OpenLane/designs/picorv32a/src/my_base.sdc
-set_propagated_clock (all_clocks)
-report_checks -path_delay min_max -format full_clock_expanded -digits 4
-```
+Note that I did not need to invoke OpenROAD for post-CTS STA, I found the reports already in the reports/cts directory. 
 	
+Below are the hold and setup STA analysis results respectively (both slacks are met):
+	
+<img width="490" alt="cststa1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/a13d9431-e81b-40c0-bf55-8a7df3729e2a">
+
+<img width="452" alt="cststa2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/63aa417d-193e-40f0-ac7d-9958b1050d7c">
+	
+<img width="493" alt="cststa3" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/f7113b99-5fd5-439a-945e-b71ee7182c8c">
+
+<img width="491" alt="cststa4" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/c24d3c4d-2549-4336-a2cd-70af82d982f5">
+
+
 </details>
