@@ -2940,11 +2940,13 @@ A screenshot of the obtained LEF is shown below:
 <img width="447" alt="lef" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2e299eae-b576-4c2a-a528-54660c30680b">
 
 	
-To include the generated LEF with the picorv32a design, I used the following commands in the OpenLane/designs/picorv32a/src (I also copied sky130_fd_sc_hd__typical.lib file from vsdstdcelldesign/libs directory since abc maps the standard cell to a library):
+To include the generated LEF with the picorv32a design, I used the following commands in the OpenLane/designs/picorv32a/src (I also copied sky130_fd_sc_hd__*.lib file from vsdstdcelldesign/libs directory since abc maps the standard cell to a library):
 	
 ```bash
 cp /home/mariam/OpenLane/vsdstdcelldesign/sky130_vsdinv.lef . 
 cp /home/mariam/OpenLane/vsdstdcelldesign/libs/sky130_fd_sc_hd__typical.lib .
+cp /home/mariam/OpenLane/vsdstdcelldesign/libs/sky130_fd_sc_hd__fast.lib .
+cp /home/mariam/OpenLane/vsdstdcelldesign/libs/sky130_fd_sc_hd__slow.lib .
 ```	
 
 I then modified OpenLane/designs/picorv32a/runs/ as follows: 
