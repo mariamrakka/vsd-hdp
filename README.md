@@ -2997,13 +2997,13 @@ A screenshot of the obtained layout is below, zoomed in to see one of the custom
 <summary> OpenLane, OpenSTA: picorv32a with sky130_vsdinv </summary>
 	
 Again, in my case no negative slack was reported post synthesis. The slack value is the difference between data required time and data arrival time. The worst slack value must be greater than or equal to zero. If a negative slack is obtained, one can do the following steps: change synthesis strategy, enable buffering (in OpenLane) and upsizing buffers: review maximum fanout of cells replacing those with high fanout (in OpenSTA). When edits are done in OpenLane, the synthesis should be rerun.
-To apply these, OpenSTA will be used iteratively (it displaying the changes, and OpenLane applying some changes), and one starts by writing a configuration file (that sets the units, reads liberty for bpth fast and slow sky130 technologies, reads the verilog for the synthesized picorv32a found in results/synthesis which is only one single file now as CTS is not done yet, links the design, reads the sdc file that specifies the constraints based on base.sdc in /scripts (i.e. to produce same slack initially seen in OpenLane inside the OpenSTA) and has some environemnt definitions brought from OpenLane and library files, and reports the delays). OpenSTA can then be invoked as follows (recall that CTS is not done yet, so this is done for ideal clock assumed, and only setup analysis is included):
+To apply these, OpenSTA will be used iteratively (it displaying the changes, and OpenLane applying some changes), and one starts by writing a configuration file (that sets the units, reads liberty for bpth fast and slow sky130 technologies, reads the verilog for the synthesized picorv32a found in results/synthesis, links the design, reads the sdc file that specifies the constraints based on base.sdc in /scripts (i.e. to produce same slack initially seen in OpenLane inside the OpenSTA) and has some environemnt definitions brought from OpenLane and library files, and reports the delays). OpenSTA can then be invoked as follows (recall that CTS is not done yet, so this is done for ideal clock assumed, and only setup analysis is included):
  
 ```bash
 sta pre_sta.conf
 ```
 	
-Note that each time a change is done in OpenLane, the netlist (.v) with same name gets updated, and hence OpenSTA must be invoked again to reflect the salck of the applied changes (that is why it is an iterative approach). Now if changes for timing where done within OpenSTA (like upsizing buffers), we need to reflect those to the OpenLane tool and the way we do this is via an echo the new timing: use "write_verilog" command. Then rerun the synthesis, floorplan and placement again.
+Note that each time a change is done in OpenLane, the netlist (.v) with same name gets updated, and hence OpenSTA must be invoked again to reflect the salck of the applied changes (that is why it is an iterative approach). Now if changes for timing where done within OpenSTA (like upsizing buffers), we need to reflect those to the OpenLane tool and the way we do this is via an echo the new timing: use "write_verilog" command in OpenSTA dumping file in the results/synthesis directory. Then rerun the synthesis, floorplan and placement again.
 	
 </details>
 	
@@ -3019,16 +3019,16 @@ Having reran synthesis, floorplan, and placement if needed to rerun (due to timi
 run_cts
 ```
 
-Then, I invoked OpenRoad as follows:
+Then, I invoked OpenROAD as follows:
 
 ```bash
 openroad
 write_db pico_cts.db
 read_db pico_cts.db
-read_verilog /openLANE_flow/designs/picorv32a/runs/03-07_11-25/results/synthesis/picorv32a.synthesis_cts.v
+read_verilog /home/mariam/OpenLane/designs/picorv32a/runs/RUN_2023.06.03_02.47.58/results/synthesis/picorv32.v
 read_liberty $::env(LIB_SYNTH_COMPLETE)
 link_design picorv32a
-read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+read_sdc /home/mariam/OpenLane/designs/picorv32a/src/my_base.sdc
 set_propagated_clock (all_clocks)
 report_checks -path_delay min_max -format full_clock_expanded -digits 4
 ```
