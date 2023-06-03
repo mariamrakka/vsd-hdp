@@ -2952,16 +2952,21 @@ cp /home/mariam/OpenLane/vsdstdcelldesign/libs/sky130_fd_sc_hd__slow.lib .
 I then modified OpenLane/designs/picorv32a/runs/ as follows: 
 	
 ```bash
-set ::env(LIB_SYNTH) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130/sky130_fd_sc_hd__typical.lib"
-set ::env(LIB_SLOWEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130/sky130_fd_sc_hd__slow.lib"
-set ::env(LIB_FASTEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130/sky130_fd_sc_hd__fast.lib"
-set ::env(LIB_TYPICAL) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130/sky130_fd_sc_hd__typical.lib"
-set ::env(EXTRA_LEFS) [glob $::env(OPENLANE_ROOT)/designs/$::env(DESIGN_NAME)/src/*.lef]	
+"LIB_SYNTH": "/home/mariam/OpenLane/designs/picorv32a/src/sky130_fd_sc_hd__typical.lib",
+    "LIB_SLOWEST": "/home/mariam/OpenLane/designs/picorv32a/src/sky130_fd_sc_hd__slow.lib",
+    "LIB_FASTEST": "/home/mariam/OpenLane/designs/picorv32a/src/sky130_fd_sc_hd__fast.lib",
+    "LIB_TYPICAL": "/home/mariam/OpenLane/designs/picorv32a/src/sky130_fd_sc_hd__typical.lib",
+    "EXTRA_LEFS": "/home/mariam/OpenLane/designs/picorv32a/src/sky130_vsdinv.lef",	
 ```
+
+The modified config.jason file is below:
 	
+
+
 I then invoked OpenLane from the already used OpenLane Container as follows:
 
 ```bash
+exit
 prep -design picorv32a
 set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
 add_lefs -src $lefs
