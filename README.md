@@ -2940,4 +2940,21 @@ A screenshot of the obtained LEF is shown below:
 <img width="447" alt="lef" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2e299eae-b576-4c2a-a528-54660c30680b">
 
 	
+To include the generated LEF with the picorv32a design, I used the following commands in the OpenLane/designs/picorv32a/src (I also copied sky130_fd_sc_hd__typical.lib file from vsdstdcelldesign/libs directory since abc maps the standard cell to a library):
+	
+```bash
+cp /home/mariam/OpenLane/vsdstdcelldesign/sky130_vsdinv.lef . 
+cp /home/mariam/OpenLane/vsdstdcelldesign/libs/sky130_fd_sc_hd__typical.lib .
+```	
+
+I then modified OpenLane/designs/picorv32a/runs/ as follows: 
+	
+```bash
+set ::env(LIB_SYNTH) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130/sky130_fd_sc_hd__typical.lib"
+set ::env(LIB_SLOWEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130/sky130_fd_sc_hd__slow.lib"
+set ::env(LIB_FASTEST) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130/sky130_fd_sc_hd__fast.lib"
+set ::env(LIB_TYPICAL) "$::env(OPENLANE_ROOT)/designs/picorv32a/src/sky130/sky130_fd_sc_hd__typical.lib"
+set ::env(EXTRA_LEFS) [glob $::env(OPENLANE_ROOT)/designs/$::env(DESIGN_NAME)/src/*.lef]	
+```	
+	
 </details>
