@@ -2525,7 +2525,7 @@ As all the above steps were successful, I got the following terminal result:
 	
 <details>
 	
-<summary> OpenLane: picorv32a  </summary>
+<summary> OpenLane (synthesis): picorv32a  </summary>
 	
 To invoke OpenLane, I used the commands below in the OpenLane directory (note that without interactive switch, OpenLane will run in automatic mode):
 	
@@ -2607,7 +2607,7 @@ The used designs are taken from https://github.com/The-OpenROAD-Project/OpenLane
 	
 <details>
 	
-<summary> OpenLane: picorv32a  </summary>
+<summary> OpenLane (floorplan, placement): picorv32a  </summary>
 
 To run the floorplanning after synthesis of the picorv32a design, I used the following command (During this, the 6 steps mentioned in summary are done, and a .def is created in the results/floorplan directory inside the chosen design directory. The results can be found in OpenLane/designs/<design name: picorv32a>/RUN_*/runs): 
 	
@@ -2738,8 +2738,7 @@ extract all
 ext2spice cthresh 0 rethresh 0
 ext2spice
 ```
-	
-	
+
 I modified the extracted netlist to include the library files and define the power supply, ground and input pulses, and specify the type of analysis. The lines I added are found below (note that I commented .subckt and .ends, and I changed names of pmos and nmos to pshort_model.0 and nshort_model.0 respectively, and I changed x0 and x1 to M1000 and M1001):
 	
 ```bash
@@ -2882,8 +2881,12 @@ The problem goes away when nsubstrate constact is added in the nwell as shown be
 <details>
 <summary> Summary </summary>
 	
-I first leaned how to extarct a LEF file (defining a port and their purpose) (the LEF file is used in picorv32a design), then I learned about pre-layout timing analysis and CTS. Recall that in delay tables, there are delay values for varying input transition and output load. For CTS: Delay tables for all buffers with their different sizes compose the timing models. To find a delay of a certain path, the delay tables of buffers on that path are used to find individual delays then those delays are added up. If two paths have the same buffer as load in turn driving the same load, then the signal comming out of those two buffers will have a skew of 0 (ensuring this will not lead to problems). For power-aware cTS, one of paths would be activated at a time. 
+I first leaned how to extarct a LEF file (defining a port and their purpose) (the LEF file is used in picorv32a design), then I learned about pre-layout timing analysis, CTS, and post-CTS timing analysis. Recall that in delay tables, there are delay values for varying input transition and output load. For CTS: Delay tables for all buffers with their different sizes compose the timing models. To find a delay of a certain path, the delay tables of buffers on that path are used to find individual delays then those delays are added up. If two paths have the same buffer as load in turn driving the same load, then the signal comming out of those two buffers will have a skew of 0 (ensuring this will not lead to problems). For power-aware CTS, one of paths would be activated at a time. 
 	
+Setup timing analysis (single clock, ideal scenariuo where clk is not built yet): the internal delay (finite time) in the capture flop which has to be subtracted from period, and the variation of time that a clock edge can can undergo when it arrives to the launch flop and capture clock (called uncertainty) which has to be also subtracted from period, so D (combinational delay)< T (period) - SUT (setup) - U (uncertainty). Using this analysis, the combinational delay should be considered when placing the cells. 
+
+Clock Tree Synthesis (CTS): goal is to make the clock reach all flipflops with minimum skew. H-tree calculates the path from all flops and connects the clock to the midpoint of the flops. Buffers (with equal rise and fall time) are added on the H-tree path. The CTS run adds clock buffers, so buffer delays are taken into consideration, and the analysis now deals with real clocks. Setup and hold time slacks can be then analyzed in the post-CTS STA analysis using OpenROAD. All critical (as shielding all is sometimes not possible) clock nets are shielded to prevent coupling with other components, and hence reducing potential of a glitch. A glitch is a serious problem as it can reset memory system and can lead to incorrect functionality in the whole system activity. Crosstalk leads to exponential delta skew, and this is another reason shielding nets is important.    
+
 </details>
 
 <details>
@@ -2895,7 +2898,7 @@ The used designs are taken from https://github.com/The-OpenROAD-Project/OpenLane
 	
 <details>
 	
-<summary> OpenLane: picorv32a with sky130_vsdinv </summary>
+<summary> OpenLane (synthesis, floorplan, placement): picorv32a with sky130_vsdinv </summary>
 	
 Ports should be at intersection of horizontal and vertical tracks. The CMOS ports A and Y are on li1 layer. A and Y must be on the intersection of horizontal and vertical tracks. I accessed the tracks.info file for the pitch and direction information by using the commands below:
 
@@ -2964,7 +2967,7 @@ The modified config.jason file is below:
 	
 <img width="491" alt="jasonfile" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/4147ca05-0b7f-4374-a697-ef44321d70cf">
 
-I then invoked OpenLane from the already used OpenLane Container then ran synthesis (note that in my case no slack violations were reported after synthesis, but if slack has been violated then there are variables that can be found in configuration/), floorplan, and placement as follows:
+I then invoked OpenLane from the already used OpenLane Container then ran synthesis (note that in my case no slack violations were reported after synthesis), floorplan, and placement as follows:
 
 ```bash
 exit
@@ -2985,6 +2988,49 @@ magic read -T /home/mariam/Desktop/open_pdks/sky130/sky130A/libs.tech/magic/sky1
 A screenshot of the obtained layout is below, zoomed in to see one of the custom CMOS added (custom CMOS is selected in screenshot):	
 	
 <img width="397" alt="vsdinvplacement" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9c2875bf-378d-4ae1-bf76-78c5dbb60e72">
+	
 
+</details>
+	
+<details>
+	
+<summary> OpenLane, OpenSTA: picorv32a with sky130_vsdinv </summary>
+	
+Again, in my case no negative slack was reported post synthesis. The slack value is the difference between data required time and data arrival time. The worst slack value must be greater than or equal to zero. If a negative slack is obtained, one can do the following steps: change synthesis strategy, enable buffering (in OpenLane) and upsizing buffers: review maximum fanout of cells replacing those with high fanout (in OpenSTA). When edits are done in OpenLane, the synthesis should be rerun.
+To apply these, OpenSTA will be used iteratively (it displaying the changes, and OpenLane applying some changes), and one starts by writing a configuration file (that sets the units, reads liberty for bpth fast and slow sky130 technologies, reads the verilog for the synthesized picorv32a found in results/synthesis which is only one single file now as CTS is not done yet, links the design, reads the sdc file that specifies the constraints based on base.sdc in /scripts (i.e. to produce same slack initially seen in OpenLane inside the OpenSTA) and has some environemnt definitions brought from OpenLane and library files, and reports the delays). OpenSTA can then be invoked as follows (recall that CTS is not done yet, so this is done for ideal clock assumed, and only setup analysis is included):
+ 
+```bash
+sta pre_sta.conf
+```
+	
+Note that each time a change is done in OpenLane, the netlist (.v) with same name gets updated, and hence OpenSTA must be invoked again to reflect the salck of the applied changes (that is why it is an iterative approach). Now if changes for timing where done within OpenSTA (like upsizing buffers), we need to reflect those to the OpenLane tool and the way we do this is via an echo the new timing: use "write_verilog" command. Then rerun the synthesis, floorplan and placement again.
+	
+</details>
+	
+</details>
+	
+<details>
+	
+<summary> OpenLane, OpenROAD (CTS): picorv32a with sky130_vsdinv </summary>
+	
+Having reran synthesis, floorplan, and placement if needed to rerun (due to timing fixes, but I did not need that), I used the following command to carry out CTS analysis:
+	
+```bash
+run_cts
+```
+
+Then, I invoked OpenRoad as follows:
+
+```bash
+openroad
+write_db pico_cts.db
+read_db pico_cts.db
+read_verilog /openLANE_flow/designs/picorv32a/runs/03-07_11-25/results/synthesis/picorv32a.synthesis_cts.v
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+link_design picorv32a
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+set_propagated_clock (all_clocks)
+report_checks -path_delay min_max -format full_clock_expanded -digits 4
+```
 	
 </details>
