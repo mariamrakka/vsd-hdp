@@ -3018,8 +3018,10 @@ Having reran synthesis, floorplan, and placement if needed to rerun (due to timi
 ```bash
 run_cts
 ```
+	
+Note that even though CTS was successful, this did not generate a .v file in the result/synthesis directory or anywhere else (even time stamp on the .v file in synthesis directory was not updated meaning cts did not overwrite that file). When I looked at OpenLane/scripts/openroad it had a cts.tcl file that did not use write_verilog!. Also, no reports where generated for cts inside reports/cts, but there were logs generated in logs/cts, and these showed no errors or warnings. The results/cts directory contained .odb, .def, and .sdc files.
 
-Then, I invoked OpenROAD as follows:
+Then, I invoked OpenROAD as follows (note I used .v file inside synthesis directory because this is the only one I had!):
 
 ```bash
 openroad
