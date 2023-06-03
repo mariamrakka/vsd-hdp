@@ -2961,7 +2961,7 @@ I then modified OpenLane/designs/picorv32a/runs/ as follows:
 
 The modified config.jason file is below:
 	
-
+<img width="491" alt="jasonfile" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/4147ca05-0b7f-4374-a697-ef44321d70cf">
 
 I then invoked OpenLane from the already used OpenLane Container as follows:
 
