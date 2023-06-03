@@ -2882,7 +2882,8 @@ The problem goes away when nsubstrate constact is added in the nwell as shown be
 <details>
 <summary> Summary </summary>
 	
-I first leaned how to extarct a LEF file (defining a port and their purpose) (the LEF file is used in picorv32a design), then I learned about pre-layout timing analysis and CTS. 
+I first leaned how to extarct a LEF file (defining a port and their purpose) (the LEF file is used in picorv32a design), then I learned about pre-layout timing analysis and CTS. Recall that in delay tables, there are delay values for varying input transition and output load. For CTS: Delay tables for all buffers with their different sizes compose the timing models. To find a delay of a certain path, the delay tables of buffers on that path are used to find individual delays then those delays are added up. If two paths have the same buffer as load in turn driving the same load, then the signal comming out of those two buffers will have a skew of 0 (ensuring this will not lead to problems). For power-aware cTS, one of paths would be activated at a time. 
+	
 </details>
 
 <details>
@@ -2963,13 +2964,25 @@ The modified config.jason file is below:
 	
 <img width="491" alt="jasonfile" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/4147ca05-0b7f-4374-a697-ef44321d70cf">
 
-I then invoked OpenLane from the already used OpenLane Container as follows:
+I then invoked OpenLane from the already used OpenLane Container then ran synthesis (note that in my case no slack violations were reported after synthesis, but if slack has been violated then there are variables that can be found in configuration/), floorplan, and placement as follows:
 
 ```bash
 exit
 prep -design picorv32a
 set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
 add_lefs -src $lefs
+run_synthesis
+run_floorplan
+run_placement
 ```
+	
+To view the layout after placement in magic, I used the command below in the results/placement directory (note that in my case the pdk was previously downloaded on my desktop in the open_pdks directory):
+	
+```bash
+magic read -T /home/mariam/Desktop/open_pdks/sky130/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.max.lef def read picorv32.def &
+```
+	
+A screenshot of the obtained layout is below, zoomed in to see the custom CMOS added:	
+	
 	
 </details>
