@@ -2883,9 +2883,20 @@ The problem goes away when nsubstrate constact is added in the nwell as shown be
 	
 I first leaned how to extarct a LEF file (defining a port and their purpose) (the LEF file is used in picorv32a design), then I learned about pre-layout timing analysis, CTS, and post-CTS timing analysis. Recall that in delay tables, there are delay values for varying input transition and output load. For CTS: Delay tables for all buffers with their different sizes compose the timing models. To find a delay of a certain path, the delay tables of buffers on that path are used to find individual delays then those delays are added up. If two paths have the same buffer as load in turn driving the same load, then the signal comming out of those two buffers will have a skew of 0 (ensuring this will not lead to problems). For power-aware CTS, one of paths would be activated at a time. 
 	
-Setup timing analysis (single clock, ideal scenariuo where clk is not built yet): the internal delay (finite time) in the capture flop which has to be subtracted from period, and the variation of time that a clock edge can can undergo when it arrives to the launch flop and capture clock (called uncertainty) which has to be also subtracted from period, so D (combinational delay)< T (period) - SUT (setup) - U (uncertainty). Using this analysis, the combinational delay should be considered when placing the cells. 
+Setup timing analysis (single clock, ideal scenario where clk is not built yet): the internal delay (finite time) in the capture flop which has to be subtracted from period, and the variation of time that a clock edge can can undergo when it arrives to the launch flop and capture clock (called uncertainty) which has to be also subtracted from period, so D (combinational delay)< T (period) - SUT (setup) - U (uncertainty). Using this analysis, the combinational delay should be considered when placing the cells. 
 
 Clock Tree Synthesis (CTS): goal is to make the clock reach all flipflops with minimum skew. H-tree calculates the path from all flops and connects the clock to the midpoint of the flops. Buffers (with equal rise and fall time) are added on the H-tree path. The CTS run adds clock buffers, so buffer delays are taken into consideration, and the analysis now deals with real clocks. Setup and hold time slacks can be then analyzed in the post-CTS STA analysis using OpenROAD. All critical (as shielding all is sometimes not possible) clock nets are shielded to prevent coupling with other components, and hence reducing potential of a glitch. A glitch is a serious problem as it can reset memory system and can lead to incorrect functionality in the whole system activity. Crosstalk leads to exponential delta skew, and this is another reason shielding nets is important.    
+
+Setup timing analysis (single clock, real clock scenario): nw clk goes through real wires and buffers, which cause delays. D (combinational delay)+ del1 (time for clk to reach launch flop) < T (period) + del2 (time for clk to reach capture flop) - SUT (setup: D to clk delay in capture flop) - U (uncertainty). del1-del2 is known as skew (difference in time the clk reaches the two flops). D+del1=data required time, T+del2-SUT-U is data arrival time, and slack= data required time - data arrival time => slack should be +ve. 
+
+Hold timing analysis (single clock, ideal scenario): D > H (hold time: clk to Q in capture flop) + HU (hold uncertainty). 
+	
+Hold timing analysis (single clock, real clock scenario): D + del1 > H (hold time: clk to Q in capture flop) + del2. The keft hand side is called data arrival time while right hand side is called data required time. In this case, slack = data arrival time - data required time, and slack here should be +ve too. 
+	
+Del 1nad del2 need to be identified for both setup and hold time analysis. Del1/del2 = sum of RC wire delays on path + sum of buffer delays on the path. The difference is that del1 goes to launch flop, while del2 goes to capture flop (see picture below to understand the difference).
+
+<img width="684" alt="realclock" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/34a1ad05-87b9-40c2-ae36-9058aba5dd79">
+	
 
 </details>
 
@@ -3033,5 +3044,21 @@ Below are the hold and setup STA analysis results respectively (both slacks are 
 
 <img width="491" alt="cststa4" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/c24d3c4d-2549-4336-a2cd-70af82d982f5">
 
+</details>
+	
+## Day 21
+	
+<details>
+<summary> Summary </summary>
+	
+I learned about routing, design rule check (drc), and PNR interactive flow. 	
+	
+</details>
+
+<details>
+	
+<summary> Codes </summary>
+	
+The used designs are taken from https://github.com/The-OpenROAD-Project/OpenLane and https://github.com/nickson-jose/vsdstdcelldesign.git
 
 </details>
