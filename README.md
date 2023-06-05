@@ -45,6 +45,8 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [Day 20](#day-20)
 
+[Day 21](#day-21)
+
 ## Day 0
 
 <details>
