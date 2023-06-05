@@ -3053,7 +3053,19 @@ Below are the hold and setup STA analysis results respectively (both slacks are 
 <details>
 <summary> Summary </summary>
 	
-I learned about routing, design rule check (drc), and PNR interactive flow. 	
+I learned about creating Power Distribution Network (PDN) in OpenLane, routing, design rule check (drc), and PNR interactive flow. In an ASIC flow, PDN generation is part of floorplan. In OpenLane, however, this is not the case and PDN must be generated after CTS and post-CTS STA analysis. 
+	
+During routing, algorithm tries to find the best possible connection between points. One such algorithm is maze routing also known as Lee's algorithm. This algorithm, find the minimum distance between points by 1-) creating a routing grid, 2-) labels source and target points, 3-) labels edge grids of source point as 1 (horizontal and vertical), then labels unlabeled edge grids of those grids as 2 and so on and so forth until we hit the target grid, 3-) Now all enumarated pathes in order that take from source to target grid are identified as options, 4-) L shaped routes (if found) would be chosen, otherwise any other identified option is chosen (the lower the number of pins found the better). Lee's algorithm is shown below. 
+	
+<img width="848" alt="mazeroute" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/879d8b61-fa68-4bca-985c-2c31520021ac">
+	
+There are 2 stages of routing: global (routing region is divided into rectangle grids which are represented as course 3D routes via FastRoute tool) and detailed (finer grids and routing guides are used to implement physical wiring via TritonRoute tool). OpenLane uses the TritonRoute tool (an inter-layer sequential, intra-layer parallel routing framework that honours pre-processed route guides, assumes that each net satisfies inter-guide connectivity, and uses MILP based panel routing scheme) for detailed routing. The preprocessed route guides and inter-guide connectivity are found below.
+	
+<img width="465" alt="preprocessedrouteguides" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/949c70c5-9c7c-469f-b1e3-6ba621fbdf71">
+	
+<img width="419" alt="interguideconnectivity" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9948f8dc-66d8-4721-9cfb-0f8045fbb4ec">
+
+Design rule check (drc) are rules that need to be followed when routing. Some rules define: minimum wire width, minimum wire pitch (distance between two wires from midpoints), and minimum wire spacing (distance between two wires from inner points). One violation is signal short when two wires meet: to solve it, one wire is put on another metal layer, but in this case two new rules are created and need to be checked: 1-) via width (inner square width) and 2-) via spacing (from inner close sides). 
 	
 </details>
 
@@ -3063,4 +3075,31 @@ I learned about routing, design rule check (drc), and PNR interactive flow.
 	
 The used designs are taken from https://github.com/The-OpenROAD-Project/OpenLane and https://github.com/nickson-jose/vsdstdcelldesign.git
 
+</details>
+	
+<details>
+	
+<summary> OpenLane (power distribution network): picorv32a with sky130_vsdinv </summary>
+	
+To generate PDN in OpenLane then verify its success, I used the commands below (PDN takes <name of design>_cts.def as input def file. During this step, the grid is created grid along with straps for the power supply and ground. These are then placed around the standard cells. A standard cell is designed such that the height is a multiple of the space between the power supply and ground rails (pitch is 2.72 here). Standard cells are powered only if the above conditions are satisfied. Power reaches the chip through the power pads, then the rings (through the via). The power supply and ground straps are connected to the power supply and ground rings, so power is then supplied to standard cells through the straps. If there are macros, then the straps attach to the rings of the macros via the macro pads and the pdn for the macro is pre-done. In this design straps are at metal layer 4 and 5 and the standard cell rails are at metal layer 1):
+	
+```bash
+gen_pdn
+echo $::env(CURRENT_DEF)
+```
+
+The generated logs and results are found in logs/floorplan and results/floorplan respectively. Hence, the "echo $::env(CURRENT_DEF)" post PDN must point to the def file in the results/floorplan directory. 
+	
+</details>
+
+<details>
+	
+<summary> OpenLane (routing): picorv32a with sky130_vsdinv </summary>
+	
+To run routing in OpenLane (via TritonRoute), I used the command below (options for routing can be specified in config.jason file, and there is a trade-off between the optimized route and the runtime according to routing strategy):
+	
+```bash
+run_routing
+```
+	
 </details>
