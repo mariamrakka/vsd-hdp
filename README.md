@@ -3124,16 +3124,19 @@ To run synthesis, I invoked OpenLane as usual, then I used the command:
 run_synthesis
 ```	
 
-The obtained STA reports are below (minimum and maximum slack and power):
+The obtained STA report is below (minimum): 
 	
 <img width="485" alt="mydesign_slackmin_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/a74016a9-078e-4cde-97d6-ca7fd2fa63ab">
 	
+The obtained STA report is below (maximum-part1):
 
 <img width="490" alt="mydesign_slackmax_synth1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/af42e5b7-3a5b-4373-9d8d-ad18731083f3">
 	
+The obtained STA report is below (maximum-part2):
 
 <img width="492" alt="mydesign_slackmax_synth2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/13d0c6c2-93e3-4593-b699-da87dc51ba8e">
-	
+
+The obtained STA report is below (power):
 	
 <img width="489" alt="mydesign_power" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9d43c82c-c906-44a7-bbe5-ce548a5dd2fb">
 	
