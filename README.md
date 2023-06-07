@@ -3234,6 +3234,44 @@ Below are the hold and setup STA analysis results respectively (both slacks are 
 
 	
 </details>
+	
+<details>
+	
+<summary> Routing: mariam_updown_counter </summary>
+	
+After CTS, I ran routing using the following command:
+	
+```bash
+run_routing
+```
+
+Below is the screenshot of the global routing log (found in logs/routing):
+	
+<img width="950" alt="my_design_global" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/4b2f45fa-87a7-4f69-80be-f19f2b782c8e">
+
+Below is the screenshot of the detailed routing log (found in logs/routing):	
+
+<img width="950" alt="mydesign_detailed" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/0014843d-979e-4343-8138-d98c61d64ab2">
+
+</details>	
+	
+<details>
+	
+<summary> GDSII: mariam_updown_counter </summary>
+	
+In OpenLane I used the command:
+	
+```bash	
+magic
+```
+
+The GDSII file is generated in the results/signoff/magic directory, so I selected it from there in the wizard.
+
+The layout screenshots are shown below (No DRC errors are found):
+	
+
+	
+</details>
 
 <details>
 	
