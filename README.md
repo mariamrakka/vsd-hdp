@@ -3267,8 +3267,17 @@ magic
 
 The GDSII file is generated in the results/signoff/magic directory, so I selected it from there in the wizard.
 
-The layout screenshots are shown below (No DRC errors are found):
+The layout screenshots are shown below (No DRC errors are found, mariam_updown_counter.magic.gds):
 	
+<img width="708" alt="gds1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2e3c55aa-46a7-4671-a4f3-844570cee236">
+
+After zooming in:
+	
+<img width="758" alt="gds2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/3fb5ff34-a569-4104-9ae3-5d8855cbc031">
+
+The LEF file shows as below in magic (mariam_updown_counter.lef.mag):
+	
+<img width="742" alt="leffile_mydesign" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/bb79ce33-8fce-4e16-b5a4-4a3c2aee7a31">
 
 	
 </details>
