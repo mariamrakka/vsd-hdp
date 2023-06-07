@@ -3104,6 +3104,16 @@ To run routing in OpenLane (via TritonRoute), I used the command below (options 
 run_routing
 ```
 	
+Below is the screenshot of the global routing log (found in logs/routing):
+	
+<img width="651" alt="globalpicorv32a" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/82ba2e0d-ddc6-4f6f-98c8-d0059b19cac0">
+
+
+Below is the screenshot of the detailed routing log (found in logs/routing):	
+
+<img width="722" alt="detailedpicorv32a" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/91525c12-53cf-497b-ab5e-9e2dfbd35caa">
+
+	
 To generate the GDSII file, I used the following commands (SPEF extraction, IR drop analysis, streaming out GDSII and generating LEF with magic, lvs, drc, antenna check, erc):
 
 ```bash	
