@@ -2621,7 +2621,7 @@ run_floorplan
 	
 Note that some of the floorplan switches (can be included with the command above) are FP_CORE_UTIL (floorplan core utilization), FP_ASPECT_RATIO (floorplan aspect ratio), FP_CORE_MARGIN (Core to die margin area), FP_IO_MODE (defines pin configurations: 1 = equidistant and 0 = not equidistant), FP_CORE_VMETAL (vertical metal layer), and FP_CORE_HMETAL (horizontal metal layer). The default values of these are defined in OpenLane/configuration/floorplan.tcl. In order to overwite these, we can define those switches in OpenLane/designs/<design name: picorv32a>/config.json. Note that in OpenLane, horizontal and vertical metal are one value added to the value we specify.
 	
-To view the layout the floorplan in magic, I used the command below in the results/floorplan directory (note that in my case the pdk was previously downloaded on my desktop in the open_pdks directory):
+To view the layout of the floorplan in magic, I used the command below in the results/floorplan directory (note that in my case the pdk was previously downloaded on my desktop in the open_pdks directory):
 	
 ```bash
 magic read -T /home/mariam/Desktop/open_pdks/sky130/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.min.lef def read picorv32.def &
@@ -3111,32 +3111,34 @@ run_routing
 <details>
  <summary> Summary </summary>
 	
-I on my design (the updown counter) using OpenLane, OpenSTA, and OpenRoad.
+I performed all the ASIC Design Flow steps on my design (the updown counter) using OpenLane, OpenSTA, and OpenRoad.
 	
 </details>
 	
 <details>
- <summary> Synthesis: mariam_updown_counter.sdc </summary>
+ <summary> Synthesis: mariam_updown_counter </summary>
 	
-To run synthesis, I invoked OpenLane as usual, then I used the command:
+After multiple trials of running the ASIC design flow on my designs, I kept encountering an error with pitch value during floorplan step, and I had to fix the jason.config file of my design to include the following command:
+	
+```bash
+"FP_PDN_AUTO_ADJUST": 0
+```
+
+The above command allowed me to carry out the whole design flow successfully starting from synthesis and ending at routing.
+	
+To run synthesis (after I invoked OpenLane as usual), I used the command:
 	
 ```bash
 run_synthesis
 ```	
 
-The obtained STA report is below (minimum): 
+The obtained STA report is below (hold (met slack), setup (met slack), and power): 
 	
 <img width="485" alt="mydesign_slackmin_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/a74016a9-078e-4cde-97d6-ca7fd2fa63ab">
 	
-The obtained STA report is below (maximum-part1):
-
 <img width="490" alt="mydesign_slackmax_synth1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/af42e5b7-3a5b-4373-9d8d-ad18731083f3">
 	
-The obtained STA report is below (maximum-part2):
-
 <img width="492" alt="mydesign_slackmax_synth2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/13d0c6c2-93e3-4593-b699-da87dc51ba8e">
-
-The obtained STA report is below (power):
 	
 <img width="489" alt="mydesign_power" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9d43c82c-c906-44a7-bbe5-ce548a5dd2fb">
 	
@@ -3150,7 +3152,94 @@ Flop ratio = 4/21 = 0.1904 = 19.04%
 	
 <img width="491" alt="mydesign_flopratio" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/e395168d-3212-4506-952c-2980f7da8973">
 	
-Below is the copied history of my terminal showing sucessful execution of all the ASIC Design Flow steps:
+</details>
+	
+<details>
+	
+<summary> Floorplan: mariam_updown_counter </summary>
+	
+To run the floorplanning after synthesis, I used the following command: 
+	
+```bash
+run_floorplan
+```
+	
+To view the layout of the floorplan in magic, I used the command below in the results/floorplan directory (note that in my case the pdk was previously downloaded on my desktop in the open_pdks directory):
+	
+```bash
+magic read -T /home/mariam/Desktop/open_pdks/sky130/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.min.lef def read mariam_updown_counter.def &
+```
+	
+A screenshot of the obtained layout is below:	
+	
+<img width="785" alt="mydesign_floorplan" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ac220133-5a0f-4ef9-9318-b5611dd18dce">
+	
+After zooming in:
+	
+<img width="950" alt="mydesign_floorplan2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/66f88730-524e-4fe7-81ba-2d28f0e350b5">
+
+
+	
+</details>
+	
+<details> 
+	
+<summary> Placement: mariam_updown_counter </summary>
+	
+To run the placement after floorplanning, I used the following command: 
+	
+```bash
+run_placement
+```
+
+To view the layout after placement in magic, I used the command below in the results/placement directory (note that in my case the pdk was previously downloaded on my desktop in the open_pdks directory):
+	
+```bash
+magic read -T /home/mariam/Desktop/open_pdks/sky130/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.max.lef def read mariam_updown_counter.def &
+```
+	
+A screenshot of the obtained layout is below:	
+	
+<img width="757" alt="mydesign_placement" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/55cb4983-d007-4c4b-bb0f-8117c1712c88">
+
+After zooming in:
+	
+<img width="747" alt="mydesign_placement2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/b08281be-100e-41fb-bdd1-2ac8699374fa">
+	
+</details>
+	
+<details>
+	
+<summary> CTS: mariam_updown_counter </summary>	
+	
+After synthesis, floorplan, and placement, I used the following command to carry out CTS analysis:
+	
+```bash
+run_cts
+```
+	
+Note that even though CTS was successful, this did not generate a .v file in the result/synthesis directory or anywhere else (even time stamp on the .v file in synthesis directory was not updated meaning cts did not overwrite that file). When I looked at OpenLane/scripts/openroad it had a cts.tcl file that did not use write_verilog!. Also, no reports where generated for cts inside reports/cts, but there were logs generated in logs/cts, and these showed no errors or warnings. The results/cts directory contained .odb, .def, and .sdc files.
+
+Note that I did not need to invoke OpenROAD for post-CTS STA, I found the reports already in the reports/cts directory. 
+	
+Below are the hold and setup STA analysis results respectively (both slacks are met):
+
+<img width="949" alt="mydesign_cts_hold1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/fe71d61e-ba99-4485-8a90-e94554dbd815">
+
+<img width="953" alt="mydesign_cts_hold2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/6dfa62cc-d626-4aa4-af03-50ce3b9f721c">
+
+<img width="954" alt="mydesign_cts_setup1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/eeead678-2715-40d2-99cf-fbdf4ba14155">
+
+<img width="953" alt="mydesign_cts_setup2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/26e6eb14-f2ca-4873-91ce-f79c8f2d8ea2">
+
+	
+</details>
+
+<details>
+	
+<summary> Entire flow success: mariam_updown_counter </summary>
+	
+Below is the copied history of my terminal showing sucessful execution of all the ASIC Design Flow steps detailed above:
 
 ```bash		
 OpenLane Container (e910d11):/openlane$ ./flow.tcl -interactive
