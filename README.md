@@ -47,6 +47,8 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [Day 21](#day-21)
 
+[My Design Part 4](#day-22)
+
 ## Day 0
 
 <details>
@@ -3101,5 +3103,46 @@ To run routing in OpenLane (via TritonRoute), I used the command below (options 
 ```bash
 run_routing
 ```
+	
+</details>
+	
+## Day 22
+	
+<details>
+ <summary> Summary </summary>
+	
+I on my design (the updown counter) using OpenLane, OpenSTA, and OpenRoad.
+	
+</details>
+	
+<details>
+ <summary> Synthesis: mariam_updown_counter.sdc </summary>
+	
+To run synthesis, I invoked OpenLane as usual, then I used the command:
+	
+```bash
+run_synthesis
+```	
+
+The obtained STA reports are below (minimum and maximum slack and power):
+	
+<img width="485" alt="mydesign_slackmin_synth" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/a74016a9-078e-4cde-97d6-ca7fd2fa63ab">
+
+<img width="490" alt="mydesign_slackmax_synth1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/af42e5b7-3a5b-4373-9d8d-ad18731083f3">
+
+<img width="492" alt="mydesign_slackmax_synth2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/13d0c6c2-93e3-4593-b699-da87dc51ba8e">
+	
+<img width="489" alt="mydesign_power" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9d43c82c-c906-44a7-bbe5-ce548a5dd2fb">
+
+To calculate the flop ratio, I used the following formula, and the numbers are extracted from the report whose screenshot is included below:
+	
+```bash	
+Flop ratio = # of D Flipflops / Total # of cells
+Flop ratio = 4/21 = 0.1904 = 19.04%
+```
+	
+<img width="491" alt="mydesign_flopratio" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/e395168d-3212-4506-952c-2980f7da8973">
+	
+
 	
 </details>
