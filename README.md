@@ -3260,7 +3260,20 @@ Below is the screenshot of the detailed routing log (found in logs/routing):
 	
 <summary> GDSII: mariam_updown_counter </summary>
 	
-In OpenLane I used the command:
+To generate the GDSII file, I used the following commands (SPEF extraction, IR drop analysis, lvs, drc, antenna check, erc, streaming out GDSII and generating LEF with magic):
+
+```bash	
+run_parasitics_sta
+run_irdrop_report
+run_magic_spice_export
+run_lvs
+run_magic_drc
+run_antenna_check
+run_erc
+run_magic
+```
+	
+To view the GDSII file in magic, in OpenLane I used the command:
 	
 ```bash	
 magic
