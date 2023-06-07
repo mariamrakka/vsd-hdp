@@ -3237,11 +3237,12 @@ Below are the hold and setup STA analysis results respectively (both slacks are 
 	
 <details>
 	
-<summary> Routing: mariam_updown_counter </summary>
+<summary> PDN and Routing: mariam_updown_counter </summary>
 	
-After CTS, I ran routing using the following command:
+After CTS, I ran PDN and routing using the following commands:
 	
 ```bash
+gen_pdn
 run_routing
 ```
 
