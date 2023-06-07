@@ -3096,7 +3096,7 @@ The generated logs and results are found in logs/floorplan and results/floorplan
 
 <details>
 	
-<summary> OpenLane (routing): picorv32a with sky130_vsdinv </summary>
+<summary> OpenLane (routing, GDSII): picorv32a with sky130_vsdinv </summary>
 	
 To run routing in OpenLane (via TritonRoute), I used the command below (options for routing can be specified in config.jason file, and there is a trade-off between the optimized route and the runtime according to routing strategy):
 	
@@ -3104,7 +3104,22 @@ To run routing in OpenLane (via TritonRoute), I used the command below (options 
 run_routing
 ```
 	
+To generate the GDSII file, I used the following commands (SPEF extraction, IR drop analysis, streaming out GDSII and generating LEF with magic, lvs, drc, antenna check, erc):
+
+```bash	
+run_parasitics_sta
+run_irdrop_report
+run_magic
+run_magic_spice_export
+run_lvs
+run_magic_drc
+run_antenna_check
+run_erc
+```
+	
 </details>
+	
+
 	
 ## Day 22
 	
@@ -3260,17 +3275,17 @@ Below is the screenshot of the detailed routing log (found in logs/routing):
 	
 <summary> GDSII: mariam_updown_counter </summary>
 	
-To generate the GDSII file, I used the following commands (SPEF extraction, IR drop analysis, lvs, drc, antenna check, erc, streaming out GDSII and generating LEF with magic):
+To generate the GDSII file, I used the following commands (SPEF extraction, IR drop analysis, streaming out GDSII and generating LEF with magic, lvs, drc, antenna check, erc):
 
 ```bash	
 run_parasitics_sta
 run_irdrop_report
+run_magic
 run_magic_spice_export
 run_lvs
 run_magic_drc
 run_antenna_check
 run_erc
-run_magic
 ```
 	
 To view the GDSII file in magic, in OpenLane I used the command:
