@@ -3127,6 +3127,23 @@ run_antenna_check
 run_erc
 ```
 	
+To view the GDSII file in magic, in OpenLane I used the command:
+	
+```bash	
+magic
+```
+
+The GDSII file is generated in the results/signoff/magic directory, so I selected it from there in the wizard.
+
+The layout screenshots are shown below:
+	
+<img width="334" alt="picorv32routing" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/6b243cc8-b43c-418b-b9c6-f10f0fa28f88">
+
+After zooming in:
+
+<img width="526" alt="picorv32routing2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/0470770e-a790-4443-acc5-009142d79544">
+
+	
 </details>
 	
 
@@ -3278,6 +3295,7 @@ Below is the screenshot of the global routing log (found in logs/routing):
 Below is the screenshot of the detailed routing log (found in logs/routing):	
 
 <img width="950" alt="mydesign_detailed" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/0014843d-979e-4343-8138-d98c61d64ab2">
+	
 
 </details>	
 	
