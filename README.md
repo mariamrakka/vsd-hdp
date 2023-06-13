@@ -3606,7 +3606,32 @@ Below are screenshots after synthesis (slacks met for min and max delay, no cloc
 
 <img width="481" alt="powerf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/6ecda74f-cfe4-4f1f-b8be-5f7a19f8dc89">
 	
+Below is screenshot after floorplan:
+	
+<img width="573" alt="floorplanf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/01c785ff-8469-4f3b-8c57-0dd3f754aa32">
+
+	
+Below is screenshot after placement:
+	
+<img width="573" alt="placementf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/894bd783-39c1-4e31-8eaa-5fa8b070bd29">
+
+Below is the min and max delays respectively (slacks met) after cts:
+	
+<img width="724" alt="mindelayctsf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/79b3d172-d16d-4185-a5a0-13038af9b110">
+
+<img width="732" alt="maxdelayctsf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/5df825a5-3747-41b4-9f63-89069d8e0662">
+	
+Below is the GDSII layout picture:
+	
+<img width="574" alt="gdsiif" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/61ec39a1-bc0e-4122-8342-c540d1f8fc1a">
+
+Below is the LEF screenshot:
+	
+<img width="579" alt="LEFf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/814b7436-1d45-45d2-8fee-cd7ae0b58e62">
+
+	
 Then I modified ....
+
 	
 I then hardened the user_project_wrapper by using the command below in updown_counter_openlane/openlane directory:
 	
