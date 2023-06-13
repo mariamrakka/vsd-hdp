@@ -15,13 +15,13 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [Day 5](#day-5)
 
-[My Design Part 1](#day-6)
+[Day 6: My Design Part 1](#day-6)
 
 [Day 7](#day-7)
 
 [Day 8](#day-8)
 
-[My Design Part 2](#day-9)
+[Day 9: My Design Part 2](#day-9)
 
 [Day 10](#day-10)
 
@@ -35,7 +35,7 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [Day 15](#day-15)
 
-[My Design Part 3](#day-16)
+[Day 16: My Design Part 3](#day-16)
 
 [Day 17](#day-17)
 
@@ -47,9 +47,9 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [Day 21](#day-21)
 
-[My Design Part 4](#day-22)
+[Day 22: My Design Part 4](#day-22)
 
-[Day 23](#day-23)
+[Day 23: My Design Part 5](#day-23)
 
 ## Day 0
 
@@ -3575,8 +3575,11 @@ In the updown_counter_openlane/openlane/mariam_updown_counter directory, I creat
     "GPL_CELL_PADDING": 2,
     "DPL_CELL_PADDING": 2,
     "CLOCK_PERIOD": 24,
+    "FP_PDN_CORE_RING": 0,
+    "GLB_RT_MAXLAYER": 5,
+    "PL_TARGET_DENSITY": 0.54,
+    "PL_TIME_DRIVEN": 0,
     "FP_CORE_UTIL": 35,
-    "FP_PDN_AUTO_ADJUST": 0,
     "DESIGN_IS_CORE": 0,
     "pdk::sky130*": {
         "SYNTH_MAX_FANOUT": 6,
