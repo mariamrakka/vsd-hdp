@@ -49,6 +49,8 @@ This github repository summarizes the progress made in the VSD-HDP tapeout progr
 
 [My Design Part 4](#day-22)
 
+[Day 23](#day-23)
+
 ## Day 0
 
 <details>
@@ -3477,5 +3479,132 @@ Available under the Apache License, version 2.0. See the LICENSE file for more d
 [WARNING]: Module sky130_ef_sc_hd__decap_12 blackboxed during sta
 [WARNING]: Module sky130_fd_sc_hd__fill_2 blackboxed during sta
 ```	
+	
+</details>
+
+	
+## Day 23
+	
+<details>
+	
+<summary> Summary </summary>
+	
+I learned how to integrate my design in the user projext wrapper as part of efabless's caravel.
+
+</details>
+	
+<details>
+	
+<summary> Links </summary>
+	
+The followed links are found in https://github.com/efabless/caravel/, https://github.com/efabless/caravel_mgmt_soc_litex, https://github.com/efabless/caravel_user_project/blob/main/docs/source/index.rst#section-quickstart, and https://github.com/efabless/caravel/blob/main/openlane/README.rst 
+
+</details>
+	
+<details>
+	
+<summary> Caravel integration: management SoC core instantiation </summary>
+	
+To clone the directory I used the following command:
+
+```bash	
+git clone https://github.com/efabless/caravel_mgmt_soc_litex.git
+```
+	
+First, I had to modify caravel.py inside the /litex directory of the cloned directory to remove the line that imports SpiFlash.
+	
+To install dependencies and build the management core, I used the following commands:
+	
+```bash
+cd caravel_mgmt_soc_litex
+cd litex
+make setup
+pip3 install git+https://github.com/litex-hub/pythondata-software-compiler_rt.git
+make
+```
+	
+The screenshot below shows the successful build of the management core:
+	
+<img width="952" alt="sucessfulbuildsoc" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/208c577b-d30a-4a62-a3d8-46200b5ced90">
+
+
+</details>
+	
+<details>
+	
+<summary> Caravel integration: hardening with OpeLane </summary>
+
+	
+I first created a new repo using the below link:
+	
+```bash
+https://github.com/efabless/caravel_user_project/generate
+```
+	
+Then, I set up the environment using the commands below
+
+```bash
+git clone https://github.com/mariamrakka/updown_counter_openlane.git
+cd updown_counter_openlane
+mkdir dependencies
+export OPENLANE_ROOT=$(pwd)/dependencies/openlane_src # you need to export this whenever you start a new shell
+export PDK_ROOT=$(pwd)/dependencies/pdks # you need to export this whenever you start a new shell
+export PDK=sky130A
+make setup
+```
+	
+To prepare for hardening my design, I first used the following commands:
+	
+```bash 
+cd openlane
+mkdir mariam_updown_counter 
+cd ..
+cd verilog/rtl/
+cp /home/mariam/OpenLane/designs/mariam_updown_counter/src/mariam_updown_counter.v .
+```
+	
+In the updown_counter_openlane/openlane/mariam_updown_counter directory, I created the following configuration file:
+
+```bash	
+{
+    "DESIGN_NAME": "mariam_updown_counter",
+    "VERILOG_FILES": "/home/mariam/updown_counter_openlane/verilog/rtl/mariam_updown_counter.v",
+    "CLOCK_PORT": "clk",
+    "CLOCK_NET": "clk",
+    "GLB_RESIZER_TIMING_OPTIMIZATIONS": true,
+    "GPL_CELL_PADDING": 2,
+    "DPL_CELL_PADDING": 2,
+    "CLOCK_PERIOD": 24,
+    "FP_CORE_UTIL": 35,
+    "FP_PDN_AUTO_ADJUST": 0,
+    "DESIGN_IS_CORE": 0,
+    "pdk::sky130*": {
+        "SYNTH_MAX_FANOUT": 6,
+        "scl::sky130_fd_sc_ms": {
+            "FP_CORE_UTIL": 30
+        }
+    }
+}
+```
+
+To harden my design, I used the command below in updown_counter_openlane/openlane directory:
+	
+```bash
+make mariam_updown_counter
+```
+	
+I then hardened the user_project_wrapper by using the command below in updown_counter_openlane/openlane directory:
+	
+```bash
+make user_project_wrapper
+```
+	
+</details>
+	
+
+	
+<details>
+	
+<summary> Caravel integration: mariam_updown_counter </summary>
 	
 </details>
