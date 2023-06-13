@@ -3601,10 +3601,3 @@ make user_project_wrapper
 	
 </details>
 	
-
-	
-<details>
-	
-<summary> Caravel integration: mariam_updown_counter </summary>
-	
-</details>
