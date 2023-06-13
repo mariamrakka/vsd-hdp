@@ -3596,6 +3596,16 @@ To harden my design, I used the command below in updown_counter_openlane/openlan
 make mariam_updown_counter
 ```
 	
+This induced the ASIC design flow to be run and the runs directory to be created inside /mariam_updown_counter.
+	
+Below are screenshots after synthesis (slacks met for min and max delay, no clock skew, and pwoer analysis):
+	
+<img width="941" alt="mindelayf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ea57c549-5bdb-41ae-840d-1562f18aab1e">
+
+<img width="504" alt="maxdelayf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/be5bfa9c-b161-4dd5-b0c6-835a1032e87c">
+
+<img width="481" alt="powerf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/6ecda74f-cfe4-4f1f-b8be-5f7a19f8dc89">
+	
 Then I modified ....
 	
 I then hardened the user_project_wrapper by using the command below in updown_counter_openlane/openlane directory:
