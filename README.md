@@ -3593,6 +3593,8 @@ To harden my design, I used the command below in updown_counter_openlane/openlan
 make mariam_updown_counter
 ```
 	
+Then I modified ....
+	
 I then hardened the user_project_wrapper by using the command below in updown_counter_openlane/openlane directory:
 	
 ```bash
