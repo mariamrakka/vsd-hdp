@@ -3633,17 +3633,29 @@ Below is the LEF screenshot:
 Then, I modified the config.json file found in openlane/user_project_wrapper/directory as shown in the screenshot below:
 	
 
-<img width="717" alt="wrapperconfig" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/1f40b50b-7ea7-4afd-8138-a216804f86d1">
+<img width="729" alt="wrapperconfig" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/3e354965-e327-4572-9a62-9ac3ace3adcd">
+
 
 I also modified the verilog/rtl/user_project_wrapper.v as shown in the screenshot below:
 
 <img width="719" alt="instantiation" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2eec25d6-e64b-42e8-9781-de957202c5e4">
+	
+Note that I could not remove the user_proj_example macro from the design as it was instantiated somehow (I figured out by using a command that searches for a keyword and returns all files that contain this keyword) in a fixed_dont_change/ directory inside the user_project_wrapper/ directory. As such, I hardened the user_proj_example using the command below in the updown_counter_openlane/openlane directory:
+	
+```bash
+make user_proj_example
+```
 
 I then hardened the user_project_wrapper by using the command below in updown_counter_openlane/openlane directory:
 	
 ```bash
 make user_project_wrapper
 ```
+	
+I got a sucessful flow uptil the LVS check which failed as shown in screenshot below:
+	
+<img width="720" alt="errorwrapper" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ecef8eee-4fe7-48ce-8002-f16c3c8fbd38">
+
 	
 </details>
 	
