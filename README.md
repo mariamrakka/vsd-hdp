@@ -3532,7 +3532,7 @@ The screenshot below shows the successful build of the management core:
 	
 <details>
 	
-<summary> Caravel integration: hardening with OpeLane </summary>
+<summary> Caravel integration: hardening with OpenLane </summary>
 
 	
 I first created a new repo using the below link:
