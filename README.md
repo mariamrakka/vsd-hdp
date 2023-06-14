@@ -3630,9 +3630,15 @@ Below is the LEF screenshot:
 <img width="579" alt="LEFf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/814b7436-1d45-45d2-8fee-cd7ae0b58e62">
 
 	
-Then I modified ....
-
+Then, I modified the config.json file found in openlane/user_project_wrapper/directory as shown in the screenshot below:
 	
+
+<img width="717" alt="wrapperconfig" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/1f40b50b-7ea7-4afd-8138-a216804f86d1">
+
+I also modified the verilog/rtl/user_project_wrapper.v as shown in the screenshot below:
+
+<img width="719" alt="instantiation" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2eec25d6-e64b-42e8-9781-de957202c5e4">
+
 I then hardened the user_project_wrapper by using the command below in updown_counter_openlane/openlane directory:
 	
 ```bash
