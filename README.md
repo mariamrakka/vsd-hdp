@@ -3557,38 +3557,65 @@ To prepare for hardening my design, I first used the following commands:
 	
 ```bash 
 cd openlane
-mkdir mariam_updown_counter 
+cp -r user_proj_example/ mariam_updown_counter 
 cd ..
 cd verilog/rtl/
 cp /home/mariam/OpenLane/designs/mariam_updown_counter/src/mariam_updown_counter.v .
 ```
-	
-In the updown_counter_openlane/openlane/mariam_updown_counter directory, I created the following configuration file:
 
-```bash	
-{
-    "DESIGN_NAME": "mariam_updown_counter",
-    "VERILOG_FILES": "/home/mariam/updown_counter_openlane/verilog/rtl/mariam_updown_counter.v",
-    "CLOCK_PORT": "clk",
-    "CLOCK_NET": "clk",
-    "GLB_RESIZER_TIMING_OPTIMIZATIONS": true,
-    "GPL_CELL_PADDING": 2,
-    "DPL_CELL_PADDING": 2,
-    "CLOCK_PERIOD": 24,
-    "FP_PDN_CORE_RING": 0,
-    "GLB_RT_MAXLAYER": 5,
-    "PL_TARGET_DENSITY": 0.54,
-    "PL_TIME_DRIVEN": 0,
-    "FP_CORE_UTIL": 35,
-    "DESIGN_IS_CORE": 0,
-    "pdk::sky130*": {
-        "SYNTH_MAX_FANOUT": 6,
-        "scl::sky130_fd_sc_ms": {
-            "FP_CORE_UTIL": 30
-        }
-    }
-}
+I then modified my verilog file has shown below (to accomodate for io_oeb which is driven low to enable the output):
+
+<img width="488" alt="final_mydesign_verilog" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/192bb585-a46e-4685-a12f-492206163f41">
+
+
+I also modified the verilog/rtl/user_project_wrapper.v as shown in the screenshot below:
+
+
+<img width="490" alt="final_wrapper" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ed61c7d6-bf59-45f1-9b57-f0fa62875668">
+
+
+After that, I modified the includes.rtl.caravel_user_project in the verilog/includes/ directory as shown below:
+
+<img width="484" alt="final_includes" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/e085dd36-ded5-4ec0-be9c-2c921c81accd">
+
+I adapted the tests found in verilog/dv/io_ports/ using the commands below:
+
+```bash
+cp -r io_ports/ mariam_updown_counter
+cd mariam_updown_counter
+rename s/io_ports/mariam_updown_counter/ *
 ```
+
+I modified the .c file in the verilog/dv/mariam_updown_counter/ directory as follows:
+
+<img width="490" alt="file_cfile" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/5b530514-61dc-4d02-8f76-3f757bc672c9">
+
+I also modified the _tb.v file in the verilog/dv/mariam_updown_counter/ directory by chaging all names as needed and applying following modifications:
+
+<img width="490" alt="final_tb" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ce860217-23b6-421b-add5-f0fb7ed7eb03">
+
+
+<img width="485" alt="final_tb1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/b63866e9-72f3-419f-9c6e-f77bf6479e90">
+
+
+<img width="498" alt="final_tb2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/37cf6796-6cd1-4594-89b7-bc783b01dbe2">
+
+
+To test the design, I used the following command in the updown_counter_openlane/ directory: 
+
+```bash
+make verify-mariam_updown_counter-rtl 
+```
+
+And below was the screenshot of the obtained traces (as we can see test has passed):
+
+<img width="490" alt="final_tbpass" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/05e09671-b851-4a27-b1e4-8310d6086100">
+
+	
+In the updown_counter_openlane/openlane/mariam_updown_counter directory, I modified the configuration file as shown in the screenshot below:
+
+<img width="489" alt="final_config" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/70ec524f-8466-45d2-a6b0-3d7d95ea779d">
+
 
 To harden my design, I used the command below in updown_counter_openlane/openlane directory:
 	
@@ -3599,35 +3626,26 @@ make mariam_updown_counter
 This induced the ASIC design flow to be run and the runs directory to be created inside /mariam_updown_counter.
 	
 Below are screenshots after synthesis (slacks met for min and max delay, no clock skew, and pwoer analysis):
-	
-<img width="941" alt="mindelayf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ea57c549-5bdb-41ae-840d-1562f18aab1e">
 
-<img width="504" alt="maxdelayf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/be5bfa9c-b161-4dd5-b0c6-835a1032e87c">
-
-<img width="481" alt="powerf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/6ecda74f-cfe4-4f1f-b8be-5f7a19f8dc89">
 	
 Below is screenshot after floorplan:
 	
-<img width="573" alt="floorplanf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/01c785ff-8469-4f3b-8c57-0dd3f754aa32">
+
 
 	
 Below is screenshot after placement:
 	
-<img width="573" alt="placementf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/894bd783-39c1-4e31-8eaa-5fa8b070bd29">
+
 
 Below is the min and max delays respectively (slacks met) after cts:
 	
-<img width="724" alt="mindelayctsf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/79b3d172-d16d-4185-a5a0-13038af9b110">
 
-<img width="732" alt="maxdelayctsf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/5df825a5-3747-41b4-9f63-89069d8e0662">
 	
 Below is the GDSII layout picture:
-	
-<img width="574" alt="gdsiif" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/61ec39a1-bc0e-4122-8342-c540d1f8fc1a">
+
 
 Below is the LEF screenshot:
-	
-<img width="579" alt="LEFf" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/814b7436-1d45-45d2-8fee-cd7ae0b58e62">
+
 
 	
 Then, I modified the config.json file found in openlane/user_project_wrapper/directory as shown in the screenshot below:
@@ -3635,16 +3653,6 @@ Then, I modified the config.json file found in openlane/user_project_wrapper/dir
 
 <img width="729" alt="wrapperconfig" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/3e354965-e327-4572-9a62-9ac3ace3adcd">
 
-
-I also modified the verilog/rtl/user_project_wrapper.v as shown in the screenshot below:
-
-<img width="719" alt="instantiation" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2eec25d6-e64b-42e8-9781-de957202c5e4">
-	
-Note that I could not remove the user_proj_example macro from the design as it was instantiated somehow (I figured out by using a command that searches for a keyword and returns all files that contain this keyword) in a fixed_dont_change/ directory inside the user_project_wrapper/ directory. As such, I hardened the user_proj_example using the command below in the updown_counter_openlane/openlane directory:
-	
-```bash
-make user_proj_example
-```
 
 I then hardened the user_project_wrapper by using the command below in updown_counter_openlane/openlane directory:
 	
