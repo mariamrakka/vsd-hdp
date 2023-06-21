@@ -3614,7 +3614,8 @@ And below was the screenshot of the obtained traces (as we can see test has pass
 	
 In the updown_counter_openlane/openlane/mariam_updown_counter directory, I modified the configuration file as shown in the screenshot below:
 
-<img width="489" alt="final_config" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/70ec524f-8466-45d2-a6b0-3d7d95ea779d">
+<img width="488" alt="final_config" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2ad78a62-3653-44bd-a8c9-102d695de669">
+
 
 
 To harden my design, I used the command below in updown_counter_openlane/openlane directory:
@@ -3623,35 +3624,27 @@ To harden my design, I used the command below in updown_counter_openlane/openlan
 make mariam_updown_counter
 ```
 	
-This induced the ASIC design flow to be run and the runs directory to be created inside /mariam_updown_counter.
-	
-Below are screenshots after synthesis (slacks met for min and max delay, no clock skew, and pwoer analysis):
-
-	
-Below is screenshot after floorplan:
-	
-
-
-	
-Below is screenshot after placement:
-	
-
-
-Below is the min and max delays respectively (slacks met) after cts:
-	
-
 	
 Below is the GDSII layout picture:
+
+<img width="222" alt="final_counter_gds" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/efaeff1f-f809-4a2f-b68d-473ae22af1b1">
+
+<img width="569" alt="zoomed_final_gds_counter" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/6257f3ca-fb7c-47f0-9630-0a61dd2b6097">
 
 
 Below is the LEF screenshot:
 
+<img width="440" alt="final_lef_counter" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/b0e56e81-ab6d-4613-9af6-b179ead7da51">
 
 	
 Then, I modified the config.json file found in openlane/user_project_wrapper/directory as shown in the screenshot below:
 	
+<img width="733" alt="final_config_wrapper" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/6d39d533-974b-411f-b048-67a59f5b960f">
 
-<img width="729" alt="wrapperconfig" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/3e354965-e327-4572-9a62-9ac3ace3adcd">
+
+I also modified the macro.cfg file as follows:
+
+<img width="499" alt="final_macro" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ddac09bf-965c-444d-ba1b-04a537dafb31">
 
 
 I then hardened the user_project_wrapper by using the command below in updown_counter_openlane/openlane directory:
