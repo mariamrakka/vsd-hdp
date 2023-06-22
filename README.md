@@ -3621,7 +3621,12 @@ To harden my design, I used the command below in updown_counter_openlane/openlan
 ```bash
 make mariam_updown_counter
 ```
-	
+
+Below is the screenshot showing a successful flow completion:
+
+<img width="730" alt="final_successful" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/99b1033b-1865-40a3-953d-3d870cc6d462">
+
+
 Below is the GDSII layout picture:
 
 <img width="222" alt="final_counter_gds" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/efaeff1f-f809-4a2f-b68d-473ae22af1b1">
