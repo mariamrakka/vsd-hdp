@@ -3557,6 +3557,7 @@ To prepare for hardening my design, I first used the following commands:
 	
 ```bash 
 cd openlane
+me
 cp -r user_proj_example/ mariam_updown_counter 
 cd ..
 cd verilog/rtl/
@@ -3623,7 +3624,6 @@ To harden my design, I used the command below in updown_counter_openlane/openlan
 ```bash
 make mariam_updown_counter
 ```
-	
 	
 Below is the GDSII layout picture:
 
