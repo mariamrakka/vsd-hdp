@@ -3572,8 +3572,6 @@ I then modified my verilog file has shown below (to accomodate for io_oeb which 
 I also modified the verilog/rtl/user_project_wrapper.v as shown in the screenshot below:
 
 
-<img width="490" alt="final_wrapper" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ed61c7d6-bf59-45f1-9b57-f0fa62875668">
-
 
 After that, I modified the includes.rtl.caravel_user_project in the verilog/includes/ directory as shown below:
 
