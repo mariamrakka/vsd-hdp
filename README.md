@@ -3611,13 +3611,10 @@ make verify-mariam_updown_counter-rtl
 And below was the screenshot of the obtained traces (as we can see test has passed):
 
 <img width="490" alt="final_tbpass" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/05e09671-b851-4a27-b1e4-8310d6086100">
-
 	
 In the updown_counter_openlane/openlane/mariam_updown_counter directory, I modified the configuration file as shown in the screenshot below:
 
 <img width="488" alt="final_config" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/2ad78a62-3653-44bd-a8c9-102d695de669">
-
-
 
 To harden my design, I used the command below in updown_counter_openlane/openlane directory:
 	
