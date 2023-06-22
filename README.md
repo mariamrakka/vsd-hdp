@@ -3668,6 +3668,20 @@ Below is the final LEF file I obtained:
 
 <img width="554" alt="final_wrapper_lef" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/e8ec8570-dbe9-46bd-bc56-4355e98a1939">
 
- 
+To run the precheck locally, I used the following commands:
+
+```bash
+make precheck
+make run-precheck
+```
+
+Below is a screenshot of the obtained result (0 DRC violations, only 2 out of 14 tests failed: default and gpio-defines):
+
+<img width="572" alt="final_precheck1" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/158646ac-53a5-4973-a578-e652f11f79d1">
+
+<img width="728" alt="final_precheck2" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ab97261c-11c8-40ac-ad47-83113245dd9d">
+
+
+
 </details>
 	
