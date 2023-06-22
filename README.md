@@ -3658,6 +3658,16 @@ I got a sucessful flow uptil the LVS check which failed as shown in screenshot b
 	
 <img width="720" alt="errorwrapper" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ecef8eee-4fe7-48ce-8002-f16c3c8fbd38">
 
-	
+Below is the final GDS file I obtained:
+
+<img width="907" alt="Screen Shot 2023-06-22 at 12 37 51 AM" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/cfcf6718-c84c-4972-a395-96b9a3e487cc">
+
+<img width="716" alt="Screen Shot 2023-06-22 at 12 38 38 AM" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/079864db-9f0c-4255-971e-59c28ac1dd77">
+
+Below is the final LEF file I obtained:
+
+<img width="554" alt="final_wrapper_lef" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/e8ec8570-dbe9-46bd-bc56-4355e98a1939">
+
+ 
 </details>
 	
