@@ -3640,7 +3640,7 @@ Below is the LEF screenshot:
 	
 Then, I modified the config.json file found in openlane/user_project_wrapper/directory as shown in the screenshot below:
 	
-<img width="733" alt="final_config_wrapper" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/6d39d533-974b-411f-b048-67a59f5b960f">
+<img width="953" alt="final_config_wrapper" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/0dc9e620-e440-45d2-8fed-95d5caebad63">
 
 
 I also modified the macro.cfg file as follows:
