@@ -3557,7 +3557,7 @@ To prepare for hardening my design, I first used the following commands:
 	
 ```bash 
 cd openlane
-me
+make openlane
 cp -r user_proj_example/ mariam_updown_counter 
 cd ..
 cd verilog/rtl/
