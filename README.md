@@ -3654,9 +3654,10 @@ I then hardened the user_project_wrapper by using the command below in updown_co
 make user_project_wrapper
 ```
 	
-I got a sucessful flow uptil the LVS check which failed as shown in screenshot below:
+I got a successful flow as shown in screenshot below:
 	
-<img width="720" alt="errorwrapper" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/ecef8eee-4fe7-48ce-8002-f16c3c8fbd38">
+<img width="796" alt="Screen Shot 2023-06-30 at 9 59 15 AM" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9c63ddff-fbe4-4917-a60e-f76c8e3dc355">
+
 
 Below is the final GDS file I obtained:
 
