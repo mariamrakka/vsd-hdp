@@ -3551,13 +3551,14 @@ export OPENLANE_ROOT=$(pwd)/dependencies/openlane_src # you need to export this 
 export PDK_ROOT=$(pwd)/dependencies/pdks # you need to export this whenever you start a new shell
 export PDK=sky130A
 make setup
+make pdk
+make openlane
 ```
 	
 To prepare for hardening my design, I first used the following commands:
 	
 ```bash 
 cd openlane
-make openlane
 cp -r user_proj_example/ mariam_updown_counter 
 cd ..
 cd verilog/rtl/
