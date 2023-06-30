@@ -3655,9 +3655,13 @@ I then hardened the user_project_wrapper by using the command below in updown_co
 make user_project_wrapper
 ```
 	
-I got a successful flow as shown in screenshot below:
+I got a successful flow as shown in the screenshot below:
 	
 <img width="796" alt="Screen Shot 2023-06-30 at 9 59 15 AM" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/9c63ddff-fbe4-4917-a60e-f76c8e3dc355">
+
+Note that the slew violations are for io pins as shown also below, so we ignore these violations:
+
+<img width="594" alt="pin_slew_violations" src="https://github.com/mariamrakka/vsd-hdp/assets/49097440/68b65a05-7007-4d5f-8307-c449da08dbb0">
 
 
 Below is the final GDS file I obtained:
